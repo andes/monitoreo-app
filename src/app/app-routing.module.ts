@@ -3,9 +3,9 @@ import { ModuleWithProviders } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
- { path: '', redirectTo: '/home', pathMatch: 'full' },
+ { path: '', redirectTo: '/login', pathMatch: 'full' },
  { path: 'home', component: HomeComponent },
-// { path: '**', redirectTo: '/home', pathMatch: 'full' },
+ { path: '**', redirectTo: '/home', pathMatch: 'full' },
     
  { path: 'login', loadChildren: './login/login.module#LoginModule' }
 

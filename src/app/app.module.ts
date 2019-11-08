@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Plex, PlexModule } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
-import { HttpModule } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { LoginModule } from './login/login.module';
 
 // Components
@@ -21,7 +21,6 @@ import { AuthModule, Auth } from '@andes/auth';
  ],
  imports: [
    BrowserModule,
-   HttpModule,
    FormsModule,
    HttpClientModule,
    PlexModule,
@@ -31,7 +30,8 @@ import { AuthModule, Auth } from '@andes/auth';
  providers: [
    Plex,
    Server,
-   Auth
+   Auth,
+   HttpClient
  ],
  bootstrap: [AppComponent]
 })
