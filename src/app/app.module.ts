@@ -26,8 +26,7 @@ import { AuthModule, Auth } from '@andes/auth';
    HttpClientModule,
    PlexModule,
    routing,
-   AuthModule,
-   LoginModule
+   AuthModule
  ],
  providers: [
    Plex,

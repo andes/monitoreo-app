@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Plex, PlexModule } from '@andes/plex';
@@ -10,6 +8,7 @@ import { Server } from '@andes/shared';
 
 // Components
 import { LoginComponent } from './login.component';
+import { LoginRoutingModule } from './login-routing.module';
 
 
 
@@ -17,10 +16,10 @@ import { LoginComponent } from './login.component';
   declarations: [LoginComponent],
   imports: [
     CommonModule,
-    BrowserModule,
     FormsModule,
     HttpClientModule,
-    PlexModule
+    PlexModule,
+    LoginRoutingModule
     //routing,
   ]
 })
