@@ -12,11 +12,11 @@
     background: rgb(221, 211, 180);
     // Form
     .login-form {
-        box-shadow: 0px 0px 22px 2px rgba(0, 0, 0, 0.45);
+        box-shadow: 0px 0px 22px 2px rgba(0, 0, 0, 0.45);font-weight:bold;
         // Header
         .login-header {
             height: 80px;
-            background: rgb(128, 105, 31); //$blue;
+            background: #614c0b; //$blue;
             // OneLogin
             .onelogin {
                 width: 120px;
@@ -35,33 +35,44 @@
                 background-repeat: no-repeat;
                 background-size: 80px;
                 background-position: center right;
-                background-image: url('../../assets/img/andes-logo-v-white.svg');
+                background-image: url('./assets/img/andes-logo-v-white.svg');
             }
         }
         // Content
         .login-content {
             padding-top: 30px;
             padding-bottom: 30px;
-            background: $dark-blue;
+            background: #091901fa;//$dark-blue;
             color: white;
             align-items: center;
             
             .input-group-addon {
-                background: rgb(128, 105, 31); //$blue; !important;
+                background: #614c0b; //$blue; !important;
             }
             input {
                 border-color: white;
             }
             plex-button,
-            .btn {
-                display: block;
-                width: 100%;
+          
+            .btn-iniciar{
+                font-weight:bold;
+                color:#333333;
+            }
+            .btn-iniciar:hover{
+                color:whitesmoke;
+            }
+            // .disabled {
+            //     opacity: 0.6;
+            //     cursor: not-allowed;
+            //   }
+            .icon {
+                color:whitesmoke;
             }
         }
         // Footer
         .login-footer {
             height: 60px;
-            background: rgb(128, 105, 31); //$blue;
+            background: #614c0b; //$blue;
             // Red TICS
             .redTICS {
                 width: 200px;

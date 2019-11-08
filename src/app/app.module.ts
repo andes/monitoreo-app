@@ -6,19 +6,18 @@ import { Plex, PlexModule } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
 import { HttpModule } from '@angular/http';
-
+import { LoginModule } from './login/login.module';
 
 // Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
 import { AuthModule, Auth } from '@andes/auth';
+
 
 @NgModule({
  declarations: [
    AppComponent,
-   HomeComponent,
-   LoginComponent
+   HomeComponent
  ],
  imports: [
    BrowserModule,
@@ -27,7 +26,8 @@ import { AuthModule, Auth } from '@andes/auth';
    HttpClientModule,
    PlexModule,
    routing,
-   AuthModule
+   AuthModule,
+   LoginModule
  ],
  providers: [
    Plex,

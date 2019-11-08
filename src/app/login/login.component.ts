@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
 @Component({
+    selector: 'app-login',
     templateUrl: 'login.html',
     styleUrls: ['login.scss'],
     encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
