@@ -6,12 +6,12 @@ import { Plex, PlexModule } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
 import { HttpClient } from '@angular/common/http';
-import { LoginModule } from './login/login.module';
 
 // Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AuthModule, Auth } from '@andes/auth';
+import { RoutingGuard } from './login/routing-guard';
 
 
 @NgModule({
@@ -31,7 +31,8 @@ import { AuthModule, Auth } from '@andes/auth';
    Plex,
    Server,
    Auth,
-   HttpClient
+   HttpClient,
+   RoutingGuard
  ],
  bootstrap: [AppComponent]
 })
