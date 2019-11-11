@@ -12,12 +12,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AuthModule, Auth } from '@andes/auth';
 import { RoutingGuard } from './login/routing-guard';
+import { WebHookComponent } from './webhook/components/webhook.component';
+import { WebHookService } from './webhook/services/webhook.service';
 
 
 @NgModule({
  declarations: [
    AppComponent,
-   HomeComponent
+   HomeComponent,
+   WebHookComponent
  ],
  imports: [
    BrowserModule,
@@ -25,14 +28,15 @@ import { RoutingGuard } from './login/routing-guard';
    HttpClientModule,
    PlexModule,
    routing,
-   AuthModule
+   AuthModule,
  ],
  providers: [
    Plex,
    Server,
    Auth,
    HttpClient,
-   RoutingGuard
+   RoutingGuard,
+   WebHookService
  ],
  bootstrap: [AppComponent]
 })
