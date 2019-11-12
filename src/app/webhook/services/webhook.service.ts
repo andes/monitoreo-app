@@ -5,7 +5,7 @@ import { Server } from '@andes/shared';
 
 @Injectable()
 export class WebHookService {
-    private webHookUrl = '/modules/webhook'; 
+    private webHookUrl = '/modules/webhook';
 
     constructor(private server: Server) { }
 
@@ -17,20 +17,20 @@ export class WebHookService {
         return this.server.post(this.webHookUrl + '/webhooks/', webHook);
     }
 
-    patch(id: String, cambios: any, options: any = {}): Observable<IWebhook> {
-        return this.server.patch(this.webHookUrl +'/webhooks/'+`${id}`, cambios);
+    patch(id, cambios: any, options: any = {}): Observable<IWebhook> {
+        return this.server.patch(this.webHookUrl + '/webhooks/' + `${id}`, cambios);
     }
 
     delete(webHook: IWebhook): Observable<any> {
-        return this.server.delete(this.webHookUrl+'/webhooks/'+`${webHook.id}`);
+        return this.server.delete(this.webHookUrl + '/webhooks/' + `${webHook.id}`);
     }
-    
-    get(nombre: String): Observable<IWebhook[]> {
-        return this.server.get(this.webHookUrl +'/webhooks/'+`${nombre}`);
+
+    get(nombre): Observable<IWebhook[]> {
+        return this.server.get(this.webHookUrl + '/webhooks/' + `${nombre}`);
     }
 
 
-    
+
 
 
 }
