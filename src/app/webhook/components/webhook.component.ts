@@ -14,7 +14,6 @@ export class WebHookComponent{
     public esEditar=true;
     public filtro='';
     public filtrado=[];
-    public hooks;
     public webHooks: IWebhook[];
     public webHook: IWebhook;
     public opciones:any[] = [{id:'POST', nombre: 'POST' }, {id:'GET', nombre: 'GET' },
@@ -23,18 +22,10 @@ export class WebHookComponent{
     constructor(
         public plex: Plex,
         private webhookService: WebHookService
-    ) {
-    }
+    ) { }
 
     ngOnInit() {
         this.filtrarPorNombre('');
-        this.hooks=[{
-            name:'',
-            event:'',
-            url:'',
-            method:'',
-            active:false
-        }];
         this.webHook = {
             id: '',
             event: '',
@@ -46,21 +37,12 @@ export class WebHookComponent{
         }; 
     }
 
-    editar(id){
-        this.encontro=false;
-        this.webHooks = this.hooks.filter(element => element.id == id );
-        if(this.webHooks.length!=0){
-            this.encontro=true;
-            this.webHook=this.webHooks[0];
-        }
-    }   
-
     cerrar(){
         this.encontro=false;
         this.nuevoHook=false;
         this.esEditar=true;
     }
-    
+
     nuevo(){
         this.webHook = {
             id: '',
@@ -76,6 +58,36 @@ export class WebHookComponent{
         this.esEditar=false;
     }
 
+    agregarWebhook(webhook) {
+        this.esEditar=false;
+        this.webhookService.post(webhook).subscribe(resultado => {
+            this.plex.info('info', 'El WebHook '+(webhook.nombre||webhook.name)+ ' fue agregado');
+        });
+        this.nuevoHook=false;
+        this.encontro=false;
+        this.esEditar=true;
+        this.filtrarPorNombre(this.filtro);
+    }
+
+    editar(id){
+        this.encontro=false;
+        this.webHooks = this.webHooks.filter(element => element.id == id );
+        if(this.webHooks.length!=0){
+            this.encontro=true;
+            this.webHook=this.webHooks[0];
+        }
+    }   
+
+    EditarWebhook(webhook) {
+        this.esEditar=true;
+        this.webhookService.patch(webhook.id, webhook).subscribe(resultado => {
+            this.plex.info('info', 'El webhook fue editado');
+            this.filtrarPorNombre(this.filtro);
+            this.nuevoHook=false;
+            this.encontro=false;
+        });
+    }
+
     borrar(hook){
         this.plex.confirm(hook.nombre || hook.name, '¿Desea eliminar?').then(confirmacion => {
             if (confirmacion) {
@@ -89,35 +101,6 @@ export class WebHookComponent{
             this.filtrarPorNombre(this.filtro);
         });
     }
-    //Trae todos los webhooks
-    obtenerHooks(){
-        this.webhookService.getAll().subscribe(datos => {
-            this.webHooks=datos;
-            this.filtrado=this.hooks;
-        });
-    }
-
-    agregarWebhook(webhook) {
-    this.esEditar=false;
-        this.webhookService.post(webhook).subscribe(resultado => {
-            this.plex.info('info', 'El WebHook '+(webhook.nombre||webhook.name)+ ' fue agregado');
-        });
-
-        this.nuevoHook=false;
-        this.encontro=false;
-        this.esEditar=true;
-        this.filtrarPorNombre(this.filtro);
-    }
-
-    EditarWebhook(webhook) {
-        this.esEditar=true;
-        this.webhookService.patch(webhook.id, webhook).subscribe(resultado => {
-            this.plex.info('info', 'El webhook fue editado');
-            this.filtrarPorNombre(this.filtro);
-            this.nuevoHook=false;
-            this.encontro=false;
-        });
-    }
 
     //Filtrado por expresion regular ingresada
     filtrarPorNombre(event){
@@ -126,17 +109,12 @@ export class WebHookComponent{
             let val=this.filtro;
             this.filtrado=[];
                 this.webhookService.get(val).subscribe(datos => {
-                    this.hooks=datos;
-                    this.webHooks=this.hooks;
+                    this.webHooks=datos;
                 });
         }
         else{
             this.webHooks=[];
         }
-    }
-
-    onScroll(){
-        console.log('scroll');
     }
 
 }
