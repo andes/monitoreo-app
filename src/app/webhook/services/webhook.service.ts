@@ -10,23 +10,23 @@ export class WebHookService {
     constructor(private server: Server) { }
 
     getAll() {
-        return this.server.get(this.webHookUrl);
+        return this.server.get(this.webHookUrl + '/webhooks/');
     }
 
     post(webHook): Observable<IWebhook> {
-        return this.server.post(this.webHookUrl + '/nuevo', webHook);
+        return this.server.post(this.webHookUrl + '/webhooks/', webHook);
     }
 
     patch(id: String, cambios: any, options: any = {}): Observable<IWebhook> {
-        return this.server.patch(this.webHookUrl +'/editar/'+`${id}`, cambios);
+        return this.server.patch(this.webHookUrl +'/webhooks/'+`${id}`, cambios);
     }
 
     delete(webHook: IWebhook): Observable<any> {
-        return this.server.delete(this.webHookUrl+'/eliminar/'+`${webHook.id}`);
+        return this.server.delete(this.webHookUrl+'/webhooks/'+`${webHook.id}`);
     }
     
-    get(nombre: String): Observable<IWebhook> {
-        return this.server.get(this.webHookUrl +'/filtro/'+`${nombre}`);
+    get(nombre: String): Observable<IWebhook[]> {
+        return this.server.get(this.webHookUrl +'/webhooks/'+`${nombre}`);
     }
 
 
