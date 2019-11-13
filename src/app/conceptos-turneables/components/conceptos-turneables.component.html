@@ -1,0 +1,68 @@
+<plex-layout [main]='(conceptoSeleccionado || agregando) ? "7": "12"'>
+    <plex-layout-main>
+        <plex-title titulo="Buscar conceptos turneables">
+            <plex-button label="Nuevo" type="primary" (click)="agregar()">
+            </plex-button>
+        </plex-title>
+        <fieldset>
+            <div class="row">
+                <div class="col-6 pr-0">
+                    <plex-text label="Ingrese ConceptID" placeholder="Concept ID" prefix="<i class='mdi mdi-star'></i>"
+                        [(ngModel)]="conceptID" name="usuario" #filtroConceptID="ngModel" [readonly]="agregando"
+                        (ngModelChange)="buscar();"></plex-text>
+                </div>
+                <div class="col-6">
+                    <plex-text label="Ingrese Term" placeholder="Term" prefix="<i class='mdi mdi-format-text'></i>"
+                        [(ngModel)]="term" name="usuario" #filtroTerm="ngModel" [readonly]="agregando"
+                        (ngModelChange)="buscar();"></plex-text>
+                </div>
+            </div>
+
+            <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
+
+            <div class="row">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table *ngIf="conceptosTurneables && conceptosTurneables.length"
+                            class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="">Concept ID</th>
+                                    <th class="">Nombre</th>
+                                    <th class="">Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover" *ngFor="let concepto of conceptosTurneables"
+                                    label="elemento conceptos turneables"
+                                    [ngClass]="{'bg-inverse text-white': conceptoSeleccionado && concepto.id === conceptoSeleccionado.id}"
+                                    (click)="onRowClick(concepto)">
+                                    <td class="">
+                                        <span *ngIf="concepto?.conceptId !== ''"
+                                            class="d-block">{{concepto.conceptId}}</span>
+                                    </td>
+                                    <td class="">
+                                        <span *ngIf="concepto?.term !== ''" class="d-block">{{concepto.term}}</span>
+                                    </td>
+                                    <td class="">
+                                        <span *ngIf="concepto?.semanticTag !== ''"
+                                            class="d-block">{{concepto.semanticTag}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </plex-layout-main>
+    <plex-layout-sidebar *ngIf="conceptoSeleccionado">
+        <app-concepto-turneable-detalle [conceptoTurneable]='conceptoSeleccionado'
+            (eliminarConceptoTurneable)="onEliminarConceptoTurneable($event)"
+            (editarConceptoTurneable)="onEditarConceptoTurneable($event)"></app-concepto-turneable-detalle>
+    </plex-layout-sidebar>
+    <plex-layout-sidebar *ngIf="!conceptoSeleccionado && agregando">
+        <app-concepto-turneable-nuevo (agregarConceptoTurneable)="onAgregarConceptoTurneable($event)"
+            (cancelarAgregarConceptoTurneable)="onCancelarAgregarConceptoTurneable()"></app-concepto-turneable-nuevo>
+    </plex-layout-sidebar>
+</plex-layout>

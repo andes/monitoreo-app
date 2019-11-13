@@ -19,7 +19,9 @@ export class AppComponent {
   }
 
   public crearMenu() {
+    this.menuList.push({ label: 'Página Principal', icon: 'home', route: '/home' });
     this.menuList.push({ label: 'Webhooks', icon: 'hook', route: '/webhook' });
+    this.menuList.push({ label: 'Conceptos Turneables', icon: 'clipboard-check', route: '/conceptos-turneables' });
     this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login' });
     this.plex.updateMenu(this.menuList);
   }
