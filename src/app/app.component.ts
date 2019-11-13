@@ -16,7 +16,7 @@ export class AppComponent {
   constructor(public server: Server, public plex: Plex) {
     server.setBaseURL(environment.API);
     this.crearMenu();
-    this.plex.updateTitle('ANDES | Apps Neuquinas de Salud');
+    this.plex.updateTitle('ANDES | Monitoreo App');
   }
 
   public crearMenu() {
