@@ -19,6 +19,9 @@ import { ConceptoTruneableService } from './conceptos-turneables/services/concep
 import { DetalleConceptoTurneableComponent } from './conceptos-turneables/components/detalle-concepto-turneable.component';
 import { NuevoConceptoTurneableComponent } from './conceptos-turneables/components/nuevo-concepto-turneable.component';
 import { SnomedService } from './shared/snomed.service';
+import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
+import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
+import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
 
 
 @NgModule({
@@ -29,6 +32,7 @@ import { SnomedService } from './shared/snomed.service';
     ConceptosTurneablesComponent,
     DetalleConceptoTurneableComponent,
     NuevoConceptoTurneableComponent,
+    MonitoreoActivacionesComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +50,9 @@ import { SnomedService } from './shared/snomed.service';
     RoutingGuard,
     WebHookService,
     ConceptoTruneableService,
-    SnomedService
+    SnomedService,
+    PacienteAppService,
+    SendMessageCacheService
   ],
   bootstrap: [AppComponent]
 })
