@@ -1,0 +1,95 @@
+<ng-container>
+    <plex-title *ngIf="conceptoTurneable.id && !editable" titulo="Detalle Concepto">
+        <plex-button label="Editar" type="warning" (click)="toggleEdicion()"></plex-button>
+        <plex-button label="Eliminar" type="danger" (click)="eliminar()">
+        </plex-button>
+    </plex-title>
+    <plex-title *ngIf="conceptoTurneable.id && editable" titulo="Editar Concepto">
+        <plex-button *ngIf="hayCambios()" label="Guardar" type="success" (click)="editar()" >
+        </plex-button>
+        <plex-button *ngIf="!hayCambios()" label="Guardar" type="success" [disabled]="true">
+            </plex-button>
+        <plex-button label="Cancelar" type="danger" (click)="cancelar()">
+        </plex-button>
+    </plex-title>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Concept ID:</strong>
+                                <plex-text placeholder="Concept ID" name="usuario"
+                                    [(ngModel)]="conceptoTurneable.conceptId" [disabled]="true">
+                                </plex-text>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Term:</strong>
+                                <plex-text placeholder="Term" name="usuario" [(ngModel)]="conceptoTurneable.term"
+                                    [disabled]="true">
+                                </plex-text>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>FSN:</strong>
+                                <plex-text placeholder="fsn" name="usuario" [(ngModel)]="conceptoTurneable.fsn"
+                                    [disabled]="true">
+                                </plex-text>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Semantic Tag:</strong>
+                                <plex-text placeholder="Semantic Tag" name="usuario"
+                                    [(ngModel)]="conceptoTurneable.semanticTag" [disabled]="true">
+                                </plex-text>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td *ngIf="!editable">
+                                <strong>Nominalizada:</strong>
+                                <plex-text *ngIf="!conceptoTurneable.noNominalizada" [(ngModel)]="paraTrue"
+                                    name="usuario" [disabled]="true">
+                                </plex-text>
+                                <plex-text *ngIf="conceptoTurneable.noNominalizada" [(ngModel)]="paraFalse"
+                                    name="usuario" [disabled]="true">
+                                </plex-text>
+                            </td>
+                            <td *ngIf="editable">
+                                <strong>Nominalizada:</strong>
+                                &nbsp;
+                                <plex-bool [(ngModel)]="nominalizada" type="slide" name="nominalizada">
+                                </plex-bool>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td *ngIf="!editable">
+                                <strong>Auditable:</strong>
+                                <plex-text *ngIf="!conceptoTurneable.auditable" [(ngModel)]="paraFalse" name="usuario"
+                                    [disabled]="true">
+                                </plex-text>
+                                <plex-text *ngIf="conceptoTurneable.auditable" [(ngModel)]="paraTrue" name="usuario"
+                                    [disabled]="true">
+                                </plex-text>
+                            </td>
+                            <td *ngIf="editable">
+                                <strong>Auditable:</strong>
+                                &nbsp;
+                                <plex-bool [(ngModel)]="auditable" type="slide" name="auditable">
+                                </plex-bool>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-container>

@@ -14,30 +14,40 @@ import { AuthModule, Auth } from '@andes/auth';
 import { RoutingGuard } from './login/routing-guard';
 import { WebHookComponent } from './webhook/components/webhook.component';
 import { WebHookService } from './webhook/services/webhook.service';
+import { ConceptosTurneablesComponent } from './conceptos-turneables/components/conceptos-turneables.component';
+import { ConceptoTruneableService } from './conceptos-turneables/services/concepto-turneable.service';
+import { DetalleConceptoTurneableComponent } from './conceptos-turneables/components/detalle-concepto-turneable.component';
+import { NuevoConceptoTurneableComponent } from './conceptos-turneables/components/nuevo-concepto-turneable.component';
+import { SnomedService } from './shared/snomed.service';
 
 
 @NgModule({
- declarations: [
-   AppComponent,
-   HomeComponent,
-   WebHookComponent
- ],
- imports: [
-   BrowserModule,
-   FormsModule,
-   HttpClientModule,
-   PlexModule,
-   routing,
-   AuthModule,
- ],
- providers: [
-   Plex,
-   Server,
-   Auth,
-   HttpClient,
-   RoutingGuard,
-   WebHookService
- ],
- bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    WebHookComponent,
+    ConceptosTurneablesComponent,
+    DetalleConceptoTurneableComponent,
+    NuevoConceptoTurneableComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    PlexModule,
+    routing,
+    AuthModule,
+  ],
+  providers: [
+    Plex,
+    Server,
+    Auth,
+    HttpClient,
+    RoutingGuard,
+    WebHookService,
+    ConceptoTruneableService,
+    SnomedService
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
