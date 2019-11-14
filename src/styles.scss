@@ -91,6 +91,12 @@ $andes-naranja-claro: #f4a03b;
     &.color-rosa:hover {
         background: darken($color-rosa, 10%);
     }
+    &.color-azul-oscuro {
+        background: $andes-azul-oscuro;
+    }
+    &.color-azul-oscuro:hover {
+        background: darken($andes-azul-oscuro, 10%);
+    }
     &.color-amarillo {
         background: $color-amarillo;
     }
