@@ -1,0 +1,112 @@
+<plex-layout main={{main}}>
+    <plex-layout-main>
+        <header>
+            <h3 class="titulo"> Servicios Conectados a WebHook </h3>
+        </header>
+        <form #formulario="ngForm">
+            <fieldset>                    
+                <div class="row">
+                    <div class="col-md">
+                        <plex-text label="Filtrar" name="buscar" [(ngModel)]="textoBuscar" (change)="loadData()"
+                            (disabled)='false'></plex-text>
+                    </div>
+                    <div class="col-md-3">
+                        <plex-datetime label="Desde" [(ngModel)]="fechaI" name="fechaI" type="date"
+                            (change)="loadData()"></plex-datetime>
+                    </div>
+                    <div class="col-md-3">
+                        <plex-datetime label="hasta " [(ngModel)]="fechaF" name="fechaF" type="date"
+                            (change)="loadData()"></plex-datetime>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <plex-scroll (change)="loadData(true)"></plex-scroll>
+        <fieldset>
+            <div *ngIf="listMostrar.length != 0;else mostrarVacio">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <td><strong>Número</strong></td>
+                            <td *ngFor="let c of listFiltrar"><strong>{{c.nombre}}</strong></td>
+                            <td><strong>Status</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let e of listMostrar;index as i" (click)="seleccionarElem(e)">
+                            <td>{{i + 1}}</td>
+                            <td>{{e.event}}</td>
+                            <td>{{e.url}}</td>
+                            <td>{{e.updatedAt | date: 'dd-MM-yyyy'}}</td>
+                            <td>{{e.status}}</td>
+    
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="finScroll" class="alert alert-warning">
+                        <p style="text-align: center;"> No se encontraron más resultados </p>
+                </div>
+            </div>
+        </fieldset>
+        <ng-template #mostrarVacio>
+            <div class="sinDatos">
+                <label>No hay datos para mostrar</label>
+            </div>
+        </ng-template>
+    </plex-layout-main>
+
+    <plex-layout-sidebar>
+        <div style="font-size:17px; text-align: center;"
+            *ngIf="elemElegido != null;else elseSinDatos">
+            <header>
+                <div
+                    style="font-size:20px; align-content:center !important">
+                    <h3> <br> Descripción</h3>
+                </div>
+            </header>
+            <div scope="row">
+                <div class="col-md">
+                    <label>Status: </label>
+                    <span>{{elemElegido.status}}</span>
+                    <br>
+                </div>
+                <br>
+            </div>
+            <div scope="row">
+                <div class="col-md">
+                    <label>Method: </label>
+                    <span>{{elemElegido.method}}</span>
+                </div>
+                <br>
+            </div>
+            <div scope="row">
+                <div class="col-md">
+                    <label>Event: </label>
+                    <span>{{elemElegido.event}}</span>
+                </div>
+                <br>
+            </div>
+            <div scope="row">
+                <div class="col-md">
+                    <label>URL: </label>
+                    <span>{{elemElegido.url}}</span>
+                    <br>
+                </div>
+                <br>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <label>Fecha: </label>
+                    <span>{{elemElegido.updatedAt | date:'dd-MM-yyyy' }}</span>
+                </div>
+                <br>
+            </div>
+        </div>
+        <ng-template #elseSinDatos>
+            <div class="sinDatos">
+                <label>No hay datos para mostrar</label>
+                <p>Elja un dato de la lista para ver detalles.</p>
+            </div>
+        </ng-template>
+    </plex-layout-sidebar>
+</plex-layout>
