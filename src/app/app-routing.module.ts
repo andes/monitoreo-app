@@ -5,6 +5,7 @@ import { RoutingGuard, RoutingNavBar } from './login/routing-guard';
 import { WebHookComponent } from './webhook/components/webhook.component';
 import { ConceptosTurneablesComponent } from './conceptos-turneables/components/conceptos-turneables.component';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
+import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -13,8 +14,9 @@ const appRoutes: Routes = [
     { path: 'conceptos-turneables', component: ConceptosTurneablesComponent, canActivate: [RoutingGuard] },
     { path: 'monitor-activaciones', component: MonitoreoActivacionesComponent, canActivate: [RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
+    // { path: 'login', loadChildren: () => import('./login/login.module').then(l=>l.LoginModule)},
+    { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard]},
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
-
 ];
 
 export const appRoutingProviders: any[] = [];

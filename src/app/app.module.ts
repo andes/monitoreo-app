@@ -23,13 +23,15 @@ import { SnomedService } from './shared/snomed.service';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
-
+import { WebhookLogComponent } from './webhook-log/webhook-log.component';
+import { WebhookLogService } from './services/webhook-log.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     WebHookComponent,
+    WebhookLogComponent,
     ConceptosTurneablesComponent,
     DetalleConceptoTurneableComponent,
     NuevoConceptoTurneableComponent,
@@ -55,7 +57,8 @@ import { SendMessageCacheService } from './monitor-activaciones/services/sendMes
     ConceptoTruneableService,
     SnomedService,
     PacienteAppService,
-    SendMessageCacheService
+    SendMessageCacheService,
+    WebhookLogService
   ],
   bootstrap: [AppComponent]
 })
