@@ -11,7 +11,7 @@ export class PacienteAppService {
     constructor(private server: Server) { }
 
     get(params: any): Observable<IPacienteApp[]> {
-        return this.server.get(this.pacienteAppUrl, { params, showError: true });
+        return this.server.get(this.pacienteAppUrl + `?documento=${params.documento}`, { showError: true });
     }
 
 

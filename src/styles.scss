@@ -1,6 +1,10 @@
 // Plex
 @import '../node_modules/@andes/plex/src/lib/styles.scss';
 
+:root {
+    --nav-bar-color: #00b9b1!important;
+}
+
 $color-celeste: #039ac6;
 $color-violeta: #9B2A79;
 $color-rosa: #002B3A;

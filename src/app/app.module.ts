@@ -6,6 +6,7 @@ import { Plex, PlexModule } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
 import { HttpClient } from '@angular/common/http';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 // Components
 import { AppComponent } from './app.component';
@@ -41,6 +42,7 @@ import { SendMessageCacheService } from './monitor-activaciones/services/sendMes
     PlexModule,
     routing,
     AuthModule,
+    InfiniteScrollModule
   ],
   providers: [
     Plex,

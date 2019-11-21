@@ -6,6 +6,7 @@ import { IWebhook } from '../interfaces/IWebhook';
 @Component({
     selector: 'app-webkook',
     templateUrl: './webhook.component.html',
+    styleUrls: ['./webhook.component.scss']
 })
 
 export class WebHookComponent implements OnInit {
@@ -16,8 +17,15 @@ export class WebHookComponent implements OnInit {
     public filtrado = [];
     public webHooks: IWebhook[];
     public webHook: IWebhook;
+    private scrollEnd = false;
+    public params = {
+        skip: 0,
+        limit: 10
+    };
     public opciones: any[] = [{ id: 'POST', nombre: 'POST' }, { id: 'GET', nombre: 'GET' },
     { id: 'PUT', nombre: 'PUT' }, { id: 'PATCH', nombre: 'PATCH' }];
+
+    public opcionesTrasform: any[] = [{ id: 'fhir', nombre: 'fhir' }];
 
     constructor(
         public plex: Plex,
@@ -31,10 +39,11 @@ export class WebHookComponent implements OnInit {
             event: '',
             url: '',
             method: 'POST',
-            transform: '',
+            trasform: '',
             active: false,
             name: ''
         };
+
     }
 
     cerrar() {
@@ -49,7 +58,7 @@ export class WebHookComponent implements OnInit {
             event: '',
             url: '',
             method: 'POST',
-            transform: '',
+            trasform: '',
             active: false,
             name: ''
         };
@@ -59,9 +68,13 @@ export class WebHookComponent implements OnInit {
     }
 
     agregarWebhook(webhook) {
+        if (webhook.trasform !== '') {
+            webhook.trasform = webhook.trasform.nombre;
+        }
+        webhook.method = webhook.method.nombre;
         this.esEditar = false;
         this.webhookService.post(webhook).subscribe(resultado => {
-            this.plex.info('info', 'El WebHook ' + (webhook.nombre || webhook.name) + ' fue agregado');
+            this.plex.info('info', 'El WebHook ' + (webhook.name) + ' fue agregado');
         });
         this.nuevoHook = false;
         this.encontro = false;
@@ -78,7 +91,11 @@ export class WebHookComponent implements OnInit {
         }
     }
 
-    EditarWebhook(webhook) {
+    editarWebhook(webhook) {
+        if (webhook.trasform != null) {
+            webhook.trasform = webhook.trasform.nombre;
+        }
+        webhook.method = webhook.method.nombre;
         this.esEditar = true;
         this.webhookService.patch(webhook.id, webhook).subscribe(resultado => {
             this.plex.info('info', 'El webhook fue editado');
@@ -89,7 +106,7 @@ export class WebHookComponent implements OnInit {
     }
 
     borrar(hook) {
-        this.plex.confirm(hook.nombre || hook.name, '¿Desea eliminar?').then(confirmacion => {
+        this.plex.confirm(hook.name, '¿Desea eliminar?').then(confirmacion => {
             if (confirmacion) {
                 this.webhookService.delete(hook).subscribe(resultado => {
                     this.plex.info('info', 'El Webhook fue eliminado');
@@ -104,15 +121,34 @@ export class WebHookComponent implements OnInit {
 
     // Filtrado por expresion regular ingresada
     filtrarPorNombre(event) {
-        if (this.filtro !== '') {
-            this.filtro = event.value;
+        this.webHooks = [];
+        this.params.skip = 0;
+        this.scrollEnd = false;
+        if (event !== '') {
+            this.filtro = event;
             const val = this.filtro;
             this.filtrado = [];
-            this.webhookService.get(val).subscribe(datos => {
+            this.webhookService.get(val, this.params).subscribe(datos => {
                 this.webHooks = datos;
+                this.params.skip = this.webHooks.length;
             });
-        } else {
-            this.webHooks = [];
         }
+    }
+
+    onScroll() {
+        if (!this.scrollEnd) {
+            this.scroller(this.filtro);
+        }
+    }
+
+    scroller(val) {
+        this.webhookService.get(val, this.params).subscribe(datos => {
+            this.webHooks = this.webHooks.concat(datos);
+            this.params.skip = this.webHooks.length;
+            if (datos.length < this.params.limit) {
+                this.params.skip = 0;
+                this.scrollEnd = true;
+            }
+        });
     }
 }
