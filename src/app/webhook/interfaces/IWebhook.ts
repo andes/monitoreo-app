@@ -3,7 +3,7 @@ export interface IWebhook {
     event: string;
     url: string;
     method: string;
-    transform: string;
+    trasform: string;
     active: boolean;
     name: string;
 }

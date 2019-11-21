@@ -3,21 +3,24 @@
         <form #formulario="ngForm">
             <div class="row login-header">
                 <div class="col">
-                    <div class="onelogin"></div>                    
+                    <div class="onelogin"></div>
                     <div class="andes"></div>
                 </div>
             </div>
             <div class="row login-content">
                 <div class="col">
-                    <plex-int label="Usuario provincial OneLogin" [autoFocus]="autoFocus" prefix="<i class='mdi mdi-account-key icon'></i>"
-                        [(ngModel)]="usuario" name="usuario" [required]="true">
+                    <plex-int label="Usuario provincial OneLogin" [autoFocus]="autoFocus"
+                              prefix="<i class='mdi mdi-account-key icon'></i>" [(ngModel)]="usuario" name="usuario"
+                              [required]="true">
                     </plex-int>
-                    <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true" [required]="true">
+                    <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true"
+                               [required]="true">
                         <plex-icon name="lock" class="icon" prefix></plex-icon>
                     </plex-text>
                     <div class="row">&nbsp;</div>
-                    <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid" (click)="login($event)" size='block'>
-                       <span class="btn-iniciar">Iniciar sesión</span> 
+                    <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
+                                 (click)="login($event)" size='block'>
+                        Iniciar sesión
                     </plex-button>
                     <plex-loader *ngIf="loading" type="ball-pulse-sync"></plex-loader>
                 </div>
@@ -25,7 +28,7 @@
             <div class="row login-footer">
                 <div class="col">
                     <div class="redTICS"></div>
-                    
+
                     <div class="ministerio"></div>
                 </div>
             </div>

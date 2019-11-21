@@ -16,7 +16,8 @@
         // Header
         .login-header {
             height: 80px;
-            background: #614c0b; //$blue;
+            background-color: var(--nav-bar-color);
+            //background: #614c0b; //$blue;
             // OneLogin
             .onelogin {
                 width: 120px;
@@ -42,12 +43,13 @@
         .login-content {
             padding-top: 30px;
             padding-bottom: 30px;
-            background: #091901fa;//$dark-blue;
+            background: $dark-blue;
             color: white;
             align-items: center;
             
             .input-group-addon {
-                background: #614c0b; //$blue; !important;
+                background-color: var(--nav-bar-color);
+                //background: #614c0b; //$blue; !important;
             }
             input {
                 border-color: white;
@@ -72,7 +74,8 @@
         // Footer
         .login-footer {
             height: 60px;
-            background: #614c0b; //$blue;
+            background-color: var(--nav-bar-color);
+            //background: #614c0b; //$blue;
             // Red TICS
             .redTICS {
                 width: 200px;

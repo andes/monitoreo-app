@@ -5,7 +5,7 @@ import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
 
 @Injectable()
 export class ConceptoTruneableService {
-    private conceptoTurneableUrl = '/core/tm/conceptosTurneables';  // URL to web api
+    private conceptoTurneableUrl = '/core/tm/conceptoTurneable';  // URL to web api
 
     constructor(private server: Server) { }
 
