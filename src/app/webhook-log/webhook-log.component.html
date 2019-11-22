@@ -11,11 +11,11 @@
                             (disabled)='false'></plex-text>
                     </div>
                     <div class="col-md-3">
-                        <plex-datetime label="Desde" [(ngModel)]="fechaI" name="fechaI" type="date"
+                        <plex-datetime label="Desde" [(ngModel)]="fechaI" name="fechaI" type="datetime"
                             (change)="loadData()"></plex-datetime>
                     </div>
                     <div class="col-md-3">
-                        <plex-datetime label="hasta " [(ngModel)]="fechaF" name="fechaF" type="date"
+                        <plex-datetime label="hasta " [(ngModel)]="fechaF" name="fechaF" type="datetime"
                             (change)="loadData()"></plex-datetime>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                             <td>{{i + 1}}</td>
                             <td>{{e.event}}</td>
                             <td>{{e.url}}</td>
-                            <td>{{e.updatedAt | date: 'dd-MM-yyyy'}}</td>
+                            <td>{{e.updatedAt | date: 'dd-MM-yyyy  hh:mm:ss'}}</td>
                             <td>{{e.status}}</td>
     
                         </tr>
@@ -97,7 +97,7 @@
             <div class="row">
                 <div class="col-md">
                     <label>Fecha: </label>
-                    <span>{{elemElegido.updatedAt | date:'dd-MM-yyyy' }}</span>
+                    <span>{{elemElegido.updatedAt | date:'dd-MM-yyyy hh:mm:ss' }}</span>
                 </div>
                 <br>
             </div>
