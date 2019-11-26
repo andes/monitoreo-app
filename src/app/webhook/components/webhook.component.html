@@ -1,4 +1,4 @@
-<plex-layout [main]='(encontro || nuevoHook) ? "8": "12"'>
+<plex-layout [main]='(webHook.method) ? "8": "12"'>
     <plex-layout-main>
         <plex-title titulo="Webhooks">
             <plex-button label="Nuevo" type="primary" (click)="nuevo()"></plex-button>
@@ -36,10 +36,8 @@
         <plex-title main titulo="Complete los datos" size="sm">
             <plex-button label="Cancelar" type="danger" (click)="cerrar()" size="sm">
             </plex-button>
-            <plex-button class="float-right" *ngIf="!esEditar && webHook.name" size="sm" label="Guardar" type="success"
-                         (click)="agregarWebhook(webHook)"></plex-button>
-            <plex-button class="float-right" *ngIf="esEditar && webHook.name" size="sm" label="Guardar" type="success"
-                         (click)="editarWebhook(webHook)"></plex-button>
+            <plex-button class="float-right" *ngIf="webHook.name" size="sm" label="Guardar" type="success"
+                         (click)="creaModificaWebhook(webHook)"></plex-button>
         </plex-title>
 
         <div class="row">
