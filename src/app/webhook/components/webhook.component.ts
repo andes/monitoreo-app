@@ -10,11 +10,7 @@ import { IWebhook } from '../interfaces/IWebhook';
 })
 
 export class WebHookComponent implements OnInit {
-    public encontro = false;
-    public nuevoHook = false;
-    public esEditar = true;
     public filtro = '';
-    public filtrado = [];
     public webHooks: IWebhook[];
     public webHook: IWebhook;
     private scrollEnd = false;
@@ -38,18 +34,15 @@ export class WebHookComponent implements OnInit {
             id: '',
             event: '',
             url: '',
-            method: 'POST',
+            method: '',
             trasform: '',
             active: false,
             name: ''
         };
-
     }
 
     cerrar() {
-        this.encontro = false;
-        this.nuevoHook = false;
-        this.esEditar = true;
+        this.webHook.method = '';
     }
 
     nuevo() {
@@ -62,47 +55,30 @@ export class WebHookComponent implements OnInit {
             active: false,
             name: ''
         };
-        this.webHooks = [];
-        this.nuevoHook = true;
-        this.esEditar = false;
-    }
-
-    agregarWebhook(webhook) {
-        if (webhook.trasform !== '') {
-            webhook.trasform = webhook.trasform.nombre;
-        }
-        webhook.method = webhook.method.nombre;
-        this.esEditar = false;
-        this.webhookService.post(webhook).subscribe(resultado => {
-            this.plex.info('info', 'El WebHook ' + (webhook.name) + ' fue agregado');
-        });
-        this.nuevoHook = false;
-        this.encontro = false;
-        this.esEditar = true;
-        this.filtrarPorNombre(this.filtro);
     }
 
     editar(id) {
-        this.encontro = false;
         this.webHooks = this.webHooks.filter(element => element.id === id);
         if (this.webHooks.length !== 0) {
-            this.encontro = true;
             this.webHook = this.webHooks[0];
         }
     }
 
-    editarWebhook(webhook) {
+    creaModificaWebhook(webhook) {
         if (webhook.trasform != null) {
             webhook.trasform = webhook.trasform.nombre;
         }
         webhook.method = webhook.method.nombre;
-        this.esEditar = true;
-        this.webhookService.patch(webhook.id, webhook).subscribe(resultado => {
-            this.plex.info('info', 'El webhook fue editado');
-            this.filtrarPorNombre(this.filtro);
-            this.nuevoHook = false;
-            this.encontro = false;
-        });
+        if (webhook.id === '') {
+            this.webhookService.post(webhook).subscribe(resultado => {
+                this.plex.info('info', 'El WebHook ' + (webhook.name) + ' fue agregado');
+                this.filtrarPorNombre(this.filtro);
+            });
+        } else {
+            this.webhookService.patch(webhook.id, webhook).subscribe(resultado => {
+                this.plex.info('info', 'El webhook fue editado');
+            });
+        }
     }
 
     borrar(hook) {
@@ -110,12 +86,9 @@ export class WebHookComponent implements OnInit {
             if (confirmacion) {
                 this.webhookService.delete(hook).subscribe(resultado => {
                     this.plex.info('info', 'El Webhook fue eliminado');
+                    this.filtrarPorNombre(this.filtro);
                 });
             }
-            this.nuevoHook = false;
-            this.encontro = false;
-            this.esEditar = true;
-            this.filtrarPorNombre(this.filtro);
         });
     }
 
@@ -127,7 +100,6 @@ export class WebHookComponent implements OnInit {
         if (event !== '') {
             this.filtro = event;
             const val = this.filtro;
-            this.filtrado = [];
             this.webhookService.get(val, this.params).subscribe(datos => {
                 this.webHooks = datos;
                 this.params.skip = this.webHooks.length;
