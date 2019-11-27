@@ -25,9 +25,9 @@ export class WebhookLogService {
         let busq = '';
         let url = this.webhlUrl;
         if (JSON.stringify(query) !== JSON.stringify({})) {
-            url = url + `?skip=${ query.skip}` + `&limit=${ query.limit}`;
+            url = url + `?skip=${query.skip}` + `&limit=${query.limit}`;
             if (query.search) {
-                busq = `&search=^${ query.search}`;
+                busq = `&search=^${query.search}`;
             }
             return this.server.get(url + busq, { showError: true });
         } else {
@@ -37,17 +37,16 @@ export class WebhookLogService {
 
     getAll(query: any): Observable<IWebhooklog[]> {
         let fI = '';
-        const fF = '';
         let busq = '';
         let url = this.webhlUrl;
         if (JSON.stringify(query) !== JSON.stringify({})) {
-            url = url + `?skip=${ query.skip}` + `&limit=${ query.limit}`;
+            url = url + `?skip=${query.skip}` + `&limit=${query.limit}`;
             if (query.search) {
-                busq = `&search=^${ query.search}`;
+                busq = `&search=^${query.search}`;
             }
             if (query.fecha) {
                 fI = (query.search) ? '&' : '?';
-                fI = fI + `fecha=${ query.fecha}`;
+                fI = fI + `fecha=${query.fecha}`;
             }
             return this.server.get(url + busq + fI, { showError: true });
         } else {

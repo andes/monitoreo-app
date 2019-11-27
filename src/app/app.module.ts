@@ -24,7 +24,8 @@ import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
-import { WebhookLogService } from './services/webhook-log.service';
+import { WebhookLogService } from './webhook-log/services/webhook-log.service';
+
 
 @NgModule({
   declarations: [
