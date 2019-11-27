@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { WebhookLogService } from '../services/webhook-log.service';
-import { IWebhooklog } from '../interfaces/IWebhook-log';
+import { WebhookLogService } from './services/webhook-log.service';
+import { IWebhooklog } from './interfaces/IWebhook-log';
 
 const limit = 7;
 
@@ -54,12 +54,12 @@ export class WebhookLogComponent implements OnInit {
         error = true;
         this.fechaF = null;
       } else {
-        params.fecha = (this.fechaI && this.fechaF) ? { fechaInicio: this.fechaI, fechaFin: this.fechaF } :
-          (this.fechaI) ? { fechaInicio: this.fechaI } : { fechaFin: this.fechaF };
+        params.fecha = (this.fechaI && this.fechaF) ? `${this.fechaI}|${this.fechaF}` :
+          (this.fechaI) ? `>=${this.fechaI}` : `<=${this.fechaF}`;
       }
     }
-    if (!error) { // si el orden de las fechas están correctas
-      this.webhooklogService.getAllSinFechas(params).subscribe(
+    if (!error) { // si el orden de las fechas es correcto
+      this.webhooklogService.getAll(params).subscribe(
         data => {
           if (concatenar) {
             if (data.length > 0) {
