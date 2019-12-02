@@ -22,35 +22,25 @@ export class WebhookLogService {
      */
 
     getAllSinFechas(query: any): Observable<IWebhooklog[]> {
-        let busq = '';
-        let url = this.webhlUrl;
+        let params: any = {};
         if (JSON.stringify(query) !== JSON.stringify({})) {
-            url = url + `?skip=${query.skip}` + `&limit=${query.limit}`;
-            if (query.search) {
-                busq = `&search=^${query.search}`;
-            }
-            return this.server.get(url + busq, { showError: true });
-        } else {
-            return this.server.get(url, { showError: true });
+            params = {
+                skip: `${query.skip}`,
+                limit: `${query.limit}`
+            };
+            if (query.search) { params.search = `^${query.search}`; }
         }
+        return this.server.get(this.webhlUrl, { params, showError: true });
     }
 
     getAll(query: any): Observable<IWebhooklog[]> {
-        let fI = '';
-        let busq = '';
-        let url = this.webhlUrl;
+        let params: any = {};
         if (JSON.stringify(query) !== JSON.stringify({})) {
-            url = url + `?skip=${query.skip}` + `&limit=${query.limit}`;
-            if (query.search) {
-                busq = `&search=^${query.search}`;
-            }
-            if (query.fecha) {
-                fI = (query.search) ? '&' : '?';
-                fI = fI + `fecha=${query.fecha}`;
-            }
-            return this.server.get(url + busq + fI, { showError: true });
-        } else {
-            return this.server.get(url, { showError: true });
+            params = { skip: `${query.skip}`, limit: `${query.limit}` };
+            if (query.search) { params.search = `^${query.search}`; }
+
+            if (query.fecha) { params.fecha = `${query.fecha}`; }
         }
+        return this.server.get(this.webhlUrl, { params, showError: true });
     }
 }
