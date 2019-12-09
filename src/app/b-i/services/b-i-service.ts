@@ -27,7 +27,7 @@ export class BIService {
 
     constructor(private http: HttpClient, private server: Server, private plex: Plex) {
 
-        this.biUrl = environment.API;
+        this.biUrl = environment.API_BI;
     }
 
     /**
@@ -144,7 +144,7 @@ export class BIService {
     private parse(data: any): any {
         const dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
         const dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
-        const traverse = function(o, func) {
+        const traverse = function (o, func) {
             for (const i of Object.keys(o)) {
                 o[i] = func.apply(this, [i, o[i]]);
                 if (o[i] !== null && typeof (o[i]) === 'object') {
@@ -152,7 +152,7 @@ export class BIService {
                 }
             }
         };
-        const replacer = function(key, value) {
+        const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
                     return new Date(value);
