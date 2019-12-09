@@ -33,7 +33,7 @@ export class FiltroBiComponent implements OnInit {
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component as any);
         const componentReference = this.viewContainerRef.createComponent(componentFactory);
 
-        componentReference.instance.argumento = this.argumento;
+        componentReference.instance['argumento'] = this.argumento;
 
     }
 }

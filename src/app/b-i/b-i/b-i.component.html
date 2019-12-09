@@ -10,9 +10,9 @@
                 </plex-select>
             </div>
             <plex-box>
-                <ng-container *ngIf="listArgumentos.length > 0">
+                <ng-container *ngIf="(listaArgumentos) && (listaArgumentos.length > 0)">
                     <plex-title main titulo=" Ingrese los Argumentos" size="sm"></plex-title>
-                    <div class="col-md" *ngFor="let ar of listArgumentos">
+                    <div class="col-md" *ngFor="let ar of listaArgumentos">
                         <filtro-bi [argumento]='ar'></filtro-bi>
                         <br>
                     </div>
