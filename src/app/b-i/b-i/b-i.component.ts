@@ -43,7 +43,7 @@ export class BIComponent implements OnInit {
   }
   descargarCSV(event) {
     if (this.selectConsulta) {
-      let nombre = this.selectConsulta;
+      const nombre = this.selectConsulta;
       this.biService.descargar(this.selectConsulta);
     }
   }
