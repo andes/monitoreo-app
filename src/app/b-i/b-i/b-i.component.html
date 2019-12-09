@@ -1,0 +1,31 @@
+<plex-layout main={{main}}>
+    <plex-layout-main>
+        <header>
+            <plex-title main titulo="{{ title }}"> </plex-title>
+        </header>
+        <form #formulario="ngForm">
+            <div>
+                <plex-select required [(ngModel)]="selectConsulta" name="select" [data]="listaFiltro"
+                             labelField="nombre" label="Seleccione consulta" (change)="elegirConsulta()" idField="_id">
+                </plex-select>
+            </div>
+            <plex-box>
+                <ng-container *ngIf="listArgumentos.length > 0">
+                    <plex-title main titulo=" Ingrese los Argumentos" size="sm"></plex-title>
+                    <div class="col-md" *ngFor="let ar of listArgumentos">
+                        <filtro-bi [argumento]='ar'></filtro-bi>
+                        <br>
+                    </div>
+                </ng-container>
+
+                <div *ngIf="selectConsulta">
+                    <br>
+                    <plex-button label="Descargar" type="success" [validateForm]="formulario"
+                                 [disabled]="!formulario.form.valid" (click)="descargarCSV($event)" size="block">
+                    </plex-button>
+                </div>
+            </plex-box>
+        </form>
+    </plex-layout-main>
+    <footer></footer>
+</plex-layout>
