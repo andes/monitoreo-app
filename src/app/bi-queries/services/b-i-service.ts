@@ -127,16 +127,27 @@ export class BIService {
     }
 
     private parse(data: any): any {
+<<<<<<< HEAD:src/app/bi-queries/services/b-i-service.ts
         let dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
         let dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
         const traverse = function (o, func) {
             for (let i of Object.keys(o)) {
+=======
+        const dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
+        const dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
+        const traverse = function (o, func) {
+            for (const i of Object.keys(o)) {
+>>>>>>> feat (bi-queries): agrega componentes dinamicos:src/app/b-i/services/b-i-service.ts
                 o[i] = func.apply(this, [i, o[i]]);
                 if (o[i] !== null && typeof (o[i]) === 'object') {
                     traverse(o[i], func);
                 }
             }
+<<<<<<< HEAD:src/app/bi-queries/services/b-i-service.ts
         }
+=======
+        };
+>>>>>>> feat (bi-queries): agrega componentes dinamicos:src/app/b-i/services/b-i-service.ts
         const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
