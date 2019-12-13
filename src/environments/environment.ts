@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  API: '//localhost:3002/api',
+  HOST: '//localhost',
+  API: ':3002/api',
+  API_BI: ':3000' //'http://localhost:3000' //API LUCHO http://10.1.192.199:3000/
 };
 
 /*

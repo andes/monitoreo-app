@@ -14,7 +14,10 @@ export class AppComponent {
   private menuList = [];
 
   constructor(public server: Server, public plex: Plex) {
-    server.setBaseURL(environment.API);
+    server.setBaseURL(environment.HOST);
+    // Si pide loguearse al inicio de la app cambiar server.setBaseURL(environment.HOST) por 
+    // server.setBaseURL(environment.HOST + environment.API)
+    // una vez logueado dejar como está para poder usar API_BI
     this.crearMenu();
     this.plex.updateTitle('ANDES | Monitoreo App');
   }
