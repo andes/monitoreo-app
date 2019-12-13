@@ -22,12 +22,11 @@ const defaultOptions: Options = { params: null, showError: true, showLoader: tru
 export class BIService {
 
     // URL to web api
-    private biUrl;
-    private titulo = `consulta`;
+    private biUrl: string; // ya trae datos del HOST
+    private nombre = 'consulta';
 
     constructor(private http: HttpClient, private server: Server, private plex: Plex) {
-
-        this.biUrl = environment.API_BI;
+        this.biUrl = environment.API_BI; // se agrega el puerto de API_BI
     }
 
     /**
@@ -35,19 +34,22 @@ export class BIService {
     * @param query
     */
 
-
-
     getAllQuerys(): Observable<IFiltroBi[]> {
         // obtiene todas las querys de la colección "Consultas"
 
         return this.server.get(this.biUrl + `/getConsultas`, { showError: true });
     }
 
-
-    // en server(url, body, options)
+    descargar(consulta: IFiltroBi) {
+        this.nombre = consulta.nombre;
+        this.post(consulta).subscribe((data: any) => {
+            this.descargarArchivo(data, { type: 'text/csv' });
+        });
+    }
+    // redefinimos el post de server (url, body, options) para archvos blob en la url agregar enviroment.HOST
     post(consulta: any, options: Options = defaultOptions): Observable<any> { // en option trae params
         this.updateLoader(true, options);
-        return this.http.post(this.biUrl + `/descargarCSV`, JSON.stringify({ params: consulta }),
+        return this.http.post(environment.HOST + this.biUrl + `/descargarCSV`, JSON.stringify({ params: consulta }),
             this.prepareOptions(options, 'blob')).pipe(
                 finalize(() => this.updateLoader(false, options)),
                 map((res: any) => this.parse(res)),
@@ -55,29 +57,9 @@ export class BIService {
             );
     }
 
-
-    download(data: IFiltroBi, options: Options = defaultOptions): Observable<any> {
-        console.log('download', data);
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
-        });
-
-        const opt: any = { headers, responseType: 'blob' };
-        return this.http.post(this.biUrl + `/descargarCSV`, data, opt).pipe(
-            catchError((err: any) => this.handleError(err, options))
-        );
-    }
-    descargar(consulta: IFiltroBi) {
-        this.post(consulta).subscribe((data: any) => {
-            this.descargarArchivo(data, { type: 'text/csv' });
-        });
-    }
-
     private descargarArchivo(data: any, headers: any): void {
-        const blob = new Blob([data], headers);
-        // TODO Definir nombre del csv
-        const nombreArchivo = this.titulo + '-' + moment().format('DD-MM-YYYY') + '.csv';
+        let blob = new Blob([data], headers);
+        const nombreArchivo = this.nombre + '-' + moment().format('DD-MM-YYYY') + '.csv';
         saveAs(blob, nombreArchivo);
     }
 
@@ -104,8 +86,7 @@ export class BIService {
             if (response.status === 400) {
                 this.plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${response.status}</div>`, message);
             } else {
-                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error:
-                ${response.status}</div>`, 'No se pudo conectar con el servidor');
+                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${response.status}</div>`, 'No se pudo conectar con el servidor');
             }
         }
         return throwError(message);
@@ -115,13 +96,13 @@ export class BIService {
         const result: any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
-                Authorization: window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
+                'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
             }),
         };
         if (resType) { result.responseType = resType; }
         if (options && options.params) {
             result.params = new HttpParams();
-            for (const param in options.params) {
+            for (let param in options.params) {
                 if (options.params[param] !== undefined) {
                     if (Array.isArray(options.params[param])) {
                         (options.params[param] as Array<any>).forEach((value) => {
@@ -142,16 +123,16 @@ export class BIService {
 
 
     private parse(data: any): any {
-        const dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
-        const dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
+        let dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
+        let dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
         const traverse = function (o, func) {
-            for (const i of Object.keys(o)) {
+            for (let i of Object.keys(o)) {
                 o[i] = func.apply(this, [i, o[i]]);
                 if (o[i] !== null && typeof (o[i]) === 'object') {
                     traverse(o[i], func);
                 }
             }
-        };
+        }
         const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {

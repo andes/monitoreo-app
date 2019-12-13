@@ -33,6 +33,7 @@ export class FiltroBiComponent implements OnInit {
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component as any);
         const componentReference = this.viewContainerRef.createComponent(componentFactory);
 
+        // tslint:disable-next-line: no-string-literal
         componentReference.instance['argumento'] = this.argumento;
 
     }
