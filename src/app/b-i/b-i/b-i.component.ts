@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IFiltroBi } from '../interfaces/IFiltroBi.interface';
-// import { endWith } from 'rxjs/operators';
-// import { Server } from '@andes/shared';
-// import { environment } from '../../../environments/environment';
 import { BIService } from '../services/b-i-service';
 
 @Component({
@@ -25,16 +22,16 @@ export class BIComponent implements OnInit {
     this.biService.getAllQuerys().subscribe(
       resultado => {
         this.listaFiltro = resultado;
+      },
+      (err) => {
+
       }
     );
   }
 
-  ngOnInit() {
-    // console.log(this.selectConsulta);
-  }
+  ngOnInit() { }
 
   elegirConsulta() {
-    console.log(this.selectConsulta);
     // Traemos de la BD los argumentos para esa consulta (armamos listaArgumentos de acuerdo a lo elegido)
     if (this.selectConsulta) {
       this.listaArgumentos = this.selectConsulta.argumentos;
@@ -42,11 +39,8 @@ export class BIComponent implements OnInit {
     }
   }
 
-  mostrar(event) {
-  }
   descargarCSV(event) {
     if (this.selectConsulta) {
-      let nombre = this.selectConsulta;
       this.biService.descargar(this.selectConsulta);
     }
   }
