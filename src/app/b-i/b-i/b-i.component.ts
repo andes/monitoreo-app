@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IFiltroBi } from '../interfaces/IFiltroBi.interface';
+
 import { BIService } from '../services/b-i-service';
 
 @Component({
@@ -24,12 +25,13 @@ export class BIComponent implements OnInit {
         this.listaFiltro = resultado;
       },
       (err) => {
-
+        // console.log("error desde get: ", err);
       }
     );
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   elegirConsulta() {
     // Traemos de la BD los argumentos para esa consulta (armamos listaArgumentos de acuerdo a lo elegido)
@@ -39,8 +41,12 @@ export class BIComponent implements OnInit {
     }
   }
 
+  mostrar(event) {
+    console.log(event);
+  }
   descargarCSV(event) {
     if (this.selectConsulta) {
+      let nombre = this.selectConsulta;
       this.biService.descargar(this.selectConsulta);
     }
   }
