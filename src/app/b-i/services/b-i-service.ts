@@ -22,22 +22,21 @@ const defaultOptions: Options = { params: null, showError: true, showLoader: tru
 export class BIService {
 
     // URL to web api
-    private biUrl: string; // ya trae datos del HOST
+    private biUrl: string;
     private nombre = 'consulta';
 
     constructor(private http: HttpClient, private server: Server, private plex: Plex) {
-        this.biUrl = environment.API_BI; // se agrega el puerto de API_BI
+        this.biUrl = 'http:' + environment.HOST;
     }
 
     /**
     *
     * @param query
     */
-
-    getAllQuerys(): Observable<IFiltroBi[]> {
+    getAllQuerys(): Observable<any> { //todo ok
         // obtiene todas las querys de la colección "Consultas"
+        return this.server.get(`/modules/bi-queries/biQueries`, { showError: true });
 
-        return this.server.get(this.biUrl + `/getConsultas`, { showError: true });
     }
 
     descargar(consulta: IFiltroBi) {
@@ -49,7 +48,7 @@ export class BIService {
     // redefinimos el post de server (url, body, options) para archvos blob en la url agregar enviroment.HOST
     post(consulta: any, options: Options = defaultOptions): Observable<any> { // en option trae params
         this.updateLoader(true, options);
-        return this.http.post(environment.HOST + this.biUrl + `/descargarCSV`, JSON.stringify({ params: consulta }),
+        return this.http.post(this.biUrl + `/modules/bi-queries/descargarCSV`, JSON.stringify({ params: consulta }),
             this.prepareOptions(options, 'blob')).pipe(
                 finalize(() => this.updateLoader(false, options)),
                 map((res: any) => this.parse(res)),
@@ -59,7 +58,8 @@ export class BIService {
 
     private descargarArchivo(data: any, headers: any): void {
         let blob = new Blob([data], headers);
-        const nombreArchivo = this.nombre + '-' + moment().format('DD-MM-YYYY') + '.csv';
+        // TODO Definir nombre del csv
+        let nombreArchivo = this.nombre + '-' + moment().format('DD-MM-YYYY') + '.csv';
         saveAs(blob, nombreArchivo);
     }
 
@@ -132,7 +132,7 @@ export class BIService {
                     traverse(o[i], func);
                 }
             }
-        }
+        };
         const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
