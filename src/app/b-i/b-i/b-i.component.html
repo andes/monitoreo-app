@@ -4,7 +4,7 @@
             <plex-title main titulo="{{ title }}"> </plex-title>
         </header>
         <form #formulario="ngForm">
-            <div>
+            <div *ngIf="listaFiltro">
                 <plex-select required [(ngModel)]="selectConsulta" name="select" [data]="listaFiltro"
                              labelField="nombre" label="Seleccione consulta" (change)="elegirConsulta()" idField="_id">
                 </plex-select>
