@@ -12,16 +12,17 @@
             <plex-box>
                 <ng-container *ngIf="(listaArgumentos) && (listaArgumentos.length > 0)">
                     <plex-title main titulo=" Ingrese los Argumentos" size="sm"></plex-title>
-                    <div class="col-md" *ngFor="let ar of listaArgumentos">
+                    <!-- se genera listaArgumentos de acuerdo a la consulta elegida -->
+                    <div class="col-md" *ngFor="let ar of listaArgumentos" required>
                         <filtro-bi [argumento]='ar'></filtro-bi>
                         <br>
                     </div>
                 </ng-container>
-
                 <div *ngIf="selectConsulta">
                     <br>
                     <plex-button label="Descargar" type="success" [validateForm]="formulario"
-                                 [disabled]="!formulario.form.valid" (click)="descargarCSV($event)" size="block">
+                                 [disabled]="!formulario.form.valid && mostrar()" (click)=" descargarCSV()"
+                                 size="block">
                     </plex-button>
                 </div>
             </plex-box>
