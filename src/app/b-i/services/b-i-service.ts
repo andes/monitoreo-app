@@ -36,40 +36,24 @@ export class BIService {
 
 
 
-    getAllQuerys(): Observable<any> { //todo ok
+    getAllQuerys(): Observable<any> {
         // obtiene todas las querys de la colección "Consultas"
-        debugger;
-        let res = this.server.get(`/modules/bi-queries/biQueries`, { showError: true });
-        console.log("res: ", res);
+        const res = this.server.get(`/modules/bi-queries/biQueries`, { showError: true });
         return res;
     }
 
-    // getAllQuerys(options: Options = defaultOptions): Observable<any> {
-    //     debugger;
-    //     // obtiene todas las querys de la colección "Consultas"
-    //     this.updateLoader(true, options);
-    //     const result: any = {
-    //         headers: new HttpHeaders({
-    //             'Content-Type': 'application/json',
-    //             'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
-    //         }),
-    //     };
-    //     return this.http.get(this.biUrl + `/modules/bi-queries/biQueries`, result).pipe(
-    //         finalize(() => this.updateLoader(false, options)),
-    //         map((res: any) => this.parse(res)),
-    //         catchError((err: any) => this.handleError(err, options)));
-    // }
-
     descargar(consulta: IFiltroBi) {
         this.nombre = consulta.nombre;
-        debugger;
         this.post(consulta).subscribe((data: any) => {
-            debugger;
-            console.log("data:", data);
-            this.descargarArchivo(data, { type: 'text/csv' });
+            if (data.size < 6) {
+                this.plex.info('warning', 'No hay datos para descargar', 'Archivo vacío');
+            } else {
+                this.descargarArchivo(data, { type: 'text/csv' });
+            }
+
         });
     }
-    // redefinimos el post de server (url, body, options) para archvos blob en la url agregar enviroment.HOST
+    // redefinimos el post de server (url, body, options) para archvos blob
     post(consulta: any, options: Options = defaultOptions): Observable<any> { // en option trae params
         this.updateLoader(true, options);
         return this.http.post(this.biUrl + `/modules/bi-queries/descargarCSV`, JSON.stringify({ params: consulta }),
@@ -82,40 +66,10 @@ export class BIService {
 
     private descargarArchivo(data: any, headers: any): void {
         let blob = new Blob([data], headers);
-        console.log("blob", blob);
         // TODO Definir nombre del csv
         let nombreArchivo = this.nombre + '-' + moment().format('DD-MM-YYYY') + '.csv';
         saveAs(blob, nombreArchivo);
     }
-
-    // post(consulta: any): Observable<IFiltroBi> {
-    //     //falta respues de csv y verificar si usar este o redefinir el post para recibir enviar el blob
-    //     return this.server.post(this.biUrl + `/descargarCSV`, { params: consulta });
-    // }
-
-    // download(data: IFiltroBi, options: Options = defaultOptions): Observable<any> {
-    //     console.log("download", data);
-    //     let headers = new HttpHeaders({
-    //         'Content-Type': 'application/json',
-    //         'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
-    //     });
-
-    //     let opt: any = { headers: headers, responseType: 'blob' };
-    //     return this.http.post(this.biUrl + `/descargarCSV`, data, opt).pipe(
-    //         catchError((err: any) => this.handleError(err, options))
-    //     );
-    // }
-
-
-
-
-    // get(options: Options = defaultOptions): Observable<any> { //server
-    //     this.updateLoader(true, options);
-    //     return this.http.get(this.biUrl, this.prepareOptions(options)).pipe(
-    //         finalize(() => this.updateLoader(false, options)),
-    //         map((res: any) => this.parse(res)), catchError((err: any) => this.handleError(err, options))
-    //     );
-    // }
 
     private updateLoader(show: boolean, options: Options) {
         if (!options || options.showLoader || (options.showLoader === undefined)) {
@@ -134,7 +88,6 @@ export class BIService {
         } else {
             message = 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a la red.';
         }
-
         if (!options || options.showError || (options.showError === undefined)) {
             // El código 400 es usado para enviar mensaje de validación al usuario
             if (response.status === 400) {
