@@ -136,7 +136,7 @@ export class BIService {
                     traverse(o[i], func);
                 }
             }
-        };
+        }
         const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
