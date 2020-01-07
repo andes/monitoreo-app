@@ -15,9 +15,6 @@ export class AppComponent {
 
   constructor(public server: Server, public plex: Plex) {
     server.setBaseURL(environment.API);
-    // Si pide loguearse al inicio de la app cambiar server.setBaseURL(environment.HOST) por 
-    // server.setBaseURL(environment.HOST + environment.API)
-    // una vez logueado dejar como está para poder usar API_BI
     this.crearMenu();
     this.plex.updateTitle('ANDES | Monitoreo App');
   }
@@ -28,7 +25,7 @@ export class AppComponent {
     this.menuList.push({ label: 'Conceptos Turneables', icon: 'clipboard-check', route: '/conceptos-turneables' });
     this.menuList.push({ label: 'Monitoreo Activaciones', icon: 'cellphone-basic', route: '/monitor-activaciones' });
     this.menuList.push({ label: 'WebhookLogs', icon: 'webhook', route: '/webhooklog' });
-    this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/b-i' });
+    this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/bi-queries' });
     this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login' });
     this.plex.updateMenu(this.menuList);
   }

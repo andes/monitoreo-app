@@ -7,10 +7,10 @@ import { filtrosBi } from '../filtros.bi.decorator';
   templateUrl: './fecha.component.html',
   styleUrls: ['./fecha.component.scss']
 })
+
 @filtrosBi('FechaComponent')
 export class FechaComponent extends FiltroBiComponent implements OnInit {
 
   ngOnInit() {
-    // console.log(this.argumento);
   }
 }

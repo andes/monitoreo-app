@@ -34,8 +34,6 @@ export class BIService {
     * @param query
     */
 
-
-
     getAllQuerys(): Observable<any> {
         // obtiene todas las querys de la colección "Consultas"
         const res = this.server.get(`/modules/bi-queries/biQueries`, { showError: true });
@@ -127,7 +125,6 @@ export class BIService {
         }
         return result;
     }
-
 
     private parse(data: any): any {
         let dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;

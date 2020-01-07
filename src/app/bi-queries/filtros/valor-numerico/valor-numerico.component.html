@@ -2,9 +2,9 @@
     <div class="row flex-column">
         <div class="col-12">
             <plex-int *ngIf="argumento.tipo === 'integer'" [label]="argumento.label" [(ngModel)]="argumento.valor"
-                      [name]="argumento.nombre"> </plex-int>
+                      [name]="argumento.nombre" [required]="true"> </plex-int>
             <plex-float *ngIf="argumento.tipo === 'float'" [label]="argumento.label" [(ngModel)]="argumento.valor"
-                        [name]="argumento.nombre"> </plex-float>
+                        [name]="argumento.nombre" [required]="true"> </plex-float>
         </div>
     </div>
 </form>
