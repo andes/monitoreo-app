@@ -15,7 +15,6 @@ export class AppComponent {
 
   constructor(public server: Server, public plex: Plex, public auth: Auth) {
     server.setBaseURL(environment.API);
-
     this.plex.updateTitle('ANDES | Monitoreo App');
     const token = this.auth.getToken();
     if (token) {
@@ -41,7 +40,7 @@ export class AppComponent {
     this.menuList.push({ label: 'Conceptos Turneables', icon: 'clipboard-check', route: '/conceptos-turneables' });
     this.menuList.push({ label: 'Monitoreo Activaciones', icon: 'cellphone-basic', route: '/monitor-activaciones' });
     this.menuList.push({ label: 'WebhookLogs', icon: 'webhook', route: '/webhooklog' });
-    this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/b-i' });
+    this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/bi-queries' });
     this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
     this.plex.updateMenu(this.menuList);
   }

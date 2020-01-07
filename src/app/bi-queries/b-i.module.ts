@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Plex, PlexModule } from '@andes/plex';
 
 // components
-import { BIComponent } from './b-i/b-i.component';
+import { BIComponent } from './bi-queries/b-i.component';
 import { BIRoutingModule } from './b-i-routing.module';
 import { FechaComponent } from './filtros/fecha/fecha.component';
 import { FiltroBiComponent } from './filtros/filtros.bi.component';
