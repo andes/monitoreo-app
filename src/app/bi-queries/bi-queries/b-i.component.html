@@ -20,9 +20,8 @@
                 </ng-container>
                 <div *ngIf="selectConsulta">
                     <br>
-                    <plex-button label="Descargar" type="success" [validateForm]="formulario"
-                                 [disabled]="!formulario.form.valid && mostrar()" (click)=" descargarCSV()"
-                                 size="block">
+                    <plex-button label="Descargar" type="success" [validateForm]="formulario" [disabled]="!mostrar"
+                                 (click)=" descargarCSV($event)" size="block">
                     </plex-button>
                 </div>
             </plex-box>

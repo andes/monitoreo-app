@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IFiltroBi } from '../interfaces/IFiltroBi.interface';
-
+import { IArgumentoBi } from '../interfaces/IArgumentoBi.interface';
 import { BIService } from '../services/b-i-service';
+import { FiltroBiComponent } from '../filtros/filtros.bi.component';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +15,14 @@ export class BIComponent implements OnInit {
   title = 'Consultas';
   private main = 12;
   private listaFiltro: any;
-  private listaArgumentos = [];
+  private listaArgumentos: any = [];
   private selectConsulta: IFiltroBi;
   private seleccionado: boolean;
+  private mostrar = true;
 
+  @ViewChildren(FiltroBiComponent) listaElemFiltro: QueryList<any>;
+  @ViewChild('formulario', { static: true }) formulario: any;
   constructor(public plex: Plex, private biService: BIService) {
-    // this.argumetosCargados = false;
     this.selectConsulta = null;
     this.biService.getAllQuerys().subscribe(
       resultado => {
@@ -36,24 +39,22 @@ export class BIComponent implements OnInit {
 
   elegirConsulta() {
     if (this.selectConsulta) {
-      this.listaArgumentos = this.selectConsulta.argumentos;
+      this.listaArgumentos = this.selectConsulta.argumentos; // se establecen la lista con info de componenetes a crear
+      this.mostrarDatos();
     }
   }
 
-  mostrar() {
+  mostrarDatos() {
     let argumetosCarg = true;
-    if ((this.listaArgumentos) && (this.listaArgumentos.length > 0)) {
-      this.listaArgumentos.forEach(arg => {
-        argumetosCarg = argumetosCarg && (arg.valor !== undefined) && (arg.valor !== null);
+    if ((this.listaElemFiltro) && (this.listaElemFiltro.length > 0)) {
+      this.listaElemFiltro.forEach(arg => {
+        argumetosCarg = argumetosCarg && arg.isValid;
       });
     }
-    return argumetosCarg;
+    this.mostrar = argumetosCarg;
   }
-  descargarCSV() {
+  descargarCSV(event) {
     if (this.selectConsulta) {
-      let nombre = this.selectConsulta;
-      //this.argumetosCargados = true;
-
       if (this.verificarFechas()) {
         this.biService.descargar(this.selectConsulta);
       }
