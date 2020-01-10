@@ -8,7 +8,7 @@ import { filtrosBi } from '../filtros.bi.decorator';
   styleUrls: ['./fecha.component.scss']
 })
 
-@filtrosBi('FechaComponent')
+@filtrosBi('FechaComponent')  // cargamos el componente en lista de componentes
 export class FechaComponent extends FiltroBiComponent implements OnInit {
 
   ngOnInit() {

@@ -2,7 +2,9 @@
     <div class="row flex-column">
         <div class="col-12">
             <plex-datetime [label]="argumento.label" [(ngModel)]="argumento.valor" [name]="argumento.nombre"
-                           [(ngModel)]="argumento.valor" [type]="argumento.tipo" [required]="true"> </plex-datetime>
+                           [(ngModel)]="argumento.valor" [type]="argumento.tipo" [required]="true"
+                           (change)="mostrarFecha($event)">
+            </plex-datetime>
         </div>
     </div>
 </form>
