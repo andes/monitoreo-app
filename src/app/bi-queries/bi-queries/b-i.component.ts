@@ -56,9 +56,7 @@ export class BIComponent implements OnInit {
   }
   descargarCSV(event) {
     this.mostrarDatos();
-    console.log(this.mostrar);
-
-    if (this.selectConsulta) {
+    if (this.selectConsulta && this.mostrar) {
       if (this.verificarFechas()) {
         this.biService.descargar(this.selectConsulta);
       }
