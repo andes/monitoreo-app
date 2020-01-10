@@ -48,12 +48,16 @@ export class BIComponent implements OnInit {
     let argumetosCarg = true;
     if ((this.listaElemFiltro) && (this.listaElemFiltro.length > 0)) {
       this.listaElemFiltro.forEach(arg => {
+        arg.argInstance.validate();
         argumetosCarg = argumetosCarg && arg.isValid;
       });
     }
     this.mostrar = argumetosCarg;
   }
   descargarCSV(event) {
+    this.mostrarDatos();
+    console.log(this.mostrar);
+
     if (this.selectConsulta) {
       if (this.verificarFechas()) {
         this.biService.descargar(this.selectConsulta);

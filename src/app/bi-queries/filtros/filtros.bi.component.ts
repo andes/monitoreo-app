@@ -42,7 +42,7 @@ export class FiltroBiComponent implements OnInit {
         // tslint:disable-next-line: no-string-literal
         componentReference.instance['argumento'] = this.argumento; // asignamos el componente recibido a la variable 'argumento'
         // Event bubbling
-        componentReference.instance['change'].subscribe(value => {
+        componentReference.instance.change.subscribe(value => {
             this.emitChange(false);
         });
         this.argInstance = componentReference.instance;
@@ -77,13 +77,15 @@ export class FiltroBiComponent implements OnInit {
      */
     public validateForm() { // verifica el formulario de 'form'
         if (this.form) {
-            for (let key in this.form.controls) {
-                let frm = this.form.controls[key];
+            for (const key in this.form.controls) {
+                const frm = this.form.controls[key];
                 frm.markAsTouched();
-                if (frm.validator) { frm.validator({ value: frm.value }); }
+                if (frm.validator) {
+                    frm.validator({ value: frm.value });
+                }
             }
         }
-        return (!this.argInstance.form || !this.argInstance.formu.invalid);
+        return (!this.form || !this.form.invalid);
     }
     get isValid() {
         if (this.argInstance) {

@@ -1,8 +1,7 @@
 <plex-layout main={{main}}>
     <plex-layout-main>
-        <header>
-            <plex-title main titulo="{{ title }}"> </plex-title>
-        </header>
+        <plex-title main [titulo]="title"> </plex-title>
+
         <form #formulario="ngForm">
             <div *ngIf="listaFiltro">
                 <plex-select required [(ngModel)]="selectConsulta" name="select" [data]="listaFiltro"
