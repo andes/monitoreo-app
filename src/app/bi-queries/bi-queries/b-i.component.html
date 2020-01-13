@@ -1,7 +1,6 @@
 <plex-layout main={{main}}>
     <plex-layout-main>
         <plex-title main [titulo]="title"> </plex-title>
-
         <form #formulario="ngForm">
             <div *ngIf="listaFiltro">
                 <plex-select required [(ngModel)]="selectConsulta" name="select" [data]="listaFiltro"
@@ -19,8 +18,8 @@
                 </ng-container>
                 <div *ngIf="selectConsulta">
                     <br>
-                    <plex-button label="Descargar" type="success" [validateForm]="formulario" [disabled]="!mostrar"
-                                 (click)=" descargarCSV($event)" size="block">
+                    <plex-button label="Descargar" type="success" [validateForm]="formulario" [disabled]="!mostrarBoton"
+                                 (click)=" descargarCSV()" size="block">
                     </plex-button>
                 </div>
             </plex-box>

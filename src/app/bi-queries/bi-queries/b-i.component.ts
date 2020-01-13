@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, QueryList, ViewChildren } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IFiltroBi } from '../interfaces/IFiltroBi.interface';
-import { IArgumentoBi } from '../interfaces/IArgumentoBi.interface';
 import { BIService } from '../services/b-i-service';
 import { FiltroBiComponent } from '../filtros/filtros.bi.component';
 
@@ -11,17 +10,16 @@ import { FiltroBiComponent } from '../filtros/filtros.bi.component';
   styleUrls: ['./b-i.component.scss'],
   encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
 })
+
 export class BIComponent implements OnInit {
   title = 'Consultas';
   private main = 12;
   private listaFiltro: any;
   private listaArgumentos: any = [];
   private selectConsulta: IFiltroBi;
-  private seleccionado: boolean;
-  private mostrar = true;
 
   @ViewChildren(FiltroBiComponent) listaElemFiltro: QueryList<any>;
-  @ViewChild('formulario', { static: true }) formulario: any;
+
   constructor(public plex: Plex, private biService: BIService) {
     this.selectConsulta = null;
     this.biService.getAllQuerys().subscribe(
@@ -36,46 +34,45 @@ export class BIComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  // botón select consulta
   elegirConsulta() {
     if (this.selectConsulta) {
-      this.listaArgumentos = this.selectConsulta.argumentos; // se establecen la lista con info de componenetes a crear
-      this.mostrarDatos();
+      // lista con datos de los componenetes a crear
+      this.listaArgumentos = this.selectConsulta.argumentos;
     }
   }
-
-  mostrarDatos() {
+  // variable boleana para mostrar el botón de descarga
+  get mostrarBoton() {
     let argumetosCarg = true;
     if ((this.listaElemFiltro) && (this.listaElemFiltro.length > 0)) {
       this.listaElemFiltro.forEach(arg => {
-        arg.argInstance.validate();
+        arg.argInstance.validateForm();
         argumetosCarg = argumetosCarg && arg.isValid;
       });
     }
-    this.mostrar = argumetosCarg;
+    return argumetosCarg;
   }
-  descargarCSV(event) {
-    this.mostrarDatos();
-    if (this.selectConsulta && this.mostrar) {
+
+  descargarCSV() {
+    if (this.selectConsulta) {
       if (this.verificarFechas()) {
         this.biService.descargar(this.selectConsulta);
       }
     }
   }
+
   verificarFechas() {
-    // revisamos el contenido de los argumentos,
+    // Revisamos el contenido de los argumentos,
     // si son intervalos de fechas comparamos orden fechaInicio < fechaFin
+    // Según 'nombre' argumento en la BD: se asume que fecha de inicio se llama "fechaInicio" y fecha fin "fechaFin"
     let fechasOk = true;
     let fechaI: Date;
     let fechaF: Date;
     if ((this.listaArgumentos) && (this.listaArgumentos.length > 0)) {
       this.listaArgumentos.forEach(arg => {
         if (arg.tipo === 'date') {
-          switch (arg.nombre) {
-            case 'fechaInicio': if (!arg.valor) { fechasOk = false; } else { fechaI = new Date(arg.valor); } break;
-            case 'fechaFin': if (!arg.valor) { fechasOk = false; } else { fechaF = new Date(arg.valor); } break;
-            default: fechasOk = (arg.valor);
-          }
+          if (arg.nombre === 'fechaInicio' && (arg.valor)) { fechaI = new Date(arg.valor); }
+          if (arg.nombre === 'fechaFin' && (arg.valor)) { fechaF = new Date(arg.valor); }
         }
       });
     }

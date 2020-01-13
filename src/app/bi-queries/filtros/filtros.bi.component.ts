@@ -5,13 +5,11 @@ import { IArgumentoBi } from '../interfaces/IArgumentoBi.interface';
 
 @Component({
     selector: 'filtro-bi',
-    template: ''    // Debe quedar vacío, y cada atómo indicar que usa 'rup.html' o su propio template
+    template: ''    // Debe quedar vacío, y cada atómo indicar que usa su propio template
 })
 export class FiltroBiComponent implements OnInit {
-    @ViewChild('form', { static: true }) form: any;
+    @ViewChild('form', { static: true }) form: any; // fromulario de hijos??? ver de instanciar el formulario actual
 
-    // Eventos
-    @Output() change: EventEmitter<any> = new EventEmitter<any>();
     public argInstance: any;
 
     // Propiedades
@@ -20,7 +18,7 @@ export class FiltroBiComponent implements OnInit {
     constructor(
         private componentFactoryResolver: ComponentFactoryResolver,
         public route: ActivatedRoute,
-        private viewContainerRef: ViewContainerRef
+        private viewContainerRef: ViewContainerRef // Referencia al padre del componente que queremos cargar (?
     ) { }
 
     ngOnInit() {
@@ -34,46 +32,21 @@ export class FiltroBiComponent implements OnInit {
      */
     private loadComponent() {
         // Cargamos el componente
-        const component = filtrosBiRegister.get(this.argumento.componente).component;
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component as any);
-
+        const component = filtrosBiRegister.get(this.argumento.componente).component; // obtenemos el tipo de componente de la lista
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component as any); // creamos el componente
+        // asignamos referencia de la instancia actual al componente creado
         const componentReference = this.viewContainerRef.createComponent(componentFactory);
-
-        // tslint:disable-next-line: no-string-literal
         componentReference.instance['argumento'] = this.argumento; // asignamos el componente recibido a la variable 'argumento'
-        // Event bubbling
-        componentReference.instance.change.subscribe(value => {
-            this.emitChange(false);
-        });
         this.argInstance = componentReference.instance;
     }
 
     /**
-     * Emite el evento change con los nuevos datos de registro
-     *
-     * @protected
-     * @memberof FiltroBiComponent
-     */
-    public emitChange(notifyObservers = true) {
-        // Notifica al componente padre del cambio
-        this.change.emit(this.argumento);
-    }
-    /**
-     * valida argumentos
-     * Si existe un formulario en el argumento, lo valida
-     *
-     * Cada argumento puede sobreescribir esta funcionalidad, implementando el metodo 'validate'.
-     *
-     * @protected
-     * @memberof FiltroBiComponent
-     */
-    public validate() {
-        const validForm = this.validateForm();
-        return validForm;
-    }
-
-    /**
+     * Valida argumentos
      * Busca una referencia al formulario, y lo valida.
+     * Cada argumento puede sobreescribir esta funcionalidad, implementando el metodo 'validateForm'.
+     *
+     * @protected
+     * @memberof FiltroBiComponent
      */
     public validateForm() { // verifica el formulario de 'form'
         if (this.form) {
@@ -87,6 +60,8 @@ export class FiltroBiComponent implements OnInit {
         }
         return (!this.form || !this.form.invalid);
     }
+
+    // verifica formulario en la instancia actual
     get isValid() {
         if (this.argInstance) {
             return !this.argInstance.form || !this.argInstance.form.touched || (!this.argInstance.form.invalid);
