@@ -45,6 +45,7 @@ export class AppComponent {
     this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/queries' });
     this.menuList.push({ label: 'Regenerar CDAs', icon: 'refresh', route: '/cda-regenerar' });
     this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
+    this.menuList.push({ label: 'Novedades', icon: 'bell-outline', route: '/registro-novedades' });
     this.plex.updateMenu(this.menuList);
   }
 }

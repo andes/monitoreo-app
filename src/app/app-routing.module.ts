@@ -17,6 +17,7 @@ const appRoutes: Routes = [
     { path: 'buscador-snomed', component: BuscadorSnomedComponent, canActivate: [RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
     { path: 'queries', loadChildren: './queries/queries.module#QueriesModule' },
+    // { path: 'login', loadChildren: () => import('./login/login.module').then(l=>l.LoginModule)},
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
     { path: 'cda-regenerar', loadChildren: './cda/cda.module#CdaModule' },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
