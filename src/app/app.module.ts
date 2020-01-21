@@ -23,7 +23,7 @@ import { SnomedService } from './shared/snomed.service';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
-
+import { RegistroNovedadesModule } from './registro-novedades/registro-novedades.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,8 @@ import { SendMessageCacheService } from './monitor-activaciones/services/sendMes
     PlexModule,
     routing,
     AuthModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    RegistroNovedadesModule
   ],
   providers: [
     Plex,

@@ -13,6 +13,7 @@ const appRoutes: Routes = [
     { path: 'conceptos-turneables', component: ConceptosTurneablesComponent, canActivate: [RoutingGuard] },
     { path: 'monitor-activaciones', component: MonitoreoActivacionesComponent, canActivate: [RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
+    { path: 'registro-novedades', loadChildren: './registro-novedades/registro-novedades.module#RegistroNovedadesModule' },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 
 ];
