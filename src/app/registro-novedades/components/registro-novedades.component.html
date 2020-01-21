@@ -1,0 +1,76 @@
+<plex-layout main={{main}}>
+    <plex-layout-main>
+        <plex-title titulo={{title}}>
+            <plex-button label="Registrar Novedad" type="primary" (click)="nuevo()"></plex-button>
+        </plex-title>
+        <div class="d-flex justify-content-between align-items-end">
+            <plex-text label="Filtrar: " name="name" [(ngModel)]="textoBuscar" class="w-100" (change)="loadData()">
+            </plex-text>
+        </div>
+        <plex-scroll (change)="loadData(true)"></plex-scroll>
+        <div *ngIf="listRegNovedades.length != 0;else mostrarVacio">
+            <div class="col">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <td><strong>Número</strong></td>
+                            <td><strong>Titulo</strong></td>
+                            <td><strong>Fecha</strong></td>
+                            <td><strong>Módulo</strong></td>
+                            <td><strong>Estado</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let nov of listRegNovedades;index as i" (click)="verRegistro(nov)">
+                            <td>{{i + 1}}</td>
+                            <td>{{nov.titulo}}</td>
+                            <td>{{nov.fecha | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{nov.modulo.nombre}}</td>
+                            <td>
+                                <plex-badge type="success" *ngIf="nov.activa">
+                                    <plex-icon name="save"></plex-icon> Activa
+                                </plex-badge>
+                                <plex-badge type="danger" *ngIf="!nov.activa">
+                                    <plex-icon name="save"></plex-icon> Inactiva
+                                </plex-badge>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <ng-template #mostrarVacio>
+            <div class="sinDatos">
+                <label>No hay datos para mostrar</label>
+            </div>
+        </ng-template>
+    </plex-layout-main>
+
+    <plex-layout-sidebar>
+        <plex-title titulo={{titleABM}} size="sm">
+            <plex-button label="Cancelar" type="danger" (click)="cerrarSidebar()" size="sm"></plex-button>
+            <plex-button class="float-right" size="sm" type="success" label="Guardar" (click)="creaModificaNovedad()"
+                         [validateForm]="formulario" [disabled]="!formulario.form.valid">
+            </plex-button>
+        </plex-title>
+        <br>
+        <form #formulario="ngForm">
+            <div class="row">
+                <div class="col">
+                    <plex-bool label="Activo" [(ngModel)]="regNov.activa" type="slide" name="activo">
+                    </plex-bool>
+                    <plex-text required label="titulo" [(ngModel)]="regNov.titulo" name="titulo"></plex-text>
+                    <plex-datetime label="fecha" [(ngModel)]="regNov.fecha" name="fecha" type="date" required>
+                    </plex-datetime>
+                    <plex-text label="descripcion" [(ngModel)]="regNov.descripcion" name="descripcion" html="true"
+                               required>
+                    </plex-text>
+                    <plex-select *ngIf="listModulos" required [(ngModel)]="regNov.modulo" name="select"
+                                 [data]="listModulos" labelField="nombre" label="Seleccione Módulo" idField="_id">
+                    </plex-select>
+                </div>
+            </div>
+        </form>
+    </plex-layout-sidebar>
+</plex-layout>
