@@ -6,6 +6,6 @@ export interface IRegistroNovedades {
     fecha: Date;
     descripcion: string;
     modulo: IModuloAndes;
-    imagenes?: any;
+    imagenes?: File[];
     activa: boolean;
 }
