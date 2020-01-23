@@ -1,11 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Plex, PlexModule } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
-import { HttpClient } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 // Components
