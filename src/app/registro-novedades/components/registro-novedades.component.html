@@ -1,6 +1,6 @@
 <plex-layout main={{main}}>
     <plex-layout-main>
-        <plex-title titulo={{title}}>
+        <plex-title titulo={{title}} main>
             <plex-button label="Registrar Novedad" type="primary" (click)="nuevo()"></plex-button>
         </plex-title>
         <div class="d-flex justify-content-between align-items-end">
@@ -48,7 +48,7 @@
     </plex-layout-main>
 
     <plex-layout-sidebar>
-        <plex-title titulo={{titleABM}} size="sm">
+        <plex-title titulo={{titleABM}} size="sm" main>
             <plex-button label="Cancelar" type="danger" (click)="cerrarSidebar()" size="sm"></plex-button>
             <plex-button class="float-right" size="sm" type="success" label="Guardar" (click)="creaModificaNovedad()"
                          [validateForm]="formulario" [disabled]="!formulario.form.valid">
@@ -56,66 +56,54 @@
         </plex-title>
         <br>
         <form #formulario="ngForm">
+            <div class="align-items-end" justify>
+                <plex-text class="w-100 mr-4" required label="titulo" [(ngModel)]="regNov.titulo" name="titulo">
+                </plex-text>
+                <plex-bool label="Activa" [(ngModel)]="regNov.activa" type="slide" name="activo" class="float-left">
+                </plex-bool>
+            </div>
+            <div justify>
+                <plex-select class="w-50" *ngIf="listModulos" required [(ngModel)]="regNov.modulo" name="select"
+                             [data]="listModulos" labelField="nombre" label="Seleccione Módulo" idField="_id">
+                </plex-select>
+                <plex-datetime label="fecha" [(ngModel)]="regNov.fecha" name="fecha" type="date" required>
+                </plex-datetime>
+            </div>
+            <plex-text label="descripcion" [(ngModel)]="regNov.descripcion" name="descripcion" html="true" required>
+            </plex-text>
+
+            <plex-title justify titulo="Cargar Imagen" size="sm" class="mt-4">
+                <input type="file" (change)="changeListener($event)" style="display:none;" #upload>
+                <ng-container *ngIf="!waiting">
+                    <plex-button type="primary" icon="image-plus" class="btn-sm" title="Elegir Imagen"
+                                 (click)="upload.click()">
+                        <!-- <plex-icon name=""></plex-icon> -->
+                    </plex-button>
+                </ng-container>
+            </plex-title>
+            <span *ngIf="waiting">
+                <plex-loader class="app-waiting" type="ball-pulse-sync"></plex-loader>
+                <plex-button type="danger" class="btn-sm" label="Cancelar" (click)="cancelarAdjunto()">
+                </plex-button>
+            </span>
+
             <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-2">
-                        <plex-bool label="Activa" [(ngModel)]="regNov.activa" type="slide" name="activo"
-                                   class="float-left">
-                        </plex-bool>
-                    </div>
-                    <div class="col-md-10">
-                        <plex-select *ngIf="listModulos" required [(ngModel)]="regNov.modulo" name="select"
-                                     class="float-right" [data]="listModulos" labelField="nombre"
-                                     label="Seleccione Módulo" idField="_id">
-                        </plex-select>
-                    </div>
-                    <br>
-                    <br>
-                    <plex-text required label="titulo" [(ngModel)]="regNov.titulo" name="titulo"></plex-text>
-                    <plex-datetime label="fecha" [(ngModel)]="regNov.fecha" name="fecha" type="date" required>
-                    </plex-datetime>
-                    <plex-text label="descripcion" [(ngModel)]="regNov.descripcion" name="descripcion" html="true"
-                               required>
-                    </plex-text>
-
-
-                    <div>
-                        <input type="file" (change)="changeListener($event)" style="display:none;" #upload>
-                        <strong>Cargar Imagen </strong>
-                        <span *ngIf="!waiting">
-                            <plex-button type="primary" class="btn-sm" title="Elegir Imagen" (click)="upload.click()">
-                                <plex-icon name="image-plus"></plex-icon>
-                            </plex-button>
-                        </span>
-                        <span *ngIf="waiting">
-                            <plex-loader class="app-waiting" type="ball-pulse-sync"></plex-loader>
-                            <plex-button type="danger" class="btn-sm" label="Cancelar" (click)="cancelarAdjunto()">
-                            </plex-button>
-                        </span>
-                    </div>
-
-                    <div class="row">
-                        <div class="image-container hr-inline-group" *ngIf="fotos && fileToken">
-                            <ng-container *ngFor="let doc of fotos; let i = index">
-                                <a (click)="activaLightbox(i)">
-                                    <div class="image hover">
-                                        <img [src]="createUrl(doc)" alt="">
-                                        <div class="x-mark" (click)="imageRemoved(doc)"><span class="close"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div (click)="lightbox = false" *ngIf="i === indice && lightbox"
-                                     [ngClass]="{'lightbox': i === indice && lightbox }" class="hover">
-                                    <i (click)=imagenPrevia(i)
-                                       class="mdi mdi-chevron-double-left previous parpadeo"></i>
-                                    <img [src]="createUrl(doc)" alt="">
-                                    <i (click)=imagenSiguiente(i)
-                                       class="mdi mdi-chevron-double-right next parpadeo"></i>
+                <div class="image-container hr-inline-group" *ngIf="fotos && fileToken">
+                    <ng-container *ngFor="let doc of fotos; let i = index">
+                        <a (click)="activaLightbox(i)">
+                            <div class="image hover">
+                                <img [src]="createUrl(doc)" alt="">
+                                <div class="x-mark" (click)="imageRemoved(doc)"><span class="close"></span>
                                 </div>
-                            </ng-container>
+                            </div>
+                        </a>
+                        <div (click)="lightbox = false" *ngIf="i === indice && lightbox"
+                             [ngClass]="{'lightbox': i === indice && lightbox }" class="hover">
+                            <i (click)=imagenPrevia(i) class="mdi mdi-chevron-double-left previous parpadeo"></i>
+                            <img [src]="createUrl(doc)" alt="">
+                            <i (click)=imagenSiguiente(i) class="mdi mdi-chevron-double-right next parpadeo"></i>
                         </div>
-                    </div>
-
+                    </ng-container>
                 </div>
             </div>
         </form>
