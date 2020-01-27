@@ -26,38 +26,36 @@ context('Registro novedades', () => {
 
     it('Registrar una Novedad y verificar que este en la lista', () => {
         let titulo = 'Cambio en registro de camas';
+        let text = `alguna descripcion`;
+        let modulo = 'INTERNACION';
         cy.plexButton('Registrar Novedad').click();
-        cy.plexBool('name="activo"', false);
-        cy.plexSelectType('name="select"', 'INTERNACION');
+        cy.plexBool('name="activo"', false); // `Inactiva`
+        cy.plexSelectType('name="select"', modulo);
         cy.plexText('label="titulo"', titulo);
         cy.plexDatetime('label="fecha"', '07/02/2020');
 
-        //textArea no funciona:
-        //  cy.get('textarea').last().type('Descripcion');
+        //plexTextArea defiido no funciona (no escribe el texto), por eso se resolvió:
+        let elem = cy.get(`plex-text[label="descripcion"] quill-editor div[class="ql-container ql-snow"] div p`);
+        elem.type(text, {
+            force: true
+        });
 
-        // cy.get(`plex-text['label="descripcion "'] textarea`).first().type('Descripcion');
-        // cy.plexTextArea('label="descripcion"', 'hhh');
-
-        cy.plexButtonIcon('image-plus').click();
+        cy.plexButtonIcon('image-plus');
 
         cy.plexButton('Guardar').click();
         cy.wait('@postNovedades').then((xhr) => {
             expect(xhr.status).to.be.eq(200);
         });
 
-<<<<<<< HEAD
-        //verificamos que la lista se carguenuevamente
-=======
         //verificamos que la lista se cargue nuevamente
->>>>>>> test(novedades):casos de test para RegistroNovedad
         cy.wait('@getNovedades').then((xhr) => {
             expect(xhr.status).to.be.eq(200);
         });
-        cy.get('table tbody td').contains(titulo).click();
+        cy.get('table tbody td').contains(titulo);
+        cy.get('table tbody td').contains(modulo);
+        cy.get('table tbody td').contains(`Inactiva`);
     });
 
-<<<<<<< HEAD
-=======
     it('Se busca la primer novedad cargada y se activa', () => {
         cy.get('table tbody td').find('span').should('have.class', 'badge badge-success badge-md').first().click();
         cy.plexBool('label="Activa"', true);
@@ -68,5 +66,4 @@ context('Registro novedades', () => {
         cy.get('table tbody td').find('span').should('have.class', 'badge badge-success badge-md').first().contains(' Activa ');
     });
 
->>>>>>> test(novedades):casos de test para RegistroNovedad
 });
