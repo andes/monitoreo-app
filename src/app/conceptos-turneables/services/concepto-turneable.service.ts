@@ -13,7 +13,7 @@ export class ConceptoTruneableService {
         return this.server.get(`${this.conceptoTurneableUrl}`, { params, showError: true });
     }
 
-    getById(id: String): Observable<IConceptoTurneable> {
+    getById(id: string): Observable<IConceptoTurneable> {
         return this.server.get(`${this.conceptoTurneableUrl}/${id}`, null);
     }
 
@@ -25,7 +25,7 @@ export class ConceptoTruneableService {
         return this.server.put(`${this.conceptoTurneableUrl}/${conceptoTurneable.id}`, conceptoTurneable);
     }
 
-    patch(id: String, cambios: any, options: any = {}): Observable<IConceptoTurneable> {
+    patch(id: string, cambios: any, options: any = {}): Observable<IConceptoTurneable> {
         return this.server.patch(`${this.conceptoTurneableUrl}/${id}`, cambios);
     }
 

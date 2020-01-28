@@ -19,15 +19,15 @@ export class SnomedService {
     }
 
     get(params: any): Observable<any[]> {
-        return this.server.get(this.snomedURL, { params: params, showError: true });
+        return this.server.get(this.snomedURL, { params, showError: true });
     }
 
     getCie10(params: any): Observable<any> {
-        return this.server.get(this.snomedURL + '/map', { params: params, showError: true });
+        return this.server.get(this.snomedURL + '/map', { params, showError: true });
     }
 
     getQuery(params: any): Observable<any[]> {
-        return this.server.get(this.snomedURLexpression, { params: params, showError: true });
+        return this.server.get(this.snomedURLexpression, { params, showError: true });
     }
 
     getConcepts(sctids): Observable<any[]> {

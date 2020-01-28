@@ -8,8 +8,8 @@ import { ConceptoTruneableService } from '../services/concepto-turneable.service
     templateUrl: './conceptos-turneables.component.html',
 })
 export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
-    private conceptosTurneables: IConceptoTurneable[];
-    private conceptoSeleccionado: IConceptoTurneable;
+    public conceptosTurneables: IConceptoTurneable[];
+    public conceptoSeleccionado: IConceptoTurneable;
     private timeoutHandle: number;
     public textoLibre: string = null;
     loading = false;
@@ -39,8 +39,8 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
         }
 
         this.conceptoSeleccionado = null;
-        let conceptID = this.conceptID && this.conceptID.trim();
-        let term = this.term && this.term.trim();
+        const conceptID = this.conceptID && this.conceptID.trim();
+        const term = this.term && this.term.trim();
 
         if (conceptID || term) {
             this.loading = true;
@@ -87,7 +87,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     }
 
     onAgregarConceptoTurneable(conceptoTurneable) {
-        console.log(conceptoTurneable)
+        console.log(conceptoTurneable);
         this.plex.confirm('Agregar concepto turneable "' + conceptoTurneable.term + '"', '¿Desea agregar?').then(confirmacion => {
             if (confirmacion) {
                 this.conceptoTurneableService.post(conceptoTurneable).subscribe(resultado => {
@@ -125,9 +125,9 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
                         let index;
                         this.conceptosTurneables.forEach(concepto => {
                             if (concepto.id === conceptoTurneable.id) {
-                                index = i
+                                index = i;
                             }
-                            i++
+                            i++;
                         });
 
                         this.conceptosTurneables.splice(index, 1);

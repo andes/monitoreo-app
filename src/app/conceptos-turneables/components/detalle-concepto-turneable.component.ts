@@ -14,8 +14,8 @@ export class DetalleConceptoTurneableComponent implements OnInit {
     auditable;
     nominalizada;
     editable = false;
-    paraFalse = 'NO'
-    paraTrue = 'SI'
+    paraFalse = 'NO';
+    paraTrue = 'SI';
 
     constructor(
         public plex: Plex,
@@ -34,7 +34,7 @@ export class DetalleConceptoTurneableComponent implements OnInit {
                         const cambios = {
                             noNominalizada: !this.nominalizada,
                             auditable: this.auditable,
-                        }
+                        };
                         this.toggleEdicion();
                         this.editarConceptoTurneable.emit(cambios);
                     }
@@ -56,9 +56,9 @@ export class DetalleConceptoTurneableComponent implements OnInit {
         }
 
         if (this.conceptoTurneable.auditable) {
-            this.auditable = true
+            this.auditable = true;
         } else {
-            this.auditable = false
+            this.auditable = false;
         }
     }
 
@@ -72,6 +72,6 @@ export class DetalleConceptoTurneableComponent implements OnInit {
     }
 
     hayCambios() {
-        return ((this.conceptoTurneable.noNominalizada !== !this.nominalizada) || (this.conceptoTurneable.auditable !== this.auditable))
+        return ((this.conceptoTurneable.noNominalizada !== !this.nominalizada) || (this.conceptoTurneable.auditable !== this.auditable));
     }
 }

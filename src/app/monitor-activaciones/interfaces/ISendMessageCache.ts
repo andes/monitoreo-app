@@ -1,18 +1,18 @@
 
 export interface ISendMessageCache {
-    message: String;
-    phone: String;
-    subject: String;
-    email: String;
-    template: String;
+    message: string;
+    phone: string;
+    subject: string;
+    email: string;
+    template: string;
     extras: any;
-    from: String;
-    tries: Number;
+    from: string;
+    tries: number;
     createdAt: Date;
     updatedAt: Date;
     scheduledAt: Date;
     status: {
-        type: String,
-        enum: [String]
+        type: string,
+        enum: [string]
     };
 }

@@ -1,23 +1,23 @@
 import { IDevice } from './IDevice';
 
 export interface IPacienteApp {
-    nombre: String;
-    apellido: String;
-    email: String;
-    usuario: String;
-    documento: String;
-    nacionalidad: String;
-    sexo: String;
-    genero: String;
+    nombre: string;
+    apellido: string;
+    email: string;
+    usuario: string;
+    documento: string;
+    nacionalidad: string;
+    sexo: string;
+    genero: string;
     fechaNacimiento: Date;
-    telefono: String;
-    password: String;
+    telefono: string;
+    password: string;
     pacientes: any;
     profesionalId: any;
-    activacionApp: Boolean;
-    permisos: [String];
+    activacionApp: boolean;
+    permisos: [string];
     restablecerPassword: {
-        codigo: String,
+        codigo: string,
         fechaExpiracion: Date
     };
     devices: [IDevice];

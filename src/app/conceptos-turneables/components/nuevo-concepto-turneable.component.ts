@@ -86,7 +86,7 @@ export class NuevoConceptoTurneableComponent implements OnInit {
     }
 
     cancelarAgregar() {
-        this.cancelarAgregarConceptoTurneable.emit()
+        this.cancelarAgregarConceptoTurneable.emit();
     }
 
 

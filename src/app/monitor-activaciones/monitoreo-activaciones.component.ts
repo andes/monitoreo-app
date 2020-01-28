@@ -22,9 +22,11 @@ export class MonitoreoActivacionesComponent implements OnInit {
     searchClear = true;    // True si el campo de búsqueda se encuentra vacío
 
 
-    constructor(private pacienteAppService: PacienteAppService, private sendMessageCacheService: SendMessageCacheService,
-        private plex: Plex) {
-    }
+    constructor(
+        private pacienteAppService: PacienteAppService,
+        private sendMessageCacheService: SendMessageCacheService,
+        private plex: Plex
+    ) { }
 
     ngOnInit() {
     }
@@ -59,7 +61,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
 
     }
 
-    public loadMensajes(email: String) {
+    public loadMensajes(email: string) {
         this.sendMessageCacheService.get({ email }).subscribe(
             datos => {
                 this.resultadoMensajes = datos;
