@@ -1,10 +1,10 @@
-import { Component, Output, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Output, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filtrosBiRegister } from './filtros.bi.decorator';
 import { IArgumentoBi } from '../interfaces/IArgumentoBi.interface';
 
 @Component({
-    selector: 'filtro-bi',
+    selector: 'app-filtro-bi',
     template: ''    // Debe quedar vacío, y cada atómo indicar que usa su propio template
 })
 export class FiltroBiComponent implements OnInit {
@@ -25,17 +25,13 @@ export class FiltroBiComponent implements OnInit {
         this.loadComponent();
     }
 
-    /**
-     * Carga un componente dinámicamente
-     * @private
-     * @memberof FiltroBiComponent
-     */
     private loadComponent() {
         // Cargamos el componente
         const component = filtrosBiRegister.get(this.argumento.componente).component; // obtenemos el tipo de componente de la lista
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component as any); // creamos el componente
         // asignamos referencia de la instancia actual al componente creado
         const componentReference = this.viewContainerRef.createComponent(componentFactory);
+        // tslint:disable-next-line: no-string-literal
         componentReference.instance['argumento'] = this.argumento; // asignamos el componente recibido a la variable 'argumento'
         this.argInstance = componentReference.instance;
     }
@@ -45,11 +41,10 @@ export class FiltroBiComponent implements OnInit {
      * Busca una referencia al formulario, y lo valida.
      * Cada argumento puede sobreescribir esta funcionalidad, implementando el metodo 'validateForm'.
      *
-     * @protected
-     * @memberof FiltroBiComponent
      */
     public validateForm() { // verifica el formulario de 'form'
         if (this.form) {
+            // tslint:disable-next-line: forin
             for (const key in this.form.controls) {
                 const frm = this.form.controls[key];
                 frm.markAsTouched();

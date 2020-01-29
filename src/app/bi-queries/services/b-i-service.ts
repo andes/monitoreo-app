@@ -26,17 +26,12 @@ export class BIService {
     private nombre = 'consulta';
 
     constructor(private http: HttpClient, private server: Server, private plex: Plex) {
-        this.biUrl = 'http:' + environment.API;
+        this.biUrl = '/modules/bi-queries';
     }
 
-    /**
-    *
-    * @param query
-    */
-
+    // obtiene todas las querys de la colección "Consultas"
     getAllQuerys(): Observable<any> {
-        // obtiene todas las querys de la colección "Consultas"
-        const res = this.server.get(`/modules/bi-queries/biQueries`, { showError: true });
+        const res = this.server.get(this.biUrl + `/biQueries`, { showError: true });
         return res;
     }
 
@@ -54,7 +49,7 @@ export class BIService {
     // redefinimos el post de server (url, body, options) para archvos blob
     post(consulta: any, options: Options = defaultOptions): Observable<any> { // en option trae params
         this.updateLoader(true, options);
-        return this.http.post(this.biUrl + `/modules/bi-queries/descargarCSV`, JSON.stringify({ params: consulta }),
+        return this.http.post(environment.API + this.biUrl + `/descargarCSV`, JSON.stringify({ params: consulta }),
             this.prepareOptions(options, 'blob')).pipe(
                 finalize(() => this.updateLoader(false, options)),
                 map((res: any) => this.parse(res)),
@@ -63,9 +58,9 @@ export class BIService {
     }
 
     private descargarArchivo(data: any, headers: any): void {
-        let blob = new Blob([data], headers);
+        const blob = new Blob([data], headers);
         // TODO Definir nombre del csv
-        let nombreArchivo = this.nombre + '-' + moment().format('DD-MM-YYYY') + '.csv';
+        const nombreArchivo = this.nombre + '-' + moment().format('DD-MM-YYYY') + '.csv';
         saveAs(blob, nombreArchivo);
     }
 
@@ -91,7 +86,8 @@ export class BIService {
             if (response.status === 400) {
                 this.plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${response.status}</div>`, message);
             } else {
-                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${response.status}</div>`, 'No se pudo conectar con el servidor');
+                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error:
+                ${response.status}</div>`, 'No se pudo conectar con el servidor');
             }
         }
         return throwError(message);
@@ -101,13 +97,13 @@ export class BIService {
         const result: any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
-                'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
+                Authorization: window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
             }),
         };
         if (resType) { result.responseType = resType; }
         if (options && options.params) {
             result.params = new HttpParams();
-            for (let param in options.params) {
+            for (const param in options.params) {
                 if (options.params[param] !== undefined) {
                     if (Array.isArray(options.params[param])) {
                         (options.params[param] as Array<any>).forEach((value) => {
@@ -136,7 +132,8 @@ export class BIService {
                     traverse(o[i], func);
                 }
             }
-        }
+        };
+        // tslint:disable-next-line: only-arrow-functions
         const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
