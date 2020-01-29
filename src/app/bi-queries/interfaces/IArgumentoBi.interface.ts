@@ -3,7 +3,7 @@ export interface IArgumentoBi {
     key: string;
     descripcion?: string;
     label: string; // label en HTML
-    params: string; // tal vez cambiar nombre por label
+    param: string;
     componente: string;
     tipo: string;
     nombre: string; // name en html

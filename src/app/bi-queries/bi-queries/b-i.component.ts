@@ -42,19 +42,19 @@ export class BIComponent implements OnInit {
     }
   }
   // variable boleana para mostrar el botón de descarga
-  get mostrarBoton() {
-    let argumetosCarg = true;
+  mostrarBoton() {
+    let argumentosCarg = true;
     if ((this.listaElemFiltro) && (this.listaElemFiltro.length > 0)) {
       this.listaElemFiltro.forEach(arg => {
         arg.argInstance.validateForm();
-        argumetosCarg = argumetosCarg && arg.isValid;
+        argumentosCarg = argumentosCarg && arg.isValid;
       });
     }
-    return argumetosCarg;
+    return argumentosCarg;
   }
 
   descargarCSV() {
-    if (this.selectConsulta) {
+    if (this.selectConsulta && this.mostrarBoton()) {
       if (this.verificarFechas()) {
         this.biService.descargar(this.selectConsulta);
       }
