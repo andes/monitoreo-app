@@ -8,7 +8,7 @@ import { IArgumentoBi } from '../interfaces/IArgumentoBi.interface';
     template: ''    // Debe quedar vacío, y cada atómo indicar que usa su propio template
 })
 export class FiltroBiComponent implements OnInit {
-    @ViewChild('form', { static: true }) form: any; // fromulario de hijos??? ver de instanciar el formulario actual
+    @ViewChild('form', { static: true }) form: any;
 
     public argInstance: any;
 
