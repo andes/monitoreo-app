@@ -43,7 +43,7 @@ export class BIService {
     descargar(consulta: IFiltroBi) {
         this.nombre = consulta.nombre;
         this.post(consulta).subscribe((data: any) => {
-            if (data.size < 6) {
+            if (data.size < 50) {
                 this.plex.info('warning', 'No hay datos para descargar', 'Archivo vacío');
             } else {
                 this.descargarArchivo(data, { type: 'text/csv' });
