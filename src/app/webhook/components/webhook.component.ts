@@ -77,6 +77,8 @@ export class WebHookComponent implements OnInit {
         } else {
             this.webhookService.patch(webhook.id, webhook).subscribe(resultado => {
                 this.plex.info('info', 'El webhook fue editado');
+                this.webHook.method = '';
+                this.filtrarPorNombre(webhook.name);
             });
         }
     }
