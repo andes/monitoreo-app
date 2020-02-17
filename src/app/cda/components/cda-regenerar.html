@@ -1,0 +1,33 @@
+<plex-layout main="{{side}}">
+    <plex-layout-main>
+        <header>
+            <h3> Regenerar CDA </h3>
+        </header>
+        <app-paciente-buscar (searchStart)="onSearchStart()" (searchEnd)="onSearchEnd($event.pacientes)"
+                             (searchClear)="onSearchClear()">
+        </app-paciente-buscar>
+
+        <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
+
+        <app-paciente-listado *ngIf="listaPacientes && listaPacientes.length" [pacientes]="listaPacientes"
+                              (selected)="seleccionar($event)">
+        </app-paciente-listado>
+        <div *ngIf="listaPacientes && !listaPacientes.length && !searchClear" class="alert alert-danger">
+            <i class="mdi mdi-account-alert"></i> No se encontró ningún paciente..
+        </div>
+    </plex-layout-main>
+    <plex-layout-sidebar>
+        <plex-title titulo="CDA del paciente" size="sm" main>
+            <plex-button label="refrescar" type="primary" (click)="refreshCDA()"></plex-button>
+            <plex-button label="regenerar" type="success" (click)="regenerarCDA()"></plex-button>
+        </plex-title>
+
+        <app-cda-listado *ngIf="listaCDA && listaCDA.length;else mostrarVacio" [listaCda]="listaCDA" [type]='sm'>
+        </app-cda-listado>
+        <ng-template #mostrarVacio>
+            <div>
+                <label>No hay datos para mostrar</label>
+            </div>
+        </ng-template>
+    </plex-layout-sidebar>
+</plex-layout>

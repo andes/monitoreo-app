@@ -28,6 +28,7 @@ import { SendMessageCacheService } from './monitor-activaciones/services/sendMes
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { WebhookLogService } from './webhook-log/services/webhook-log.service';
 import { QueriesModule } from './queries/queries.module';
+import { CdaModule } from './cda/cda.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { QueriesModule } from './queries/queries.module';
     routing,
     AuthModule,
     InfiniteScrollModule,
-    QueriesModule
+    QueriesModule,
+    CdaModule
   ],
   providers: [
     Plex,

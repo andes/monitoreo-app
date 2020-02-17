@@ -1,0 +1,38 @@
+<table *ngIf="listado && listado.length" style="table-layout:fixed" class="table table-striped table-hover table-fixed">
+    <thead>
+        <tr>
+            <th>N°</th>
+            <th class="text-center">Fecha</th>
+            <th class="text-center">Tipo prestación</th>
+            <th>Efector</th>
+            <th>Profesional</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="hover" *ngFor="let cda of listado , let i = index">
+            <td>{{i+1}}</td>
+            <td class="text-center">
+                <span *ngIf="cda.fecha && cda.fecha !== ''" class="d-block">{{cda.fecha | fecha:'utc'}}</span>
+                <span *ngIf="!cda.fecha || cda.fecha === ''" class="d-block">N/D</span>
+            </td>
+            <td class="text-center">
+                <span *ngIf="cda.prestacion.snomed.term !== null">
+                    <span class="d-block">{{ cda.prestacion.snomed.term}}</span>
+                </span>
+                <span *ngIf="cda.prestacion.snomed.term === null">N/D</span>
+            </td>
+            <td class="text-center">
+                <span *ngIf="cda.organizacion?.nombre && cda.organizacion.nombre !== '' && cda.organizacion.nombre !== '-'"
+                      class="d-block">{{cda.organizacion.nombre}}</span>
+                <span *ngIf="!cda.organizacion.nombre || cda.organizacion.nombre === '' || cda.organizacion.nombre === '-'"
+                      class="d-block">N/D</span>
+            </td>
+            <td class="text-center">
+                <span *ngIf="cda.profesional && cda.profesional !== '' && (cda.profesional.nombre !== '-' || cda.profesional.apellido !== '-')"
+                      class="d-block">{{cda.profesional | paciente}}</span>
+                <span *ngIf="!cda.profesional || cda.profesional === ''|| (cda.profesional.nombre === '-' && cda.profesional.apellido === '-')"
+                      class="d-block">N/D</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
