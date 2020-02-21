@@ -1,8 +1,14 @@
-import { LoginComponent } from './login.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { RoutingGuard } from './routing-guard';
+// Components
+import { LoginComponent } from './components/login/login.component';
+import { SelectOrganizacionComponent } from './components/select-organizacion/select-organizacion.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 const routes = [
+    { path: 'select-organizacion', component: SelectOrganizacionComponent, canActivate: [RoutingGuard] },
+    { path: 'logout', component: LogoutComponent, canActivate: [RoutingGuard] },
     { path: '', component: LoginComponent }
 ];
 

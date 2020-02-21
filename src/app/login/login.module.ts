@@ -3,22 +3,34 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Plex, PlexModule } from '@andes/plex';
+
 import { Server } from '@andes/shared';
 
 // Components
-import { LoginComponent } from './login.component';
+import { LoginComponent } from './components/login/login.component';
+import { SelectOrganizacionComponent } from './components/select-organizacion/select-organizacion.component';
+import { LogoutComponent } from './components/logout/logout.component';
+
 import { LoginRoutingModule } from './login-routing.module';
+
+// Services
+import { OrganizacionService } from '../services/organizacion.service';
 
 
 
 @NgModule({
-  declarations: [LoginComponent],
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
     PlexModule,
     LoginRoutingModule
-  ]
+  ],
+  declarations: [
+    LoginComponent,
+    LogoutComponent,
+    SelectOrganizacionComponent
+  ],
+  providers: [OrganizacionService] // [WebSocketService]
 })
 export class LoginModule { }

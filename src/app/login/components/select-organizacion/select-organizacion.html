@@ -1,0 +1,7 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-button size="block" type="info mb-1" *ngFor="let org of organizaciones" (click)=seleccionar(org)>
+            {{org.nombre}}
+        </plex-button>
+    </plex-layout-main>
+</plex-layout>
