@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
+import { WebSocketService } from '../../../services/websocket.service';
+
 @Component({
     selector: 'app-login',
     templateUrl: 'login.html',
@@ -13,23 +15,27 @@ export class LoginComponent implements OnInit {
     public password: string;
     public loading = false;
 
-    constructor(private plex: Plex, private auth: Auth, private router: Router) { }
+    constructor(
+        private plex: Plex,
+        private auth: Auth,
+        private router: Router,
+        public ws: WebSocketService) { }
 
     ngOnInit() {
         this.auth.logout();
+        this.ws.close();
     }
 
     login(event) {
         if (event.formValid) {
             this.loading = true;
-            this.auth.login(this.usuario.toString(), this.password)
-                .subscribe((data) => {
-                    this.plex.updateUserInfo({ usuario: this.auth.usuario });
-                    this.router.navigate(['/home']);
-                }, (err) => {
-                    this.plex.info('danger', 'Usuario o contraseña incorrectos');
-                    this.loading = false;
-                });
+            this.auth.login(this.usuario.toString(), this.password).subscribe((data) => {
+                this.ws.setToken(window.sessionStorage.getItem('jwt'));
+                this.router.navigate(['/login/select-organizacion']);
+            }, (err) => {
+                this.plex.info('danger', 'Usuario o contraseña incorrectos');
+                this.loading = false;
+            });
         }
     }
 

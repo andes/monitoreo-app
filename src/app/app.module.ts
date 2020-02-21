@@ -23,6 +23,7 @@ import { SnomedService } from './shared/snomed.service';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
+import { WebSocketService } from './services/websocket.service';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { SendMessageCacheService } from './monitor-activaciones/services/sendMes
     ConceptoTruneableService,
     SnomedService,
     PacienteAppService,
-    SendMessageCacheService
+    SendMessageCacheService,
+    WebSocketService
   ],
   bootstrap: [AppComponent]
 })
