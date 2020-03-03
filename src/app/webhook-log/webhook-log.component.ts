@@ -3,7 +3,7 @@ import { Plex } from '@andes/plex';
 import { WebhookLogService } from './services/webhook-log.service';
 import { IWebhooklog } from './interfaces/IWebhook-log';
 
-const limit = 7;
+const limit = 20;
 
 @Component({
   selector: 'app-root',
