@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
-import { WebSocketService } from '../../../services/websocket.service';
 
 @Component({
     selector: 'app-login',
@@ -18,19 +17,16 @@ export class LoginComponent implements OnInit {
     constructor(
         private plex: Plex,
         private auth: Auth,
-        private router: Router,
-        public ws: WebSocketService) { }
+        private router: Router) { }
 
     ngOnInit() {
         this.auth.logout();
-        this.ws.close();
     }
 
     login(event) {
         if (event.formValid) {
             this.loading = true;
             this.auth.login(this.usuario.toString(), this.password).subscribe((data) => {
-                this.ws.setToken(window.sessionStorage.getItem('jwt'));
                 this.router.navigate(['/login/select-organizacion']);
             }, (err) => {
                 this.plex.info('danger', 'Usuario o contraseña incorrectos');
