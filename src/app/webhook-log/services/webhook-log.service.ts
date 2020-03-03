@@ -7,7 +7,7 @@ import { Server } from '@andes/shared';
 export class WebhookLogService {
 
     // URL to web api
-    private webhlUrl = '/modules/webhooklogs';
+    private webhlUrl = '/modules/webhook/log';
 
     constructor(private server: Server) { }
 
