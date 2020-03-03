@@ -3,7 +3,6 @@ import { environment } from './../environments/environment';
 import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
-import { WebSocketService } from './services/websocket.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +13,12 @@ export class AppComponent {
 
   private menuList = [];
 
-  constructor(public server: Server, public plex: Plex, public auth: Auth, public ws: WebSocketService) {
+  constructor(public server: Server, public plex: Plex, public auth: Auth) {
     server.setBaseURL(environment.API);
 
     this.plex.updateTitle('ANDES | Monitoreo App');
     const token = this.auth.getToken();
     if (token) {
-      this.ws.setToken(token);
       this.auth.session().subscribe(() => {
         // Inicializa el menú
         this.crearMenu();
