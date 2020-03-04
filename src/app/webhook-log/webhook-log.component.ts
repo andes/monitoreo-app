@@ -12,13 +12,13 @@ const limit = 20;
 })
 export class WebhookLogComponent implements OnInit {
   title = 'WebHookLog';
-  private elemElegido;
-  private listMostrar: IWebhooklog[];
+  elemElegido;
+  listMostrar: IWebhooklog[];
   private listFiltrar;
-  private textoBuscar;
-  private main = 12;
-  private fechaI: Date;
-  private fechaF: Date;
+  textoBuscar;
+  main = 12;
+  fechaI: Date;
+  fechaF: Date;
   private finScroll = false;
   private skip = 0;
 
