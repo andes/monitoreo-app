@@ -1,14 +1,14 @@
 
 export interface IWebhooklog {
-    url: String;
-    event: String;
+    url: string;
+    event: string;
     method: {
-        type: String,
+        type: string,
         default: 'POST',
         enum: ['POST', 'PUT', 'PATCH', 'GET']
     };
     body: any; // a projections of data to send
-    status: Number;
+    status: number;
     response: any; // ver por message y porque response cambia
     updatedAt: Date;
 }
