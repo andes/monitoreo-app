@@ -18,8 +18,8 @@
     </plex-layout-main>
     <plex-layout-sidebar>
         <plex-title titulo="CDA del paciente" size="sm" main>
-            <plex-button label="refrescar" type="primary" (click)="refreshCDA()"></plex-button>
-            <plex-button label="regenerar" type="success" (click)="regenerarCDA()"></plex-button>
+            <plex-button label="refrescar" type="primary" size="sm" (click)="refreshCDA()"></plex-button>
+            <plex-button label="regenerar" type="success" size="sm" (click)="regenerarCDA()"></plex-button>
         </plex-title>
 
         <app-cda-listado *ngIf="listaCDA && listaCDA.length;else mostrarVacio" [listaCda]="listaCDA" [type]='sm'>
