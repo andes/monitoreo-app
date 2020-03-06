@@ -2,13 +2,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({ name: 'edad', pure: false })
-// pure: false - Info: https://stackoverflow.com/questions/34456430/ngfor-doesnt-update-data-with-pipe-in-angular2
+
 export class EdadPipe implements PipeTransform {
     transform(value: any, args: string[]): any {
         // debugger;
         let edad: any;
         let fechaNac: any;
-        let fechaActual: Date = new Date();
+        const fechaActual: Date = new Date();
         let fechaAct: any;
         let difAnios: any;
         let difDias: any;

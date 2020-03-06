@@ -1,8 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
 
 @Pipe({ name: 'sexo', pure: false })
-// pure: false - Info: https://stackoverflow.com/questions/34456430/ngfor-doesnt-update-data-with-pipe-in-angular2
+
 export class SexoPipe implements PipeTransform {
     transform(value: any, args: string[]): any {
         let result: string;
