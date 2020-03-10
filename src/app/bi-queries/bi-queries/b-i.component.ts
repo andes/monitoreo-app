@@ -13,10 +13,10 @@ import { FiltroBiComponent } from '../filtros/filtros.bi.component';
 
 export class BIComponent implements OnInit {
   title = 'Consultas';
-  private main = 12;
-  private listaFiltro: any;
-  private listaArgumentos: any = [];
-  private selectConsulta: IFiltroBi;
+  main = 12;
+  listaFiltro: any;
+  listaArgumentos: any = [];
+  selectConsulta: IFiltroBi;
 
   @ViewChildren(FiltroBiComponent) listaElemFiltro: QueryList<any>;
 
