@@ -12,7 +12,7 @@ context('Pagina de login', () => {
     it('login complete', () => {
         cy.server();
         cy.route('POST', '**/api/auth/login').as('login');
-
+        cy.route('GET', '**/api/auth/organizaciones').as('organizaciones');
         cy.plexInt('name="usuario"').type('hola').should('have.value', '');
         cy.plexInt('name="usuario"').type('38906735').should('have.value', '38906735');
         cy.plexText('name="password"', 'anypasswordfornow').should('have.value', 'anypasswordfornow');
@@ -20,10 +20,12 @@ context('Pagina de login', () => {
         cy.plexButton('Iniciar sesión').click();
 
         cy.wait('@login').then((xhr) => {
-            expect(xhr.status).to.be.eq(200)
+            expect(xhr.status).to.be.eq(200);
+            expect(xhr.response.body).to.have.any.keys('token');
         });
-
-        cy.get('app-home section plex-box div div div').find('[class="andes-inicio row"]').find('div[ label="Boton Conceptos Turneables"]');
+        cy.wait('@organizaciones').then((xhr) => {
+            expect(xhr.status).to.be.eq(200);
+        });
     })
 
     it('login failed', () => {
@@ -35,7 +37,7 @@ context('Pagina de login', () => {
         cy.plexButton('Iniciar sesión').click();
 
         cy.wait('@login').then((xhr) => {
-            expect(xhr.status).to.be.eq(403)
+            expect(xhr.status).to.be.eq(403);
         });
     });
 });
