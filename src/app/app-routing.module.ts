@@ -20,6 +20,7 @@ const appRoutes: Routes = [
     // { path: 'login', loadChildren: () => import('./login/login.module').then(l=>l.LoginModule)},
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
     { path: 'cda-regenerar', loadChildren: './cda/cda.module#CdaModule' },
+    { path: 'novedades', loadChildren: './registro-novedades/novedades.module#NovedadesModule' },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
