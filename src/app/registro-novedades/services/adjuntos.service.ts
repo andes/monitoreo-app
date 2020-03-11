@@ -7,7 +7,7 @@ import { Server } from '@andes/shared';
 @Injectable()
 export class AdjuntosService {
 
-    private url = '/modules/registro-novedades';  // URL to web api
+    private url = '/modules/registro-novedades/';  // URL to web api
 
     constructor(private server: Server, public auth: Auth) { }
 
@@ -29,10 +29,6 @@ export class AdjuntosService {
         return this.server.delete(this.url + '/' + id);
     }
 
-    /**
-     * Upload a file
-     * @param {string} file  Archivo en Base64
-     */
     upload(file, metadata) {
         return this.server.post(this.url + '/store', { file, metadata });
     }

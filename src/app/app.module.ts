@@ -1,3 +1,5 @@
+import { LoginModule } from './login/login.module';
+import { ModuloService } from './registro-novedades/services/modulo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -29,44 +31,49 @@ import { WebhookLogService } from './webhook-log/services/webhook-log.service';
 import { QueriesModule } from './queries/queries.module';
 import { CdaModule } from './cda/cda.module';
 
+import { NovedadesModule } from './registro-novedades/novedades.module';
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    WebHookComponent,
-    WebhookLogComponent,
-    ConceptosTurneablesComponent,
-    DetalleConceptoTurneableComponent,
-    NuevoConceptoTurneableComponent,
-    MonitoreoActivacionesComponent,
-    BuscadorSnomedComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    PlexModule,
-    routing,
-    AuthModule,
-    InfiniteScrollModule,
-    QueriesModule,
-    CdaModule
-  ],
-  providers: [
-    Plex,
-    Server,
-    Auth,
-    HttpClient,
-    RoutingGuard,
-    RoutingNavBar,
-    WebHookService,
-    ConceptoTruneableService,
-    SnomedService,
-    PacienteAppService,
-    OrganizacionService,
-    SendMessageCacheService,
-    WebhookLogService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        WebHookComponent,
+        WebhookLogComponent,
+        ConceptosTurneablesComponent,
+        DetalleConceptoTurneableComponent,
+        NuevoConceptoTurneableComponent,
+        MonitoreoActivacionesComponent,
+        BuscadorSnomedComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        PlexModule,
+        routing,
+        AuthModule,
+        InfiniteScrollModule,
+        QueriesModule,
+        CdaModule,
+        NovedadesModule,
+        LoginModule
+    ],
+    providers: [
+        Plex,
+        Server,
+        Auth,
+        HttpClient,
+        RoutingGuard,
+        RoutingNavBar,
+        WebHookService,
+        ConceptoTruneableService,
+        SnomedService,
+        PacienteAppService,
+        OrganizacionService,
+        SendMessageCacheService,
+        WebhookLogService,
+        ModuloService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

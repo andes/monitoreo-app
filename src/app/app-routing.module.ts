@@ -19,6 +19,7 @@ const appRoutes: Routes = [
     { path: 'queries', loadChildren: './queries/queries.module#QueriesModule' },
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
     { path: 'cda-regenerar', loadChildren: './cda/cda.module#CdaModule' },
+    { path: 'novedades', loadChildren: './registro-novedades/novedades.module#NovedadesModule' },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 

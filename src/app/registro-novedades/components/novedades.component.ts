@@ -1,38 +1,40 @@
+import { ModuloService } from '../services/modulo.service';
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
 
-import { IRegistroNovedades } from '../interfaces/IRegistroNovedades.interface';
-import { IModuloAndes } from '../interfaces/IModuloAndes.interface';
-import { RegistroNovedadesService } from '../services/registro-novedades.service';
+import { INovedad } from '../interfaces/INovedad.interface';
+import { IModulo } from '../interfaces/IModulo.interface';
+import { NovedadesService } from '../services/novedades.service';
 import { AdjuntosService } from '../services/adjuntos.service';
 
 const limit = 10;
 
 @Component({
-  selector: 'app-registro-novedades',
-  templateUrl: './registro-novedades.component.html',
-  styleUrls: ['./registro-novedades.component.css'],
+  selector: 'app-novedades',
+  templateUrl: './novedades.component.html',
+  styleUrls: ['./novedades.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class RegistroNovedadesComponent implements OnInit {
+export class NovedadesComponent implements OnInit {
   @ViewChild('upload', { static: true }) uploadElement: ElementRef; // uploadElement
 
-  private main = 12; // tamaño vista pantalla
+  public main = 12; // tamaño vista pantalla
 
   // scroll infinito
   private skip;
   private finScroll = false;
 
   // títulos
-  private title = 'Novedades';
-  private titleABM: string;
 
-  private regNov: IRegistroNovedades;
-  private listRegNovedades: IRegistroNovedades[];
-  private textoBuscar: string;
-  private listModulos: IModuloAndes[];
+  public regNov: INovedad;
+  public listRegNovedades: INovedad[];
+  public titulo: string;
+  public modulo: IModulo;
+  public titleABM: string;
+  public listModulos: IModulo[] = [];
   private modoEdit: boolean;
+  public mostrarVacio: boolean;
 
   // Adjuntar Imagenes
   errorExt = false;
@@ -47,23 +49,20 @@ export class RegistroNovedadesComponent implements OnInit {
 
   constructor(
     public plex: Plex,
-    private regNovService: RegistroNovedadesService,
+    private regNovService: NovedadesService,
+    private moduloService: ModuloService,
     public adjuntosService: AdjuntosService,
     public auth: Auth) {
     this.regNov = null;
     this.listRegNovedades = [];
-    this.titleABM = 'Registrar Novedad';
-    this.textoBuscar = null;
     this.modoEdit = false;
-
-
   }
 
   ngOnInit() {
 
     this.loadData(false);
     this.skip = 0;
-    this.regNovService.getAllModulos().subscribe(
+    this.moduloService.get({}).subscribe(
       modulos => {
         this.listModulos = modulos;
       },
@@ -106,12 +105,9 @@ export class RegistroNovedadesComponent implements OnInit {
     };
   }
 
-  verRegistro(nov: IRegistroNovedades = null) {
+  verRegistro(nov: INovedad = null) {
     this.abrirSidebar('Editar Novedad');
-    if (nov) { // ver un registro
-      // se copia el registro para que no se edite sobre la lista
-      // si se quiere mostrar el cambio enla lista mientras se edita se puede quitar copia, 
-      // pero habría que modificar "cancelar"
+    if (nov) {
       this.regNov = Object.assign({}, nov);
       this.fotos = (this.regNov.imagenes) ? this.regNov.imagenes : [];
     }
@@ -122,7 +118,7 @@ export class RegistroNovedadesComponent implements OnInit {
     this.regNov.imagenes = this.fotos;
     if (this.modoEdit) { // editar novedad;
       this.regNovService.patch(this.regNov).subscribe(
-        registros => {
+        () => {
           this.loadData(false);
           this.plex.toast('success', 'Los datos se editaron correctamente');
         },
@@ -132,9 +128,8 @@ export class RegistroNovedadesComponent implements OnInit {
       );
     } else { // crear novedad
 
-      this.regNovService.postNuevoRegistro(this.regNov).subscribe(
-        registros => {
-
+      this.regNovService.post(this.regNov).subscribe(
+        () => {
           this.loadData(false);
           this.plex.toast('success', 'Los datos se guardaron correctamente');
         },
@@ -154,10 +149,13 @@ export class RegistroNovedadesComponent implements OnInit {
       limit,
       skip: this.skip
     };
-    if (this.textoBuscar) {
-      params.search = this.textoBuscar;
+    if (this.titulo) {
+      params.titulo = this.titulo;
     }
-    this.regNovService.getAll(params).subscribe(
+    if (this.modulo) {
+      params.modulo = this.modulo._id;
+    }
+    this.regNovService.get(params).subscribe(
       registros => {
         if (concatenar) { // scroll infinito
           if (registros.length > 0) {
@@ -194,8 +192,8 @@ export class RegistroNovedadesComponent implements OnInit {
       this.plex.toast('danger', 'Tipo de archivo incorrecto');
       return;
     }
-    let file: File = inputValue.files[0];
-    let myReader: FileReader = new FileReader();
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
       this.uploadElement.nativeElement.value = '';
