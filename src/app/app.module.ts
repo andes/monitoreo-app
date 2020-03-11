@@ -1,3 +1,5 @@
+import { LoginModule } from './login/login.module';
+import { ModuloService } from './registro-novedades/services/modulo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +31,8 @@ import { WebhookLogService } from './webhook-log/services/webhook-log.service';
 import { QueriesModule } from './queries/queries.module';
 import { CdaModule } from './cda/cda.module';
 
+import { NovedadesModule } from './registro-novedades/novedades.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +54,9 @@ import { CdaModule } from './cda/cda.module';
     AuthModule,
     InfiniteScrollModule,
     QueriesModule,
-    CdaModule
+    CdaModule,
+    NovedadesModule,
+    LoginModule
   ],
   providers: [
     Plex,
@@ -65,7 +71,8 @@ import { CdaModule } from './cda/cda.module';
     PacienteAppService,
     OrganizacionService,
     SendMessageCacheService,
-    WebhookLogService
+    WebhookLogService,
+    ModuloService
   ],
   bootstrap: [AppComponent]
 })
