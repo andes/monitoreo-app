@@ -14,7 +14,7 @@ const appRoutes: Routes = [
     { path: 'conceptos-turneables', component: ConceptosTurneablesComponent, canActivate: [RoutingGuard] },
     { path: 'monitor-activaciones', component: MonitoreoActivacionesComponent, canActivate: [RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
-    { path: 'bi-queries', loadChildren: './bi-queries/b-i.module#BIModule' },
+    { path: 'bi-queries', loadChildren: './queries/queries.module#QueriesModule' },
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];

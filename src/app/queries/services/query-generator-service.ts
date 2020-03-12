@@ -12,14 +12,14 @@ import { Options } from '@andes/shared/src/lib/server/options';
 import { Plex } from '@andes/plex';
 
 import * as moment from 'moment';
-import { IFiltroBi } from '../interfaces/IFiltroBi.interface';
+import { IFiltroQuery } from '../interfaces/IFiltroQuery.interface';
 
 
 // Constantes
 const defaultOptions: Options = { params: null, showError: true, showLoader: true };
 
 @Injectable()
-export class BIService {
+export class QueriesGeneratorService {
 
     // URL to web api
     private biUrl: string;
@@ -29,13 +29,13 @@ export class BIService {
         this.biUrl = '/modules/bi-queries';
     }
 
-    // obtiene todas las querys de la colección "Consultas"
-    getAllQuerys(): Observable<any> {
+    // obtiene todas las queries
+    getAllQueries(): Observable<any> {
         const res = this.server.get(this.biUrl + `/biQueries`, { showError: true });
         return res;
     }
 
-    descargar(consulta: IFiltroBi) {
+    descargar(consulta: IFiltroQuery) {
         this.nombre = consulta.nombre;
         this.post(consulta).subscribe((data: any) => {
             if (data.size < 50) {

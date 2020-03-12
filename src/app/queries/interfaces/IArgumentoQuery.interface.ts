@@ -1,5 +1,5 @@
 
-export interface IArgumentoBi {
+export interface IArgumentoQuery {
     key: string;
     descripcion?: string;
     label: string; // label en HTML

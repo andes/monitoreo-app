@@ -12,7 +12,7 @@
                     <plex-title main titulo=" Ingrese los Argumentos" size="sm"></plex-title>
                     <!-- se genera listaArgumentos de acuerdo a la consulta elegida -->
                     <div class="col-md" *ngFor="let ar of listaArgumentos" required>
-                        <app-filtro-bi [argumento]='ar'></app-filtro-bi>
+                        <app-filtro-query [argumento]='ar'></app-filtro-query>
                         <br>
                     </div>
                 </ng-container>

@@ -1,28 +1,28 @@
 import { Component, OnInit, ViewEncapsulation, QueryList, ViewChildren } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { IFiltroBi } from '../interfaces/IFiltroBi.interface';
-import { BIService } from '../services/b-i-service';
-import { FiltroBiComponent } from '../filtros/filtros.bi.component';
+import { IFiltroQuery } from '../interfaces/IFiltroQuery.interface';
+import { QueriesGeneratorService } from '../services/query-generator-service';
+import { FiltroQueryComponent } from '../filtros/filtros.query.component';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './b-i.component.html',
-  styleUrls: ['./b-i.component.scss'],
+  templateUrl: './query-generator.component.html',
+  styleUrls: [],
   encapsulation: ViewEncapsulation.None // Use to disable CSS Encapsulation for this component
 })
 
-export class BIComponent implements OnInit {
+export class QueryComponent implements OnInit {
   title = 'Consultas';
   main = 12;
   listaFiltro: any;
   listaArgumentos: any = [];
-  selectConsulta: IFiltroBi;
+  selectConsulta: IFiltroQuery;
 
-  @ViewChildren(FiltroBiComponent) listaElemFiltro: QueryList<any>;
+  @ViewChildren(FiltroQueryComponent) listaElemFiltro: QueryList<any>;
 
-  constructor(public plex: Plex, private biService: BIService) {
+  constructor(public plex: Plex, private biService: QueriesGeneratorService) {
     this.selectConsulta = null;
-    this.biService.getAllQuerys().subscribe(
+    this.biService.getAllQueries().subscribe(
       resultado => {
         this.listaFiltro = resultado;
       },
