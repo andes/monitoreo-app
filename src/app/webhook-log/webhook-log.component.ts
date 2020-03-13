@@ -4,7 +4,7 @@ import { WebhookLogService } from './services/webhook-log.service';
 import { IWebhooklog } from './interfaces/IWebhook-log';
 
 const limit = 20;
-
+const side = 9;
 @Component({
   selector: 'app-root',
   templateUrl: './webhook-log.component.html',
@@ -17,6 +17,7 @@ export class WebhookLogComponent implements OnInit {
   private listFiltrar;
   textoBuscar;
   main = 12;
+
   fechaI: Date;
   fechaF: Date;
   private finScroll = false;
@@ -82,7 +83,7 @@ export class WebhookLogComponent implements OnInit {
     this.webhooklogService.getById(e._id).subscribe(
       data => {
         this.elemElegido = data;
-        this.main = 9;
+        this.main = side;
       },
       (err) => {
         this.elemElegido = null;
