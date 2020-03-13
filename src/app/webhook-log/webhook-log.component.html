@@ -1,22 +1,22 @@
 <plex-layout main={{main}}>
     <plex-layout-main>
         <header>
-            <h3 class="titulo"> Servicios Conectados a WebHook </h3>
+            <plex-title size="lg" titulo="Servicios Conectados a WebHook"></plex-title>
         </header>
         <form #formulario="ngForm">
-            <fieldset>                    
+            <fieldset>
                 <div class="row">
                     <div class="col-md">
                         <plex-text label="Filtrar" name="buscar" [(ngModel)]="textoBuscar" (change)="loadData()"
-                            (disabled)='false'></plex-text>
+                                   (disabled)='false'></plex-text>
                     </div>
                     <div class="col-md-3">
                         <plex-datetime label="Desde" [(ngModel)]="fechaI" name="fechaI" type="datetime"
-                            (change)="loadData()"></plex-datetime>
+                                       (change)="loadData()"></plex-datetime>
                     </div>
                     <div class="col-md-3">
                         <plex-datetime label="hasta " [(ngModel)]="fechaF" name="fechaF" type="datetime"
-                            (change)="loadData()"></plex-datetime>
+                                       (change)="loadData()"></plex-datetime>
                     </div>
                 </div>
             </fieldset>
@@ -39,12 +39,12 @@
                             <td>{{e.url}}</td>
                             <td>{{e.updatedAt | date: 'dd-MM-yyyy  hh:mm:ss'}}</td>
                             <td>{{e.status}}</td>
-    
+
                         </tr>
                     </tbody>
                 </table>
                 <div *ngIf="finScroll" class="alert alert-warning">
-                        <p style="text-align: center;"> No se encontraron más resultados </p>
+                    <p style="text-align: center;"> No se encontraron más resultados </p>
                 </div>
             </div>
         </fieldset>
@@ -56,57 +56,44 @@
     </plex-layout-main>
 
     <plex-layout-sidebar>
-        <div style="font-size:17px; text-align: center;"
-            *ngIf="elemElegido != null;else elseSinDatos">
-            <header>
-                <div
-                    style="font-size:20px; align-content:center !important">
-                    <h3> <br> Descripción</h3>
+        <div class="d-flex align-items-justify" justify>
+            <div *ngIf="elemElegido != null;else elseSinDatos">
+                <plex-title titulo="Descripción" size="sm" main></plex-title>
+                <plex-detail size="lg" *ngIf="elemElegido.status">
+                    <div title>Fecha</div>
+                    <div subtitle>{{elemElegido.updatedAt | date:'dd/MM/yyyy hh:mm:ss' }}</div>
+                </plex-detail>
+
+                <div scope="row">
+                    <div class="text-left col-md">
+                        <div *ngIf="elemElegido.status" size="lg">
+                            <plex-label titulo="Status"></plex-label>
+                            <plex-label [tituloBold]=" false" [titulo]="elemElegido.status"></plex-label>
+                        </div>
+                        <br>
+                        <div *ngIf="elemElegido.event">
+                            <plex-label titulo="Event "></plex-label>
+                            <plex-label [tituloBold]=" false" [titulo]="elemElegido.event"></plex-label>
+                        </div>
+                        <br>
+                        <div *ngIf="elemElegido.method">
+                            <plex-label titulo="Method"></plex-label>
+                            <span>{{elemElegido.method}}</span>
+                        </div>
+                        <br>
+                        <div *ngIf="elemElegido.method">
+                            <plex-label titulo="URL"></plex-label>
+                            <span>{{elemElegido.url}}</span>
+                        </div>
+                    </div>
                 </div>
-            </header>
-            <div scope="row">
-                <div class="col-md">
-                    <label>Status: </label>
-                    <span>{{elemElegido.status}}</span>
-                    <br>
-                </div>
-                <br>
             </div>
-            <div scope="row">
-                <div class="col-md">
-                    <label>Method: </label>
-                    <span>{{elemElegido.method}}</span>
+            <ng-template #elseSinDatos>
+                <div class="sinDatos" class="text-left col-md">
+                    <label>No hay datos para mostrar</label>
+                    <p>Elja un dato de la lista para ver detalles.</p>
                 </div>
-                <br>
-            </div>
-            <div scope="row">
-                <div class="col-md">
-                    <label>Event: </label>
-                    <span>{{elemElegido.event}}</span>
-                </div>
-                <br>
-            </div>
-            <div scope="row">
-                <div class="col-md">
-                    <label>URL: </label>
-                    <span>{{elemElegido.url}}</span>
-                    <br>
-                </div>
-                <br>
-            </div>
-            <div class="row">
-                <div class="col-md">
-                    <label>Fecha: </label>
-                    <span>{{elemElegido.updatedAt | date:'dd-MM-yyyy hh:mm:ss' }}</span>
-                </div>
-                <br>
-            </div>
+            </ng-template>
         </div>
-        <ng-template #elseSinDatos>
-            <div class="sinDatos">
-                <label>No hay datos para mostrar</label>
-                <p>Elja un dato de la lista para ver detalles.</p>
-            </div>
-        </ng-template>
     </plex-layout-sidebar>
 </plex-layout>
