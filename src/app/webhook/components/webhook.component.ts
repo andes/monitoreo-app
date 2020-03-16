@@ -37,7 +37,7 @@ export class WebHookComponent implements OnInit {
             method: '',
             trasform: '',
             active: false,
-            name: ''
+            nombre: ''
         };
     }
 
@@ -53,7 +53,7 @@ export class WebHookComponent implements OnInit {
             method: 'POST',
             trasform: '',
             active: false,
-            name: ''
+            nombre: ''
         };
     }
 
