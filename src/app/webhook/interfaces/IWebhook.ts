@@ -5,5 +5,5 @@ export interface IWebhook {
     method: string;
     trasform: string;
     active: boolean;
-    name: string;
+    nombre: string;
 }

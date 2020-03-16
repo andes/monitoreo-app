@@ -4,7 +4,7 @@
             <plex-button label="Nuevo" type="primary" (click)="nuevo()"></plex-button>
         </plex-title>
         <div class="d-flex justify-content-between align-items-end">
-            <plex-text label="Filtrar (Nombre)" name="name" [(ngModel)]="filtro" class="w-100"
+            <plex-text label="Filtrar (Nombre)" name="nombre" [(ngModel)]="filtro" class="w-100"
                        (change)="filtrarPorNombre($event.value)">
             </plex-text>
         </div>
@@ -20,7 +20,7 @@
                            [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
                         <tr class="hover" *ngFor="let item of webHooks">
                             <td>
-                                {{ item.name }}
+                                {{ item.nombre }}
                                 <plex-button class="float-right" type="success" size='sm' icon="pencil"
                                              (click)="editar(item.id)"></plex-button>
                                 <plex-button class="float-right" icon="trash-can" type="danger" size='sm'
@@ -36,13 +36,13 @@
         <plex-title main titulo="Complete los datos" size="sm">
             <plex-button label="Cancelar" type="danger" (click)="cerrar()" size="sm">
             </plex-button>
-            <plex-button class="float-right" *ngIf="webHook.name" size="sm" label="Guardar" type="success"
+            <plex-button class="float-right" *ngIf="webHook.nombre" size="sm" label="Guardar" type="success"
                          (click)="creaModificaWebhook(webHook)"></plex-button>
         </plex-title>
 
         <div class="row">
             <div class="col">
-                <plex-text required label="Nombre" [(ngModel)]="webHook.name" name="name"></plex-text>
+                <plex-text required label="Nombre" [(ngModel)]="webHook.nombre" name="nombre"></plex-text>
                 <plex-text label="Event" [(ngModel)]="webHook.event" name="event"></plex-text>
                 <plex-text label="Url" [(ngModel)]="webHook.url" name="url"></plex-text>
                 <plex-select required [(ngModel)]="webHook.method" name="select" [data]="opciones" labelField="nombre"
