@@ -2,7 +2,8 @@
     <plex-layout-main>
         <div class="row">
             <div class="col-12">
-                <plex-text (change)="loadPacientes()" [(ngModel)]="documento" name="buscador" placeholder="Ingrese un documento">
+                <plex-text (change)="loadPacientes()" [(ngModel)]="documento" name="buscador"
+                           placeholder="Ingrese un documento">
                 </plex-text>
             </div>
         </div>
@@ -54,8 +55,8 @@
             <div *ngIf="pacienteSeleccionado ">
                 <div class="row">
                     <div class="col-md">
-                        <plex-badge type="danger" *ngIf="!pacienteApp.activacionApp"> APP SIN ACTIVAR </plex-badge>
-                        <plex-badge type="success" *ngIf="pacienteApp.activacionApp"> APP ACTIVADA </plex-badge>
+                        <plex-badge type="danger" *ngIf="!pacienteApp?.activacionApp"> APP SIN ACTIVAR </plex-badge>
+                        <plex-badge type="success" *ngIf="pacienteApp?.activacionApp"> APP ACTIVADA </plex-badge>
                     </div>
                 </div>
                 <div class="row">
@@ -98,17 +99,17 @@
                 <fieldset>
 
                     <legend>Historial de mensajes</legend>
-                    <div *ngIf="pacienteSeleccionado && !resultadoMensajes.length" class="alert alert-danger">
+                    <div *ngIf="pacienteSeleccionado && !resultadoMensajes?.length" class="alert alert-danger">
                         <i class="mdi mdi-account-warning"></i> No hay mensajes en el historial
                     </div>
                     <div class="row mb-2">
                         <div class="col">
-                            <table *ngIf="pacienteSeleccionado && resultadoMensajes.length" class="table table-striped table-hover">
+                            <table *ngIf="pacienteSeleccionado && resultadoMensajes?.length"
+                                   class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Fecha</th>
-                                        <th>Teléfono</th>
-                                        <th>Email</th>
+                                        <th>Teléfono/Email</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -118,10 +119,13 @@
                                         <td class="text-center">
                                             {{mensaje.createdAt | date: 'dd/MM/yyyy h:mm:ss'}}
                                         </td>
-                                        <td>{{mensaje.phone}}</td>
                                         <td>
-                                            {{mensaje.email}}
-                                        </td>
+                                            <span *ngIf="mensaje?.email">
+                                                <plex-icon name="email-outline"></plex-icon> {{mensaje.email}}
+                                            </span>
+                                            <span *ngIf="mensaje?.phone">
+                                                <plex-icon name="cellphone-android"></plex-icon> {{mensaje.phone}}
+                                            </span> </td>
                                         <td>{{mensaje.status}}</td>
                                     </tr>
                                 </tbody>
