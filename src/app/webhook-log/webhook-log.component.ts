@@ -4,7 +4,7 @@ import { WebhookLogService } from './services/webhook-log.service';
 import { IWebhooklog } from './interfaces/IWebhook-log';
 
 const limit = 20;
-const side = 9;
+const side = 8;
 @Component({
   selector: 'app-root',
   templateUrl: './webhook-log.component.html',
