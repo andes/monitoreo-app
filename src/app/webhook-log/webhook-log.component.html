@@ -38,7 +38,16 @@
                             <td>{{e.event}}</td>
                             <td>{{e.url}}</td>
                             <td>{{e.updatedAt | date: 'dd-MM-yyyy  hh:mm:ss'}}</td>
-                            <td>{{e.status}}</td>
+                            <td>
+                                <ng-container *ngIf="(e.status >= 200 && e.status < 300) || e.status == 0">
+                                    <plex-badge type='success'> {{e.status}}
+                                    </plex-badge>
+                                </ng-container>
+
+                                <ng-container *ngIf="!((e.status >= 200 && e.status < 300) || e.status == 0)">
+                                    <plex-badge type='warning'>{{e.status}}</plex-badge>
+                                </ng-container>
+                            </td>
 
                         </tr>
                     </tbody>
