@@ -20,6 +20,7 @@
                             <th>Apellido y Nombre</th>
                             <th>Nacimiento</th>
                             <th>Sexo</th>
+                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +38,11 @@
                                 <span *ngIf="paciente.fechaNacimiento === null">N/D</span>
                             </td>
                             <td>{{paciente.sexo}}</td>
+                            <td>
+                                <span *ngIf="paciente.profesionalId">
+                                    <plex-badge type="info"> PORFESIONAL </plex-badge>
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,16 +58,17 @@
             <div *ngIf="!pacienteSeleccionado" class="alert alert-danger">
                 <i class="mdi mdi-account-warning"></i> Aún no se ha seleccionado ningún paciente
             </div>
-            <div *ngIf="pacienteSeleccionado ">
+            <div *ngIf="pacienteSeleccionado">
                 <div class="row">
-                    <div class="col-md">
+                    <div class="col-md" *ngIf="!pacienteApp.profesionalId">
                         <plex-badge type="danger" *ngIf="!pacienteApp?.activacionApp"> APP SIN ACTIVAR </plex-badge>
                         <plex-badge type="success" *ngIf="pacienteApp?.activacionApp"> APP ACTIVADA </plex-badge>
                     </div>
+                    <div class="col-md" *ngIf="pacienteApp.profesionalId">
+                        <plex-badge type="info"> PROFESIONAL</plex-badge>
+                    </div>
                 </div>
                 <div class="row">
-
-
                     <div class="col-md">
                         <label>Documento</label>
                         <span>{{pacienteApp.documento}}</span>
@@ -82,7 +89,7 @@
                         <span>{{pacienteApp.sexo}}</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" *ngIf="pacienteDevice">
 
                     <div class="col-md">
                         <label>Versión App</label>
@@ -95,8 +102,10 @@
                         <span>{{pacienteDevice.device_type}}</span>
                     </div>
                 </div>
-
-                <fieldset>
+                <div class="row">
+                    <div class="col-md">&nbsp;</div>
+                </div>
+                <fieldset *ngIf="!pacienteApp.profesionalId">
 
                     <legend>Historial de mensajes</legend>
                     <div *ngIf="pacienteSeleccionado && !resultadoMensajes?.length" class="alert alert-danger">
