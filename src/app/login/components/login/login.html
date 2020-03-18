@@ -14,8 +14,8 @@
                               [required]="true">
                     </plex-int>
                     <plex-text label="Contraseña" [(ngModel)]="password" name="password" [password]="true"
-                               [required]="true">
-                        <plex-icon name="lock" class="icon" prefix></plex-icon>
+                               [required]="true" prefix="<i class='mdi mdi-dialpad'></i>">
+
                     </plex-text>
                     <div class="row">&nbsp;</div>
                     <plex-button type="success" [validateForm]="formulario" [disabled]="!formulario.form.valid"
