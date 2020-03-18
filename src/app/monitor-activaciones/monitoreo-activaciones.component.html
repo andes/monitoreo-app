@@ -40,7 +40,7 @@
                             <td>{{paciente.sexo}}</td>
                             <td>
                                 <span *ngIf="paciente.profesionalId">
-                                    <plex-badge type="info"> PORFESIONAL </plex-badge>
+                                    <plex-badge type="info"> PROFESIONAL </plex-badge>
                                 </span>
                             </td>
                         </tr>
@@ -120,6 +120,7 @@
                                         <th class="text-center">Fecha</th>
                                         <th>Teléfono/Email</th>
                                         <th>Estado</th>
+                                        <th>Código</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -136,6 +137,9 @@
                                                 <plex-icon name="cellphone-android"></plex-icon> {{mensaje.phone}}
                                             </span> </td>
                                         <td>{{mensaje.status}}</td>
+                                        <td><span
+                                                  *ngIf="mensaje.extras && mensaje.extras.codigo">{{mensaje.extras.codigo}}</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
