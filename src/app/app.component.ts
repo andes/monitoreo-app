@@ -16,7 +16,7 @@ export class AppComponent {
   constructor(public server: Server, public plex: Plex, public auth: Auth) {
     server.setBaseURL(environment.API);
 
-    this.plex.updateTitle('ANDES | Monitoreo App');
+    this.plex.updateTitle('ANDES | Monitoreo');
     const token = this.auth.getToken();
     if (token) {
       this.auth.session().subscribe(() => {
