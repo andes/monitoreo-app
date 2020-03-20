@@ -5,6 +5,6 @@ export interface INovedad {
     fecha: Date;
     descripcion: string;
     modulo: IModulo;
-    imagenes?: File[];
+    imagenes?: any[];
     activa: boolean;
 }
