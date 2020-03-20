@@ -39,7 +39,6 @@ export class NovedadesComponent implements OnInit {
   // Adjuntar Imagenes
   errorExt = false;
   waiting = false;
-  fotos: any[] = [];
   fileToken: string = null;
   timeout = null;
   lightbox = false;
@@ -94,7 +93,6 @@ export class NovedadesComponent implements OnInit {
 
   loadRegNov() {
     this.modoEdit = false;
-    this.fotos = [];
     this.regNov = {
       titulo: '',
       fecha: new Date(),
@@ -109,7 +107,6 @@ export class NovedadesComponent implements OnInit {
     this.abrirSidebar('Editar Novedad');
     if (nov) {
       this.regNov = Object.assign({}, nov);
-      this.fotos = (this.regNov.imagenes) ? this.regNov.imagenes : [];
     }
     this.modoEdit = true;
   }
@@ -153,7 +150,7 @@ export class NovedadesComponent implements OnInit {
       params.titulo = this.titulo;
     }
     if (this.modulo) {
-      params.modulo = this.modulo._id;
+      params.modulos = this.modulo._id;
     }
     this.regNovService.get(params).subscribe(
       registros => {
@@ -199,13 +196,11 @@ export class NovedadesComponent implements OnInit {
       this.uploadElement.nativeElement.value = '';
       const metadata = {};
       this.adjuntosService.upload(myReader.result, metadata).subscribe((data) => {
-        this.fotos.push({
+        this.regNov.imagenes.push({
           ext,
           id: data._id
         });
       });
-
-
     };
     myReader.readAsDataURL(file);
   }
@@ -255,6 +250,17 @@ export class NovedadesComponent implements OnInit {
     const imagenSiguiente = i + 1;
     if (imagenSiguiente <= this.fotos.length - 1) {
       this.indice = imagenSiguiente;
+    }
+  }
+
+  get fotos() {
+    if (this.regNov && this.regNov.imagenes) {
+      return this.regNov.imagenes.map((doc: any) => {
+        doc.url = this.createUrl(doc);
+        return doc;
+      });
+    } else {
+      return [];
     }
   }
 

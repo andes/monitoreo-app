@@ -46,6 +46,7 @@ export class AppComponent {
     this.menuList.push({ label: 'Regenerar CDAs', icon: 'refresh', route: '/cda-regenerar' });
     this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
     this.menuList.push({ label: 'Novedades', icon: 'bell-outline', route: '/novedades' });
+    this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
     this.plex.updateMenu(this.menuList);
   }
 }

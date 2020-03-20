@@ -99,23 +99,15 @@
             </span>
 
             <div class="row">
-                <div class="image-container hr-inline-group" *ngIf="fotos && fileToken">
-                    <ng-container *ngFor="let doc of fotos; let i = index">
-                        <a (click)="activaLightbox(i)">
-                            <div class="image hover">
-                                <img [src]="createUrl(doc)" alt="">
-                                <div class="x-mark" (click)="imageRemoved(doc)"><span class="close"></span>
-                                </div>
-                            </div>
-                        </a>
-                        <div (click)="lightbox = false" *ngIf="i === indice && lightbox"
-                             [ngClass]="{'lightbox': i === indice && lightbox }" class="hover">
-                            <i (click)=imagenPrevia(i) class="mdi mdi-chevron-double-left previous parpadeo"></i>
-                            <img [src]="createUrl(doc)" alt="">
-                            <i (click)=imagenSiguiente(i) class="mdi mdi-chevron-double-right next parpadeo"></i>
+                <plex-visualizador [files]="fotos" #visualizador></plex-visualizador>
+                <ng-container *ngFor="let doc of fotos; let i = index">
+                    <a>
+                        <div class="image hover">
+                            <ng-container *ngIf="!esImagen(doc.ext)">{{ doc.ext }}</ng-container>
+                            <img [src]="createUrl(doc)" alt="" *ngIf="esImagen(doc.ext)" (click)="visualizador.open(i)">
                         </div>
-                    </ng-container>
-                </div>
+                    </a>
+                </ng-container>
             </div>
         </form>
     </plex-layout-sidebar>
