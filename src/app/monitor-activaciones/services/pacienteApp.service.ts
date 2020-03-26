@@ -11,9 +11,15 @@ export class PacienteAppService {
     constructor(private server: Server) { }
 
     get(params: any): Observable<IPacienteApp[]> {
-        return this.server.get(this.pacienteAppUrl + `?documento=${params.documento}`, { showError: true });
+        return this.server.get(this.pacienteAppUrl, { params, showError: true });
     }
 
+    post(pacienteApp: IPacienteApp): Observable<IPacienteApp[]> {
+        return this.server.post(this.pacienteAppUrl, { pacienteApp, showError: true });
+    }
 
+    patch(pacienteApp: IPacienteApp): Observable<IPacienteApp> {
+        return this.server.patch(this.pacienteAppUrl + `/${pacienteApp._id}`, pacienteApp);
+    }
 }
 

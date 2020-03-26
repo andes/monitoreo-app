@@ -1,6 +1,7 @@
 import { IDevice } from './IDevice';
 
 export interface IPacienteApp {
+    _id: string;
     nombre: string;
     apellido: string;
     email: string;
