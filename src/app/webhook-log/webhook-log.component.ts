@@ -14,22 +14,22 @@ export class WebhookLogComponent implements OnInit {
   title = 'WebHookLog';
   elemElegido;
   listMostrar: IWebhooklog[];
-  private listFiltrar;
+  listFiltrar;
   textoBuscar;
   main = 12;
 
   fechaI: Date;
   fechaF: Date;
-  private finScroll = false;
-  private skip = 0;
+  finScroll = false;
+  skip = 0;
 
 
   constructor(public plex: Plex, private webhooklogService: WebhookLogService) {
     this.textoBuscar = null;
     this.listFiltrar = [
+      { id: 1, nombre: 'Fecha' },
       { id: 2, nombre: 'Event' },
-      { id: 3, nombre: 'URL' },
-      { id: 4, nombre: 'Fecha' }];
+      { id: 3, nombre: 'URL' }];
     this.elemElegido = null;
     this.listMostrar = [];
   }
@@ -80,13 +80,19 @@ export class WebhookLogComponent implements OnInit {
 
 
   seleccionarElem(e) {
-    this.webhooklogService.getById(e._id).subscribe(
-      data => {
-        this.elemElegido = data;
-        this.main = side;
-      },
-      (err) => {
-        this.elemElegido = null;
-      });
+    if (this.main === side && this.elemElegido && e._id && this.elemElegido._id === e._id) {
+      this.main = 12;
+    } else {
+      this.webhooklogService.getById(e._id).subscribe(
+        data => {
+          this.elemElegido = data;
+          this.main = side;
+        },
+        (err) => {
+          this.elemElegido = null;
+        });
+    }
   }
 }
+
+
