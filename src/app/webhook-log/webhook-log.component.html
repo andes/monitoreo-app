@@ -22,41 +22,25 @@
             </fieldset>
         </form>
         <plex-scroll (change)="loadData(true)"></plex-scroll>
-        <fieldset>
-            <div *ngIf="listMostrar.length != 0;else mostrarVacio">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <td><strong>Número</strong></td>
-                            <td *ngFor="let c of listFiltrar"><strong>{{c.nombre}}</strong></td>
-                            <td><strong>Status</strong></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let e of listMostrar;index as i" (click)="seleccionarElem(e)">
-                            <td>{{i + 1}}</td>
-                            <td>{{e.event}}</td>
-                            <td>{{e.url}}</td>
-                            <td>{{e.updatedAt | date: 'dd-MM-yyyy  hh:mm:ss'}}</td>
-                            <td>
-                                <ng-container *ngIf="(e.status >= 200 && e.status < 300) || e.status == 0">
-                                    <plex-badge type='success'> {{e.status}}
-                                    </plex-badge>
-                                </ng-container>
-
-                                <ng-container *ngIf="!((e.status >= 200 && e.status < 300) || e.status == 0)">
-                                    <plex-badge type='warning'>{{e.status}}</plex-badge>
-                                </ng-container>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-                <div *ngIf="finScroll" class="alert alert-warning">
-                    <p style="text-align: center;"> No se encontraron más resultados </p>
-                </div>
+        <div *ngIf="listMostrar.length != 0;else mostrarVacio">
+            <plex-list [striped]="true" height="70%">
+                <plex-heading>
+                    <b label *ngFor="let c of listFiltrar" class="col-md-3">{{c.nombre}}</b>
+                    <b badge class="col-md-2">Status</b>
+                </plex-heading>
+                <ng-container *ngFor="let e of listMostrar">
+                    <plex-item class="hover text-md-center" [botonera]="false" (click)="seleccionarElem(e)">
+                        <plex-label class="col-md-3">{{e.updatedAt | date: 'dd/MM/yyyy  hh:mm:ss'}} </plex-label>
+                        <plex-label class="col-md-3">{{e.event}}</plex-label>
+                        <plex-label class="col-md-3">{{e.url}}</plex-label>
+                        <plex-badge class="col-md-2">{{e.status}}</plex-badge>
+                    </plex-item>
+                </ng-container>
+            </plex-list>
+            <div *ngIf="finScroll" class="alert alert-warning text-left col-md">
+                <p> No se encontraron más resultados </p>
             </div>
-        </fieldset>
+        </div>
         <ng-template #mostrarVacio>
             <div class="sinDatos">
                 <label>No hay datos para mostrar</label>
