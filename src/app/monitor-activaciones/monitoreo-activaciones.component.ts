@@ -17,8 +17,10 @@ export class MonitoreoActivacionesComponent implements OnInit {
     resultadoBusqueda;
     resultadoMensajes;
     pacienteApp: IPacienteApp;
+    pacienteEditado: IPacienteApp;
     pacienteDevice: IDevice;
     pacienteSeleccionado = false;
+    edicionActivada = false;
     searchClear = true;    // True si el campo de búsqueda se encuentra vacío
 
 
@@ -80,5 +82,46 @@ export class MonitoreoActivacionesComponent implements OnInit {
             this.pacienteDevice = this.pacienteApp.devices[0];
             this.loadMensajes(this.pacienteApp.email);
         }
+    }
+
+    habilitarEdicion() {
+        if (this.pacienteSeleccionado) {
+            this.pacienteEditado = Object.assign({}, this.pacienteApp);
+            this.edicionActivada = true;
+
+        }
+    }
+
+    cancelarEdicion() {
+        this.edicionActivada = false;
+    }
+
+    guardarEdicion() {
+        this.pacienteAppService.get({ email: this.pacienteEditado.email }).subscribe(
+            resultadoCuentas => {
+                const cuentas = resultadoCuentas.filter(p => p.documento !== this.pacienteApp.documento);
+                if (cuentas.length > 0) {
+                    this.plex.info('danger', 'El correo que ingresó ya se encuentra asociado a otra cuenta.');
+                } else {
+                    const mensajeTelefono = `<b>Teléfono: </b>${this.pacienteEditado.telefono}`;
+                    const mensajeEmail = `<br><b>Email: </b>${this.pacienteEditado.email}`;
+                    this.plex.confirm(`${mensajeTelefono} ${mensajeEmail}`, '¿Desea continuar?').then(confirmacion => {
+                        if (confirmacion) {
+                            this.pacienteAppService.patch(this.pacienteEditado).subscribe(
+                                resultadoPaciente => {
+                                    this.pacienteApp = resultadoPaciente;
+                                    this.plex.toast('success', 'Los datos han sido actualizados con éxito.');
+                                },
+                                err => {
+                                    if (err) {
+                                        this.plex.toast('danger', 'No fue posible la actualización de los datos.');
+                                    }
+                                });
+                            this.edicionActivada = false;
+                        }
+                    });
+                }
+            }
+        );
     }
 }

@@ -1,4 +1,4 @@
-<plex-layout main="7">
+<plex-layout [main]="pacienteSeleccionado? 6 : 12">
     <plex-layout-main>
         <div class="row">
             <div class="col-12">
@@ -53,7 +53,17 @@
     <plex-layout-sidebar>
         <!-- Contenedor lateral -->
         <fieldset>
-            <legend>Datos del paciente</legend>
+            <plex-title titulo="Datos del paciente">
+                <plex-button icon="pencil" type="primary" *ngIf="!edicionActivada" (click)="habilitarEdicion()">
+                </plex-button>
+                <plex-button icon="close" type="danger" *ngIf="!edicionActivada"
+                             (click)="seleccionar(this.pacienteApp)">
+                </plex-button>
+                <plex-button icon="check" type="success" *ngIf="edicionActivada" (click)="guardarEdicion()">
+                </plex-button>
+                <plex-button icon="close" type="danger" *ngIf="edicionActivada" (click)="cancelarEdicion()">
+                </plex-button>
+            </plex-title>
 
             <div *ngIf="!pacienteSeleccionado" class="alert alert-danger">
                 <i class="mdi mdi-account-warning"></i> Aún no se ha seleccionado ningún paciente
@@ -89,6 +99,20 @@
                         <span>{{pacienteApp.sexo}}</span>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Email</label>
+                        <span *ngIf="!edicionActivada">{{pacienteApp.email}}</span>
+                        <plex-text *ngIf="edicionActivada" name="email" [(ngModel)]="pacienteEditado.email">
+                        </plex-text>
+                    </div>
+                    <div class="col-md">
+                        <label>Teléfono</label>
+                        <span *ngIf="!edicionActivada">{{pacienteApp.telefono}}</span>
+                        <plex-text *ngIf="edicionActivada" name="telefono" [(ngModel)]="pacienteEditado.telefono">
+                        </plex-text>
+                    </div>
+                </div>
                 <div class="row" *ngIf="pacienteDevice">
 
                     <div class="col-md">
@@ -108,8 +132,8 @@
                 <fieldset *ngIf="!pacienteApp.profesionalId">
 
                     <legend>Historial de mensajes</legend>
-                    <div *ngIf="pacienteSeleccionado && !resultadoMensajes?.length" class="alert alert-danger">
-                        <i class="mdi mdi-account-warning"></i> No hay mensajes en el historial
+                    <div *ngIf="pacienteSeleccionado && !resultadoMensajes?.length" class="alert alert-default">
+                        <small><i class="mdi mdi-account-warning"></i> No hay mensajes en el historial</small>
                     </div>
                     <div class="row mb-2">
                         <div class="col">
