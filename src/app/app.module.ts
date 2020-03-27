@@ -20,6 +20,7 @@ import { ConceptoTruneableService } from './conceptos-turneables/services/concep
 import { DetalleConceptoTurneableComponent } from './conceptos-turneables/components/detalle-concepto-turneable.component';
 import { NuevoConceptoTurneableComponent } from './conceptos-turneables/components/nuevo-concepto-turneable.component';
 import { SnomedService } from './shared/snomed.service';
+import { BuscadorSnomedComponent } from './buscador-snomed/buscador-snomed.component';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
@@ -36,7 +37,8 @@ import { WebhookLogService } from './webhook-log/services/webhook-log.service';
     ConceptosTurneablesComponent,
     DetalleConceptoTurneableComponent,
     NuevoConceptoTurneableComponent,
-    MonitoreoActivacionesComponent
+    MonitoreoActivacionesComponent,
+    BuscadorSnomedComponent
   ],
   imports: [
     BrowserModule,

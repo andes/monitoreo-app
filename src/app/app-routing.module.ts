@@ -1,3 +1,4 @@
+import { BuscadorSnomedComponent } from './buscador-snomed/buscador-snomed.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HomeComponent } from './home/home.component';
@@ -13,9 +14,9 @@ const appRoutes: Routes = [
     { path: 'webhook', component: WebHookComponent, canActivate: [RoutingGuard] },
     { path: 'conceptos-turneables', component: ConceptosTurneablesComponent, canActivate: [RoutingGuard] },
     { path: 'monitor-activaciones', component: MonitoreoActivacionesComponent, canActivate: [RoutingGuard] },
+    { path: 'buscador-snomed', component: BuscadorSnomedComponent, canActivate: [RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
-    // { path: 'login', loadChildren: () => import('./login/login.module').then(l=>l.LoginModule)},
-    { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard]},
+    { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
