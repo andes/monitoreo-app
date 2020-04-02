@@ -1,4 +1,4 @@
-import { ModuloService } from '../services/modulo.service';
+import { ModulosService } from '../services/modulos.service';
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
@@ -48,7 +48,7 @@ export class NovedadesComponent implements OnInit {
   constructor(
     public plex: Plex,
     private regNovService: NovedadesService,
-    private moduloService: ModuloService,
+    private moduloService: ModulosService,
     public adjuntosService: AdjuntosService,
     public auth: Auth) {
     this.regNov = null;
@@ -60,7 +60,7 @@ export class NovedadesComponent implements OnInit {
 
     this.loadData(false);
     this.skip = 0;
-    this.moduloService.get({}).subscribe(
+    this.moduloService.search({}).subscribe(
       modulos => {
         this.listModulos = modulos;
       },
@@ -112,7 +112,7 @@ export class NovedadesComponent implements OnInit {
 
   creaModificaNovedad() {
     if (this.modoEdit) { // editar novedad;
-      this.regNovService.patch(this.regNov).subscribe(
+      this.regNovService.update(this.regNov._id, this.regNov).subscribe(
         () => {
           this.loadData(false);
           this.plex.toast('success', 'Los datos se editaron correctamente');
@@ -123,7 +123,7 @@ export class NovedadesComponent implements OnInit {
       );
     } else { // crear novedad
 
-      this.regNovService.post(this.regNov).subscribe(
+      this.regNovService.create(this.regNov).subscribe(
         () => {
           this.loadData(false);
           this.plex.toast('success', 'Los datos se guardaron correctamente');
@@ -150,7 +150,7 @@ export class NovedadesComponent implements OnInit {
     if (this.modulo) {
       params.modulos = this.modulo._id;
     }
-    this.regNovService.get(params).subscribe(
+    this.regNovService.search(params).subscribe(
       registros => {
         if (concatenar) { // scroll infinito
           if (registros.length > 0) {
@@ -167,7 +167,7 @@ export class NovedadesComponent implements OnInit {
       (err) => {
         this.listRegNovedades = [];
         this.skip = 0;
-        this.plex.info('warning', 'En este momento no podemos procesar su pedido, intentelo más tarde', 'Error al obtener Novedades');
+        this.plex.info('warning', err, 'Error al obtener Novedades');
       }
     );
   }
@@ -227,4 +227,14 @@ export class NovedadesComponent implements OnInit {
     }
   }
 
+  getFotos() {
+    if (this.regNov && this.regNov.imagenes) {
+      return this.regNov.imagenes.map((doc: any) => {
+        doc.url = this.createUrl(doc);
+        return doc;
+      });
+    } else {
+      return [];
+    }
+  }
 }

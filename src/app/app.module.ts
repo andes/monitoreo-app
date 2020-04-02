@@ -1,5 +1,5 @@
 import { LoginModule } from './login/login.module';
-import { ModuloService } from './registro-novedades/services/modulo.service';
+import { ModulosService } from './registro-novedades/services/modulos.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -72,7 +72,7 @@ import { NovedadesModule } from './registro-novedades/novedades.module';
         OrganizacionService,
         SendMessageCacheService,
         WebhookLogService,
-        ModuloService
+        ModulosService
     ],
     bootstrap: [AppComponent]
 })

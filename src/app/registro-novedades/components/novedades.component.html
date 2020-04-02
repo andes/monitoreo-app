@@ -99,7 +99,7 @@
             </span>
 
             <div class="row">
-                <plex-visualizador [files]="regNov.imagenes" #visualizador></plex-visualizador>
+                <plex-visualizador [files]="getFotos()" #visualizador></plex-visualizador>
                 <ng-container *ngFor="let doc of regNov.imagenes; let i = index">
                     <div class="image hover">
                         <img [src]="createUrl(doc)" (click)="visualizador.open(i)">
