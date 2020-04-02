@@ -41,7 +41,6 @@ export class NovedadesComponent implements OnInit {
   waiting = false;
   fileToken: string = null;
   timeout = null;
-  lightbox = false;
   indice;
   documentos = [];
   extensions = ['bmp', 'jpg', 'jpeg', 'gif', 'png', 'tif', 'tiff', 'raw'];
@@ -94,11 +93,11 @@ export class NovedadesComponent implements OnInit {
   loadRegNov() {
     this.modoEdit = false;
     this.regNov = {
-      titulo: '',
+      titulo: ' ',
       fecha: new Date(),
       descripcion: '',
       imagenes: [],
-      modulo: null,
+      modulo: this.listModulos[0],
       activa: true
     };
   }
@@ -112,7 +111,6 @@ export class NovedadesComponent implements OnInit {
   }
 
   creaModificaNovedad() {
-    this.regNov.imagenes = this.fotos;
     if (this.modoEdit) { // editar novedad;
       this.regNovService.patch(this.regNov).subscribe(
         () => {
@@ -205,7 +203,6 @@ export class NovedadesComponent implements OnInit {
     myReader.readAsDataURL(file);
   }
 
-
   fileExtension(file) {
     if (file.lastIndexOf('.') >= 0) {
       return file.slice((file.lastIndexOf('.') + 1));
@@ -219,50 +216,15 @@ export class NovedadesComponent implements OnInit {
     this.waiting = false;
   }
 
-  activaLightbox(index) { // activa a vista previa de las imagenes
-    this.lightbox = true;
-    this.indice = index;
-  }
-
-  esImagen(extension) {
-    return this.extensions.find(x => x === extension.toLowerCase());
-  }
-
   imageRemoved($event) {
-    const index = this.fotos.indexOf($event);
-    this.fotos.splice(index, 1);
+    const index = this.regNov.imagenes.indexOf($event);
+    this.regNov.imagenes.splice(index, 1);
   }
 
-  createUrl(doc) { // creo que se debería pasar al servicio para que no se tenga que importar environment
-    /** Hack momentaneo */
+  createUrl(doc) {
     if (doc.id) {
       return this.regNovService.getUrlImage(doc.id, this.fileToken);
     }
   }
-  imagenPrevia(i) {
-    const imagenPrevia = i - 1;
-    if (imagenPrevia >= 0) {
-      this.indice = imagenPrevia;
-    }
-  }
-
-  imagenSiguiente(i) {
-    const imagenSiguiente = i + 1;
-    if (imagenSiguiente <= this.fotos.length - 1) {
-      this.indice = imagenSiguiente;
-    }
-  }
-
-  get fotos() {
-    if (this.regNov && this.regNov.imagenes) {
-      return this.regNov.imagenes.map((doc: any) => {
-        doc.url = this.createUrl(doc);
-        return doc;
-      });
-    } else {
-      return [];
-    }
-  }
-
 
 }
