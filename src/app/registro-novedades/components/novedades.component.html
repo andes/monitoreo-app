@@ -99,14 +99,12 @@
             </span>
 
             <div class="row">
-                <plex-visualizador [files]="fotos" #visualizador></plex-visualizador>
-                <ng-container *ngFor="let doc of fotos; let i = index">
-                    <a>
-                        <div class="image hover">
-                            <ng-container *ngIf="!esImagen(doc.ext)">{{ doc.ext }}</ng-container>
-                            <img [src]="createUrl(doc)" alt="" *ngIf="esImagen(doc.ext)" (click)="visualizador.open(i)">
-                        </div>
-                    </a>
+                <plex-visualizador [files]="regNov.imagenes" #visualizador></plex-visualizador>
+                <ng-container *ngFor="let doc of regNov.imagenes; let i = index">
+                    <div class="image hover">
+                        <img [src]="createUrl(doc)" (click)="visualizador.open(i)">
+                        <div class="x-mark" (click)="imageRemoved(doc)"><span class="close"></span></div>
+                    </div>
                 </ng-container>
             </div>
         </form>
