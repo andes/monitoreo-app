@@ -29,7 +29,7 @@
             </td>
             <td class="text-center" colspan="2">
                 <span *ngIf="cda.profesional && cda.profesional !== '' && (cda.profesional.nombre !== '-' || cda.profesional.apellido !== '-')"
-                      class="d-block">{{cda.profesional | paciente}}</span>
+                      class="d-block">{{cda.profesional | nombre}}</span>
                 <span *ngIf="!cda.profesional || cda.profesional === ''|| (cda.profesional.nombre === '-' && cda.profesional.apellido === '-')"
                       class="d-block">N/D</span>
             </td>
