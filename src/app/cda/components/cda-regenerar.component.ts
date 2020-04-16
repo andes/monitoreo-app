@@ -46,7 +46,7 @@ export class CdaRegenerarComponent implements OnInit {
   seleccionar(paciente) {
     if (paciente) {
       this.pacienteSelected = paciente;
-      this.side = 6;
+      this.side = 7;
       this.refreshCDA();
     } else {
       this.side = sizeSide;
