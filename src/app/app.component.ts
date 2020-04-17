@@ -42,6 +42,7 @@ export class AppComponent {
     this.menuList.push({ label: 'Monitoreo Activaciones', icon: 'cellphone-basic', route: '/monitor-activaciones' });
     this.menuList.push({ label: 'WebhookLogs', icon: 'webhook', route: '/webhooklog' });
     this.menuList.push({ label: 'Buscador SNOMED', icon: 'magnify', route: '/buscador-snomed' });
+    this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/queries' });
     this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
     this.plex.updateMenu(this.menuList);
   }

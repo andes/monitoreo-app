@@ -16,6 +16,7 @@ const appRoutes: Routes = [
     { path: 'monitor-activaciones', component: MonitoreoActivacionesComponent, canActivate: [RoutingGuard] },
     { path: 'buscador-snomed', component: BuscadorSnomedComponent, canActivate: [RoutingGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
+    { path: 'queries', loadChildren: './queries/queries.module#QueriesModule' },
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];

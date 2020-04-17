@@ -26,7 +26,7 @@ import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { WebhookLogService } from './webhook-log/services/webhook-log.service';
-
+import { QueriesModule } from './queries/queries.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,8 @@ import { WebhookLogService } from './webhook-log/services/webhook-log.service';
     PlexModule,
     routing,
     AuthModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    QueriesModule
   ],
   providers: [
     Plex,
