@@ -19,6 +19,7 @@ export class CdaRegenerarComponent implements OnInit {
   side = sizeSide;
   pacienteSelected = null;
   listaCDA = [];
+  private disabledBtn = false;
 
   constructor(private plex: Plex, private router: Router, private cdaService: CdaService) {
   }
@@ -44,6 +45,7 @@ export class CdaRegenerarComponent implements OnInit {
   }
 
   seleccionar(paciente) {
+    this.disabledBtn = false;
     if (paciente) {
       this.pacienteSelected = paciente;
       this.side = 7;
@@ -54,7 +56,12 @@ export class CdaRegenerarComponent implements OnInit {
   }
 
   regenerarCDA() {
+    // deshabilitamos boton regenerar por unos segundos
+    this.disabledBtn = true;
     this.cdaService.regenerarCda({ paciente: this.pacienteSelected }).subscribe();
+    window.setTimeout(() => {
+      this.disabledBtn = false;
+    }, 900);
   }
 
   refreshCDA() {
