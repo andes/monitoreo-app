@@ -1,0 +1,9 @@
+<form #form="ngForm">
+    <div class="row flex-column">
+        <div class="col-12">
+            <plex-datetime [label]="argumento.label" [(ngModel)]="argumento.valor" [name]="argumento.nombre"
+                           [type]="argumento.tipo" [required]="true">
+            </plex-datetime>
+        </div>
+    </div>
+</form>
