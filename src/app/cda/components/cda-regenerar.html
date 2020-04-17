@@ -6,9 +6,7 @@
         <app-paciente-buscar (searchStart)="onSearchStart()" (searchEnd)="onSearchEnd($event.pacientes)"
                              (searchClear)="onSearchClear()">
         </app-paciente-buscar>
-
         <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
-
         <app-paciente-listado *ngIf="listaPacientes && listaPacientes.length" [pacientes]="listaPacientes"
                               (selected)="seleccionar($event)">
         </app-paciente-listado>
@@ -18,9 +16,9 @@
     </plex-layout-main>
     <plex-layout-sidebar>
         <plex-title titulo="CDA del paciente" size="sm" main>
-            <plex-button label="refrescar" type="primary" size="sm" (click)="refreshCDA()"></plex-button>
+            <!-- <plex-button label="refrescar" type="primary" size="sm" (click)="refreshCDA()"></plex-button>
             <plex-button [disabled]="disabledBtn" label="regenerar" type="success" size="sm" (click)="regenerarCDA()">
-            </plex-button>
+            </plex-button> -->
         </plex-title>
 
         <app-cda-listado *ngIf="listaCDA && listaCDA.length;else mostrarVacio" [listaCda]="listaCDA" [type]="'sm'">
