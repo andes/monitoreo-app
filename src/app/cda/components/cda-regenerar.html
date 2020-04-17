@@ -23,7 +23,7 @@
             </plex-button>
         </plex-title>
 
-        <app-cda-listado *ngIf="listaCDA && listaCDA.length;else mostrarVacio" [listaCda]="listaCDA" [type]='sm'>
+        <app-cda-listado *ngIf="listaCDA && listaCDA.length;else mostrarVacio" [listaCda]="listaCDA" [type]="'sm'">
         </app-cda-listado>
         <ng-template #mostrarVacio>
             <div>
