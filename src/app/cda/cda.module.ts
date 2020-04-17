@@ -6,13 +6,7 @@ import { PlexModule } from '@andes/plex';
 import { CDARoutingModule } from './cda-routing.module';
 
 // pipes
-import { EdadPipe } from '@andes/shared/src/lib/pipes/edad.pipe';
-import { FromNowPipe } from '@andes/shared/src/lib/pipes/fromNow.pipe';
-import { FechaPipe } from '@andes/shared/src/lib/pipes/fecha.pipe';
-import { HoraPipe } from '@andes/shared/src/lib/pipes/hora.pipe';
-import { NombrePipe } from '@andes/shared/src/lib/pipes/nombre.pipe';
-import { SexoPipe } from '@andes/shared/src/lib/pipes/sexo.pipe';
-
+import { SharedModule } from '@andes/shared';
 // services
 import { PacienteService } from './services/paciente.service';
 import { CdaService } from './services/cda.service';
@@ -29,19 +23,14 @@ import { CDAListadoComponent } from './components/cda/cda-listado.component';
     CdaRegenerarComponent,
     PacienteBuscarComponent,
     PacienteListadoComponent,
-    CDAListadoComponent,
-    EdadPipe,
-    FromNowPipe,
-    FechaPipe,
-    HoraPipe,
-    NombrePipe,
-    SexoPipe
+    CDAListadoComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
     PlexModule,
+    SharedModule,
     CDARoutingModule
   ],
   providers: [PacienteService, CdaService]
