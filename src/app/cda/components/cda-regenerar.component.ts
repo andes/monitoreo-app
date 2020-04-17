@@ -19,7 +19,7 @@ export class CdaRegenerarComponent implements OnInit {
   side = sizeSide;
   pacienteSelected = null;
   listaCDA = [];
-  private disabledBtn = false;
+  public disabledBtn = false;
 
   constructor(private plex: Plex, private router: Router, private cdaService: CdaService) {
   }
