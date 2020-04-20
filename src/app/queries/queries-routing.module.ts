@@ -1,10 +1,10 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RoutingGuard } from '../login/routing-guard';
-import { QueryComponent } from './query-generator/query-generator.component';
+import { QueryExecuteComponent } from '../queries/componentes/query-execute.component';
 
 const routes = [
-    { path: 'queries', component: QueryComponent, canActivate: [RoutingGuard] }
+    { path: 'queries', component: QueryExecuteComponent, canActivate: [RoutingGuard] }
 ];
 
 @NgModule({

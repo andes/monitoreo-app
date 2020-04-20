@@ -23,6 +23,7 @@ import { SnomedService } from './shared/snomed.service';
 import { BuscadorSnomedComponent } from './buscador-snomed/buscador-snomed.component';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
+import { OrganizacionService } from './services/organizacion.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { WebhookLogService } from './webhook-log/services/webhook-log.service';
@@ -61,6 +62,7 @@ import { QueriesModule } from './queries/queries.module';
     ConceptoTruneableService,
     SnomedService,
     PacienteAppService,
+    OrganizacionService,
     SendMessageCacheService,
     WebhookLogService
   ],
