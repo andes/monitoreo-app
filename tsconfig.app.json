@@ -10,6 +10,7 @@
   "include": [
     "src/**/*.ts",
     "node_modules/@andes/**/*.ts",
+    "node_modules/ng2-slugify/**/*.ts"
   ],
   "exclude": [
     "src/test.ts",
