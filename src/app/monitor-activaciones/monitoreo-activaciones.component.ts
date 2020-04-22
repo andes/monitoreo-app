@@ -76,11 +76,13 @@ export class MonitoreoActivacionesComponent implements OnInit {
             this.pacienteSeleccionado = false;
             this.pacienteApp = null;
             this.pacienteDevice = null;
+            this.edicionActivada = false;
         } else {
             this.pacienteSeleccionado = true;
             this.pacienteApp = paciente;
             this.pacienteDevice = this.pacienteApp.devices[0];
             this.loadMensajes(this.pacienteApp.email);
+            this.edicionActivada = false;
         }
     }
 
@@ -92,36 +94,46 @@ export class MonitoreoActivacionesComponent implements OnInit {
         }
     }
 
+    verificarCorreoValido() {
+        const formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
+        const mail = String(this.pacienteEditado.email);
+        return formato.test(mail);
+    }
+
     cancelarEdicion() {
         this.edicionActivada = false;
     }
 
     guardarEdicion() {
-        this.pacienteAppService.get({ email: this.pacienteEditado.email }).subscribe(
-            resultadoCuentas => {
-                const cuentas = resultadoCuentas.filter(p => p.documento !== this.pacienteApp.documento);
-                if (cuentas.length > 0) {
-                    this.plex.info('danger', 'El correo que ingresó ya se encuentra asociado a otra cuenta.');
-                } else {
-                    const mensajeTelefono = `<b>Teléfono: </b>${this.pacienteEditado.telefono}`;
-                    const mensajeEmail = `<br><b>Email: </b>${this.pacienteEditado.email}`;
-                    this.plex.confirm(`${mensajeTelefono} ${mensajeEmail}`, '¿Desea continuar?').then(confirmacion => {
-                        if (confirmacion) {
-                            this.pacienteAppService.patch(this.pacienteEditado).subscribe(
-                                resultadoPaciente => {
-                                    this.pacienteApp = resultadoPaciente;
-                                    this.plex.toast('success', 'Los datos han sido actualizados con éxito.');
-                                },
-                                err => {
-                                    if (err) {
-                                        this.plex.toast('danger', 'No fue posible la actualización de los datos.');
-                                    }
-                                });
-                            this.edicionActivada = false;
-                        }
-                    });
+        if (this.verificarCorreoValido()) {
+            this.pacienteAppService.get({ email: this.pacienteEditado.email }).subscribe(
+                resultadoCuentas => {
+                    const cuentas = resultadoCuentas.filter(p => p.documento !== this.pacienteApp.documento);
+                    if (cuentas.length > 0) {
+                        this.plex.info('danger', 'El correo que ingresó ya se encuentra asociado a otra cuenta.');
+                    } else {
+                        const mensajeTelefono = `<b>Teléfono: </b>${this.pacienteEditado.telefono}`;
+                        const mensajeEmail = `<br><b>Email: </b>${this.pacienteEditado.email}`;
+                        this.plex.confirm(`${mensajeTelefono} ${mensajeEmail}`, '¿Desea continuar?').then(confirmacion => {
+                            if (confirmacion) {
+                                this.pacienteAppService.patch(this.pacienteEditado).subscribe(
+                                    resultadoPaciente => {
+                                        this.pacienteApp = resultadoPaciente;
+                                        this.plex.toast('success', 'Los datos han sido actualizados con éxito.');
+                                    },
+                                    err => {
+                                        if (err) {
+                                            this.plex.toast('danger', 'No fue posible la actualización de los datos.');
+                                        }
+                                    });
+                                this.edicionActivada = false;
+                            }
+                        });
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            this.plex.info('danger', 'El formato del correo no es válido');
+        }
     }
 }

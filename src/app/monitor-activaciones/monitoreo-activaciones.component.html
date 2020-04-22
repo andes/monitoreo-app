@@ -51,126 +51,134 @@
         </div>
     </plex-layout-main>
     <plex-layout-sidebar>
-        <!-- Contenedor lateral -->
-        <fieldset>
-            <plex-title titulo="Datos del paciente">
-                <plex-button icon="pencil" type="primary" *ngIf="!edicionActivada" (click)="habilitarEdicion()">
-                </plex-button>
-                <plex-button icon="close" type="danger" *ngIf="!edicionActivada"
-                             (click)="seleccionar(this.pacienteApp)">
-                </plex-button>
-                <plex-button icon="check" type="success" *ngIf="edicionActivada" (click)="guardarEdicion()">
-                </plex-button>
-                <plex-button icon="close" type="danger" *ngIf="edicionActivada" (click)="cancelarEdicion()">
-                </plex-button>
-            </plex-title>
 
-            <div *ngIf="!pacienteSeleccionado" class="alert alert-danger">
-                <i class="mdi mdi-account-warning"></i> Aún no se ha seleccionado ningún paciente
-            </div>
-            <div *ngIf="pacienteSeleccionado">
-                <div class="row">
-                    <div class="col-md" *ngIf="!pacienteApp.profesionalId">
-                        <plex-badge type="danger" *ngIf="!pacienteApp?.activacionApp"> APP SIN ACTIVAR </plex-badge>
-                        <plex-badge type="success" *ngIf="pacienteApp?.activacionApp"> APP ACTIVADA </plex-badge>
-                    </div>
-                    <div class="col-md" *ngIf="pacienteApp.profesionalId">
-                        <plex-badge type="info"> PROFESIONAL</plex-badge>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">
-                        <label>Documento</label>
-                        <span>{{pacienteApp.documento}}</span>
-                    </div>
-                    <div class="col-md">
-                        <label>Apellido</label>
-                        <span>{{pacienteApp.apellido}}</span>
-                    </div>
-                </div>
-                <div class="row">
+        <form #formEdicion="ngForm">
+            <!-- Contenedor lateral -->
+            <fieldset>
+                <plex-title titulo="Datos del paciente">
+                    <plex-button icon="pencil" type="primary" *ngIf="!edicionActivada" (click)="habilitarEdicion()">
+                    </plex-button>
+                    <plex-button icon="close" type="danger" *ngIf="!edicionActivada"
+                                 (click)="seleccionar(this.pacienteApp)">
+                    </plex-button>
+                    <plex-button icon="check" type="success" *ngIf="edicionActivada" [validateForm]="formEdicion"
+                                 (click)="guardarEdicion()" [disabled]="!formEdicion.valid">
+                    </plex-button>
+                    <plex-button icon="close" type="danger" *ngIf="edicionActivada" (click)="cancelarEdicion()">
+                    </plex-button>
+                </plex-title>
 
-                    <div class="col-md">
-                        <label>Nombre</label>
-                        <span>{{pacienteApp.nombre}}</span>
-                    </div>
-                    <div class="col-md">
-                        <label>Sexo</label>
-                        <span>{{pacienteApp.sexo}}</span>
-                    </div>
+                <div *ngIf="!pacienteSeleccionado" class="alert alert-danger">
+                    <i class="mdi mdi-account-warning"></i> Aún no se ha seleccionado ningún paciente
                 </div>
-                <div class="row">
-                    <div class="col-md">
-                        <label>Email</label>
-                        <span *ngIf="!edicionActivada">{{pacienteApp.email}}</span>
-                        <plex-text *ngIf="edicionActivada" name="email" [(ngModel)]="pacienteEditado.email">
-                        </plex-text>
-                    </div>
-                    <div class="col-md">
-                        <label>Teléfono</label>
-                        <span *ngIf="!edicionActivada">{{pacienteApp.telefono}}</span>
-                        <plex-text *ngIf="edicionActivada" name="telefono" [(ngModel)]="pacienteEditado.telefono">
-                        </plex-text>
-                    </div>
-                </div>
-                <div class="row" *ngIf="pacienteDevice">
-
-                    <div class="col-md">
-                        <label>Versión App</label>
-                        <span>
-                            {{pacienteDevice.app_version}}
-                        </span>
-                    </div>
-                    <div class="col-md">
-                        <label>Dispositivo</label>
-                        <span>{{pacienteDevice.device_type}}</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">&nbsp;</div>
-                </div>
-                <fieldset *ngIf="!pacienteApp.profesionalId">
-
-                    <legend>Historial de mensajes</legend>
-                    <div *ngIf="pacienteSeleccionado && !resultadoMensajes?.length" class="alert alert-default">
-                        <small><i class="mdi mdi-account-warning"></i> No hay mensajes en el historial</small>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col">
-                            <table *ngIf="pacienteSeleccionado && resultadoMensajes?.length"
-                                   class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Fecha</th>
-                                        <th>Teléfono/Email</th>
-                                        <th>Estado</th>
-                                        <th>Código</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="hover" *ngFor="let mensaje of resultadoMensajes">
-
-                                        <td class="text-center">
-                                            {{mensaje.createdAt | date: 'dd/MM/yyyy h:mm:ss'}}
-                                        </td>
-                                        <td>
-                                            <span *ngIf="mensaje?.email">
-                                                <plex-icon name="email-outline"></plex-icon> {{mensaje.email}}
-                                            </span>
-                                            <span *ngIf="mensaje?.phone">
-                                                <plex-icon name="cellphone-android"></plex-icon> {{mensaje.phone}}
-                                            </span> </td>
-                                        <td>{{mensaje.status}}</td>
-                                        <td><span
-                                                  *ngIf="mensaje.extras && mensaje.extras.codigo">{{mensaje.extras.codigo}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div *ngIf="pacienteSeleccionado">
+                    <div class="row">
+                        <div class="col-md" *ngIf="!pacienteApp.profesionalId">
+                            <plex-badge type="danger" *ngIf="!pacienteApp?.activacionApp"> APP SIN ACTIVAR </plex-badge>
+                            <plex-badge type="success" *ngIf="pacienteApp?.activacionApp"> APP ACTIVADA </plex-badge>
+                        </div>
+                        <div class="col-md" *ngIf="pacienteApp.profesionalId">
+                            <plex-badge type="info"> PROFESIONAL</plex-badge>
                         </div>
                     </div>
-                </fieldset>
-            </div>
-        </fieldset>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Documento</label>
+                            <span>{{pacienteApp.documento}}</span>
+                        </div>
+                        <div class="col-md">
+                            <label>Apellido</label>
+                            <span>{{pacienteApp.apellido}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md">
+                            <label>Nombre</label>
+                            <span>{{pacienteApp.nombre}}</span>
+                        </div>
+                        <div class="col-md">
+                            <label>Sexo</label>
+                            <span>{{pacienteApp.sexo}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Email</label>
+                            <span *ngIf="!edicionActivada">{{pacienteApp.email}}</span>
+                            <plex-text *ngIf="edicionActivada" name="email" [(ngModel)]="pacienteEditado.email"
+                                       [required]="true">
+                            </plex-text>
+                        </div>
+                        <div class=" col-md">
+                            <label>Teléfono</label>
+                            <span *ngIf="!edicionActivada">{{pacienteApp.telefono}}</span>
+                            <plex-phone *ngIf="edicionActivada" name="telefono" [(ngModel)]="pacienteEditado.telefono"
+                                        [required]="true">
+                            </plex-phone>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="pacienteDevice">
+
+                        <div class="col-md">
+                            <label>Versión App</label>
+                            <span>
+                                {{pacienteDevice.app_version}}
+                            </span>
+                        </div>
+                        <div class="col-md">
+                            <label>Dispositivo</label>
+                            <span>{{pacienteDevice.device_type}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">&nbsp;</div>
+                    </div>
+                    <fieldset *ngIf="!pacienteApp.profesionalId">
+
+                        <plex-title size="sm" titulo="HISTORIAL DE MENSAJES"></plex-title>
+                        <div *ngIf="pacienteSeleccionado && !resultadoMensajes?.length" class="alert alert-default">
+                            <small><i class="mdi mdi-account-warning"></i> No hay mensajes en el historial</small>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col">
+                                <table *ngIf="pacienteSeleccionado && resultadoMensajes?.length"
+                                       class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Fecha</th>
+                                            <th>Teléfono/Email</th>
+                                            <th>Estado</th>
+                                            <th>Código</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="hover" *ngFor="let mensaje of resultadoMensajes">
+
+                                            <td class="text-center">
+                                                {{mensaje.createdAt | date: 'dd/MM/yyyy h:mm:ss'}}
+                                            </td>
+                                            <td>
+                                                <span *ngIf="mensaje?.email">
+                                                    <plex-icon name="email-outline"></plex-icon> {{mensaje.email}}
+                                                </span>
+                                                <span *ngIf="mensaje?.phone">
+                                                    <plex-icon name="cellphone-android"></plex-icon>
+                                                    {{mensaje.phone}}
+                                                </span> </td>
+                                            <td>{{mensaje.status}}</td>
+                                            <td><span
+                                                      *ngIf="mensaje.extras && mensaje.extras.codigo">{{mensaje.extras.codigo}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </fieldset>
+
+        </form>
     </plex-layout-sidebar>
 </plex-layout>
