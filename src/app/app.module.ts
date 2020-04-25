@@ -30,6 +30,12 @@ import { ModulosService } from './modulos/services/modulos.service';
 import { ModulosModule } from './modulos/modulos.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { RUPElementosRupListadoComponent } from './rupers/elementos-rup-listado/elementos-rup-listado.component';
+import { RUPSeccionCreateUpdateComponent } from './rupers/seccion-create-update/seccion-create-update.component';
+import { RUPPrestacionCreateUpdateComponent } from './rupers/prestacion-create-update/prestacion-create-update.component';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +46,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     DetalleConceptoTurneableComponent,
     NuevoConceptoTurneableComponent,
     MonitoreoActivacionesComponent,
-    BuscadorSnomedComponent
+    BuscadorSnomedComponent,
+    RUPElementosRupListadoComponent,
+    RUPSeccionCreateUpdateComponent,
+    RUPPrestacionCreateUpdateComponent
   ],
   imports: [
     BrowserModule,

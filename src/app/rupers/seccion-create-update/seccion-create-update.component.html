@@ -1,0 +1,36 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title [titulo]="titulo">
+            <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
+        </plex-title>
+        <div class="grow">
+            <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
+                         labelField="term + '(' + semanticTag + ')'" [readonly]="!!id"></plex-select>
+            <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAdd()"></plex-button>
+        </div>
+        <ng-container *ngFor="let requerido of elemento.requeridos">
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <plex-select label="Concepto seccion" (getData)="searchConcept($event)"
+                                 [(ngModel)]="requerido.concepto" idField="conceptId"
+                                 labelField="term + '(' + semanticTag + ')'"></plex-select>
+                    <ng-container *ngIf="requerido.concepto">
+                        <strong> {{ requerido.concepto.conceptId }} </strong> | {{ requerido.concepto.term }}
+                    </ng-container>
+                </div>
+                <div class="col-6">
+                    <plex-wrapper>
+                        <plex-bool label="Texto libre" [(ngModel)]="requerido.params.showText"></plex-bool>
+                        <plex-bool label="Texto libre Requerido" [(ngModel)]="requerido.params.textRequired">
+                        </plex-bool>
+                        <plex-bool label="Al menos un registro" [(ngModel)]="requerido.params.conceptsRequired">
+                        </plex-bool>
+                        <!-- <plex-bool label="Al menos un registro" [(ngModel)]="requerido.params.conceptsRequired"></plex-bool> -->
+                        <plex-text label="icono" [(ngModel)]="requerido.params.icon"></plex-text>
+                    </plex-wrapper>
+                </div>
+            </div>
+        </ng-container>
+    </plex-layout-main>
+</plex-layout>

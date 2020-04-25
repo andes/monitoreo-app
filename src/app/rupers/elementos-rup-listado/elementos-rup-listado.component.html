@@ -1,0 +1,28 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Elementos RUP">
+            <!-- <plex-button type="info" routerLink="seccion/nuevo"> NUEVO </plex-button> -->
+
+            <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
+            </plex-dropdown>
+
+        </plex-title>
+        <plex-list>
+            <plex-heading>
+                <b label>Concepto</b>
+                <b label>Componente</b>
+                <b label>Tipo</b>
+                <b label>Requeridos</b>
+                <b button></b>
+            </plex-heading>
+            <plex-item *ngFor="let elemento of elementosRup">
+                <plex-label titulo="{{ elemento.conceptos[0].term }}"> </plex-label>
+                <plex-label titulo="{{ elemento.componente }}" [tituloBold]="false"> </plex-label>
+                <plex-label titulo="{{ elemento.tipo }}" [tituloBold]="false"> </plex-label>
+                <plex-label [tituloBold]="false"> {{ elemento.requeridos?.length || 0 }} </plex-label>
+                <plex-button type="warning" icon="pencil" size="sm" [routerLink]="['seccion', elemento.id]">
+                </plex-button>
+            </plex-item>
+        </plex-list>
+    </plex-layout-main>
+</plex-layout>
