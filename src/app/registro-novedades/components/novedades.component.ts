@@ -9,7 +9,8 @@ import { NovedadesService } from '../services/novedades.service';
 import { AdjuntosService } from '../services/adjuntos.service';
 
 const limit = 10;
-
+const maxMain = 12;
+const sizeSidebar = 5;
 @Component({
   selector: 'app-novedades',
   templateUrl: './novedades.component.html',
@@ -19,7 +20,7 @@ const limit = 10;
 export class NovedadesComponent implements OnInit {
   @ViewChild('upload', { static: true }) uploadElement: ElementRef; // uploadElement
 
-  public main = 12; // tamaño vista pantalla
+  public main = maxMain; // tamaño vista pantalla
 
   // scroll infinito
   private skip;
@@ -81,12 +82,12 @@ export class NovedadesComponent implements OnInit {
   }
 
   cerrarSidebar() {
-    this.main = 12;
+    this.main = maxMain;
     this.loadRegNov();
   }
 
   abrirSidebar(title) {
-    this.main = 7;
+    this.main = maxMain - sizeSidebar;
     this.titleABM = title;
   }
 
@@ -137,7 +138,7 @@ export class NovedadesComponent implements OnInit {
   }
 
   loadData(concatenar: boolean = false) {
-    this.main = 12;
+    this.main = maxMain;
     if (!concatenar) { this.skip = 0; }
 
     const params: any = {
