@@ -145,7 +145,7 @@ export class NovedadesComponent implements OnInit {
       skip: this.skip
     };
     if (this.titulo) {
-      params.titulo = this.titulo;
+      params.titulo = '^' + this.titulo;
     }
     if (this.modulo) {
       params.modulos = this.modulo._id;
