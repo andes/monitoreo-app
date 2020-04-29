@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-6">
                     <plex-select label="Módulo" [(ngModel)]="modulo" name="modulo" [data]="listModulos"
-                                 labelField="nombre" label="Seleccione Módulo" idField="_id"
+                                 labelField="nombre + '(' + subtitulo + ')'" label="Seleccione Módulo" idField="_id"
                                  (ngModelChange)="loadData(false);">
                     </plex-select>
                 </div>
@@ -73,9 +73,10 @@
                 <plex-bool label="Activa" [(ngModel)]="regNov.activa" type="slide" name="activo" class="float-left">
                 </plex-bool>
             </div>
-            <div justify>
-                <plex-select class="w-50" *ngIf="listModulos" required [(ngModel)]="regNov.modulo" name="select"
-                             [data]="listModulos" labelField="nombre" label="Seleccione Módulo" idField="_id">
+            <div class="align-items-end" justify>
+                <plex-select class="w-100 mr-4" *ngIf="listModulos" required [(ngModel)]="regNov.modulo" name="select"
+                             [data]="listModulos" labelField="nombre + '' + subtitulo" label="Seleccione Módulo"
+                             idField="_id">
                 </plex-select>
                 <plex-datetime label="fecha" [(ngModel)]="regNov.fecha" name="fecha" type="date" required>
                 </plex-datetime>
