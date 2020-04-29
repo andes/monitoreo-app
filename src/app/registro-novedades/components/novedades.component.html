@@ -16,38 +16,38 @@
                     </plex-select>
                 </div>
             </div>
-            <plex-scroll (change)="loadData(true)"></plex-scroll>
-            <div class="row">
-                <div class="col" *ngIf="listRegNovedades.length != 0;else mostrarVacio">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <td><strong>Número</strong></td>
-                                <td><strong>Titulo</strong></td>
-                                <td><strong>Fecha</strong></td>
-                                <td><strong>Módulo</strong></td>
-                                <td><strong>Estado</strong></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let nov of listRegNovedades;index as i" (click)="verRegistro(nov)">
-                                <td>{{i + 1}}</td>
-                                <td>{{nov.titulo}}</td>
-                                <td>{{nov.fecha | date: 'dd/MM/yyyy'}}</td>
-                                <td>{{nov.modulo.nombre}}</td>
-                                <td>
-                                    <plex-badge type="success" *ngIf="nov.activa">
-                                        <plex-icon name="save"></plex-icon> Activa
-                                    </plex-badge>
-                                    <plex-badge type="danger" *ngIf="!nov.activa">
-                                        <plex-icon name="save"></plex-icon> Inactiva
-                                    </plex-badge>
-                                </td>
+        </fieldset>
+        <plex-scroll (change)="loadData(true)"></plex-scroll>
+        <div class="row">
+            <div class="col" *ngIf="listRegNovedades.length != 0;else mostrarVacio">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <td><strong>Número</strong></td>
+                            <td><strong>Titulo</strong></td>
+                            <td><strong>Fecha</strong></td>
+                            <td><strong>Módulo</strong></td>
+                            <td><strong>Estado</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let nov of listRegNovedades;index as i" (click)="verRegistro(nov)">
+                            <td>{{i + 1}}</td>
+                            <td>{{nov.titulo}}</td>
+                            <td>{{nov.fecha | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{nov.modulo.nombre}}</td>
+                            <td>
+                                <plex-badge type="success" *ngIf="nov.activa">
+                                    <plex-icon name="save"></plex-icon> Activa
+                                </plex-badge>
+                                <plex-badge type="danger" *ngIf="!nov.activa">
+                                    <plex-icon name="save"></plex-icon> Inactiva
+                                </plex-badge>
+                            </td>
 
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="col" *ngIf="mostrarVacio">
                     <ng-template #mostrarVacio>
                         <div class="sinDatos">
@@ -56,7 +56,8 @@
                     </ng-template>
                 </div>
             </div>
-        </fieldset>
+
+        </div>
     </plex-layout-main>
 
     <plex-layout-sidebar>
