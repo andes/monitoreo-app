@@ -35,7 +35,6 @@ export class NovedadesComponent implements OnInit {
   public titleABM: string;
   public listModulos: IModulo[] = [];
   private modoEdit: boolean;
-  public mostrarVacio: boolean;
 
   // Adjuntar Imagenes
   errorExt = false;
