@@ -60,7 +60,6 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
                 // semanticTag: ['procedimiento', 'elemento de registro']<
             };
             this.snomedService.get(query).subscribe((conceptos: ISnomedConcept[]) => {
-
                 $event.callback(conceptos);
             });
         } else {

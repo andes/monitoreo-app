@@ -11,6 +11,7 @@ import { RUPElementosRupListadoComponent } from './rupers/elementos-rup-listado/
 import { ElementosRupResolver } from './rupers/elementos-rup-resolver';
 import { RUPSeccionCreateUpdateComponent } from './rupers/seccion-create-update/seccion-create-update.component';
 import { RUPPrestacionCreateUpdateComponent } from './rupers/prestacion-create-update/prestacion-create-update.component';
+import { RUPAtomoCreateUpdateComponent } from './rupers/atomo-create-update/atomo-create-update.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -62,6 +63,23 @@ const appRoutes: Routes = [
     {
         path: 'elementos-rup/prestacion/:id',
         component: RUPPrestacionCreateUpdateComponent,
+        canActivate: [RoutingGuard],
+        resolve: {
+            elementos: ElementosRupResolver
+        }
+    },
+    {
+        path: 'elementos-rup/atomo/nuevo',
+        component: RUPAtomoCreateUpdateComponent,
+        canActivate: [RoutingGuard],
+        resolve: {
+            elementos: ElementosRupResolver
+        },
+        pathMatch: 'full'
+    },
+    {
+        path: 'elementos-rup/atomo/:id',
+        component: RUPAtomoCreateUpdateComponent,
         canActivate: [RoutingGuard],
         resolve: {
             elementos: ElementosRupResolver

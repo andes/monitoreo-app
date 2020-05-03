@@ -20,8 +20,20 @@
                 <plex-label titulo="{{ elemento.componente }}" [tituloBold]="false"> </plex-label>
                 <plex-label titulo="{{ elemento.tipo }}" [tituloBold]="false"> </plex-label>
                 <plex-label [tituloBold]="false"> {{ elemento.requeridos?.length || 0 }} </plex-label>
-                <plex-button type="warning" icon="pencil" size="sm" [routerLink]="['seccion', elemento.id]">
-                </plex-button>
+                <ng-container [ngSwitch]="elemento.componente" ngProjectAs="plex-button">
+
+                    <plex-button *ngSwitchCase="'SeccionadoComponent'" type="warning" icon="pencil" size="sm"
+                                 [routerLink]="['seccion', elemento.id]">
+                    </plex-button>
+                    <plex-button *ngSwitchCase="'PRESTACION'" type="warning" icon="pencil" size="sm"
+                                 [routerLink]="['prestacion', elemento.id]">
+                    </plex-button>
+                    <plex-button *ngSwitchDefault type="warning" icon="pencil" size="sm"
+                                 [routerLink]="['atomo', elemento.id]">
+                    </plex-button>
+
+                </ng-container>
+
             </plex-item>
         </plex-list>
     </plex-layout-main>

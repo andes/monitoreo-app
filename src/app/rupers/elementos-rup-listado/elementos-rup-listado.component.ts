@@ -13,6 +13,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
     ) { }
 
     public items = [
+        { label: 'ATOMO', handler: () => { this.goto('/elementos-rup/atomo/nuevo'); } },
         { label: 'SECCION', handler: () => { this.goto('/elementos-rup/seccion/nuevo'); } },
         { label: 'PRESTACION', handler: () => { this.goto('/elementos-rup/prestacion/nuevo'); } }
 
@@ -20,7 +21,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
 
     ngOnInit() {
         this.elementosRup = this.actr.snapshot.data.elementos.filter(e => {
-            return e.componente === 'SeccionadoComponent' || e.tipo === 'prestacion';
+            return !!e.updatedAt || !!e.createdAt; // e.componente === 'SeccionadoComponent' || e.tipo === 'prestacion';
         });
     }
 

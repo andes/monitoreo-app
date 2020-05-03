@@ -5,7 +5,8 @@
         </plex-title>
         <div class="grow">
             <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
-                         labelField="term + '(' + semanticTag + ')'" [readonly]="!!id"></plex-select>
+                         labelField="term + '(' + semanticTag + ')'">
+            </plex-select>
         </div>
         <div class="row">
             <div class="col-6">

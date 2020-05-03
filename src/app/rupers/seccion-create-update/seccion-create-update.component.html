@@ -5,7 +5,7 @@
         </plex-title>
         <div class="grow">
             <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
-                         labelField="term + '(' + semanticTag + ')'" [readonly]="!!id"></plex-select>
+                         labelField="term + '(' + semanticTag + ')'"></plex-select>
             <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAdd()"></plex-button>
         </div>
         <ng-container *ngFor="let requerido of elemento.requeridos">
