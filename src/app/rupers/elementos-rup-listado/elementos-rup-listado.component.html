@@ -21,7 +21,9 @@
                 <plex-label titulo="{{ elemento.tipo }}" [tituloBold]="false"> </plex-label>
                 <plex-label [tituloBold]="false"> {{ elemento.requeridos?.length || 0 }} </plex-label>
                 <ng-container [ngSwitch]="elemento.componente" ngProjectAs="plex-button">
-
+                    <plex-button *ngSwitchCase="'MoleculaBaseComponent'" type="warning" icon="pencil" size="sm"
+                                 [routerLink]="['molecula', elemento.id]">
+                    </plex-button>
                     <plex-button *ngSwitchCase="'SeccionadoComponent'" type="warning" icon="pencil" size="sm"
                                  [routerLink]="['seccion', elemento.id]">
                     </plex-button>

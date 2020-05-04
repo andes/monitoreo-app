@@ -34,6 +34,7 @@ import { RUPElementosRupListadoComponent } from './rupers/elementos-rup-listado/
 import { RUPSeccionCreateUpdateComponent } from './rupers/seccion-create-update/seccion-create-update.component';
 import { RUPPrestacionCreateUpdateComponent } from './rupers/prestacion-create-update/prestacion-create-update.component';
 import { RUPAtomoCreateUpdateComponent } from './rupers/atomo-create-update/atomo-create-update.component';
+import { RUPMoleculaCreateUpdateComponent } from './rupers/molecula-create-update/molecula-create-update.component';
 
 
 
@@ -51,7 +52,8 @@ import { RUPAtomoCreateUpdateComponent } from './rupers/atomo-create-update/atom
     RUPElementosRupListadoComponent,
     RUPSeccionCreateUpdateComponent,
     RUPPrestacionCreateUpdateComponent,
-    RUPAtomoCreateUpdateComponent
+    RUPAtomoCreateUpdateComponent,
+    RUPMoleculaCreateUpdateComponent
   ],
   imports: [
     BrowserModule,

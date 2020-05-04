@@ -12,6 +12,7 @@ import { ElementosRupResolver } from './rupers/elementos-rup-resolver';
 import { RUPSeccionCreateUpdateComponent } from './rupers/seccion-create-update/seccion-create-update.component';
 import { RUPPrestacionCreateUpdateComponent } from './rupers/prestacion-create-update/prestacion-create-update.component';
 import { RUPAtomoCreateUpdateComponent } from './rupers/atomo-create-update/atomo-create-update.component';
+import { RUPMoleculaCreateUpdateComponent } from './rupers/molecula-create-update/molecula-create-update.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -85,6 +86,27 @@ const appRoutes: Routes = [
             elementos: ElementosRupResolver
         }
     },
+    {
+        path: 'elementos-rup/molecula/nuevo',
+        component: RUPMoleculaCreateUpdateComponent,
+        canActivate: [RoutingGuard],
+        resolve: {
+            elementos: ElementosRupResolver
+        },
+        pathMatch: 'full'
+    },
+    {
+        path: 'elementos-rup/molecula/:id',
+        component: RUPMoleculaCreateUpdateComponent,
+        canActivate: [RoutingGuard],
+        resolve: {
+            elementos: ElementosRupResolver
+        }
+    },
+
+
+
+
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
