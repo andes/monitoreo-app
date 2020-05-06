@@ -5,8 +5,7 @@ import { Server } from '@andes/shared';
 @Injectable()
 export class CdaService {
 
-    // URL to web api
-    private CDAGenerate = '/core/mpi/cda/regenerar';
+
     private CDAUrl = '/modules/cda/';
 
     constructor(private server: Server) { }
@@ -16,6 +15,6 @@ export class CdaService {
     }
 
     regenerarCda(params: any): Observable<any[]> {
-        return this.server.post(this.CDAGenerate, params);
+        return this.server.post(`${this.CDAUrl}paciente`, params);
     }
 }
