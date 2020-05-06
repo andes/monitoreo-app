@@ -58,7 +58,7 @@ export class CdaRegenerarComponent implements OnInit {
   regenerarCDA() {
     // deshabilitamos boton regenerar por unos segundos
     this.disabledBtn = true;
-    // this.cdaService.regenerarCda({ paciente: this.pacienteSelected }).subscribe();
+    this.cdaService.regenerarCda({ paciente: this.pacienteSelected }).subscribe();
     window.setTimeout(() => {
       this.disabledBtn = false;
     }, 900);
