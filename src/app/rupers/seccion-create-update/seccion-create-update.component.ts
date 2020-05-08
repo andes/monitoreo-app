@@ -10,6 +10,11 @@ import { ElementosRupService } from '../elementos-rup.service';
     templateUrl: './seccion-create-update.component.html'
 })
 export class RUPSeccionCreateUpdateComponent implements OnInit {
+    directionType = [
+        { id: 'vertical', label: 'Vertical' },
+        { id: 'horizontal', label: 'Horizontal' }
+    ];
+
     elementosRup = [];
     public id: string;
 

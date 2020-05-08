@@ -34,20 +34,20 @@ export interface IElementoRUP {
     conceptos: ISnomedConcept[];
     // Conceptos SNOMED que voy a tener que buscar por los registros de la HUDS del paciente
     // para poder armar por ejemplo la curva de peso.
-    conceptosBuscar: ISnomedConcept[];
+    conceptosBuscar?: ISnomedConcept[];
     // Elementos RUP requeridos para la ejecución.
     // Por ejemplo, en "Control de Niño sano" es obligatorio ejecutar "Toma de peso"
-    requeridos: [{
-        elementoRUP: IElementoRUP,
+    requeridos: {
+        elementoRUP?: IElementoRUP,
         concepto: ISnomedConcept,
         // Indica estilos para la instancia del elementoRUP
-        style: {
+        style?: {
             columns: number,
             cssClass: string
         },
         // Indica parámetros para la instancia del elementoRUP en formato {key: value}
-        params: any
-    }];
+        params?: any
+    }[];
     // Elementos RUP más frecuentes para la ejecución.
     // Por ejemplo, en "Consulta de medicina general" se puede sugerir ejecutar "Signos vitales"
     frecuentes: ISnomedConcept[];

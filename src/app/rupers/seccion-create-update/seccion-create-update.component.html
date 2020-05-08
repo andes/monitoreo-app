@@ -11,7 +11,7 @@
         <ng-container *ngFor="let requerido of elemento.requeridos">
             <hr>
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <plex-select label="Concepto seccion" (getData)="searchConcept($event)"
                                  [(ngModel)]="requerido.concepto" idField="conceptId"
                                  labelField="term + '(' + semanticTag + ')'"></plex-select>
@@ -19,7 +19,7 @@
                         <strong> {{ requerido.concepto.conceptId }} </strong> | {{ requerido.concepto.term }}
                     </ng-container>
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                     <plex-wrapper>
                         <plex-bool label="Texto libre" [(ngModel)]="requerido.params.showText"></plex-bool>
                         <plex-bool label="Texto libre Requerido" [(ngModel)]="requerido.params.textRequired">
@@ -28,6 +28,8 @@
                         </plex-bool>
                         <!-- <plex-bool label="Al menos un registro" [(ngModel)]="requerido.params.conceptsRequired"></plex-bool> -->
                         <plex-text label="icono" [(ngModel)]="requerido.params.icon"></plex-text>
+                        <plex-radio label="Layout" [(ngModel)]="requerido.params.direction" [data]="directionType"
+                                    type="horizontal" name="params-type"></plex-radio>
                     </plex-wrapper>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { SnomedService } from 'src/app/shared/snomed.service';
 import { ElementosRupService } from '../elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
+import { IElementoRUP } from 'src/app/shared/IElementoRUP';
 
 @Component({
     selector: 'rup-prestacion-create-update',
@@ -13,7 +14,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
     titulo = 'Nueva prestación';
     elementosRup = [];
     public id: string;
-    public elemento;
+    public elemento: IElementoRUP;
     public concepto;
     public requerido: ISnomedConcept;
     public sugerido: ISnomedConcept;
@@ -49,7 +50,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
             activo: true,
             defaultFor: [],
             frecuentes: []
-        };
+        } as any;
     }
 
     @Unsubscribe()
@@ -89,5 +90,47 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
         }
     }
 
+    onRemoveRequerido(index: number) {
+        this.elemento.requeridos.splice(index, 1);
+        this.elemento.requeridos = [...this.elemento.requeridos];
+    }
 
+    onRemoveSugerido(index: number) {
+        this.elemento.frecuentes.splice(index, 1);
+        this.elemento.frecuentes = [...this.elemento.frecuentes];
+    }
+
+    onUpRequerido(index: number) {
+        if (index > 0) {
+            arraymove(this.elemento.requeridos, index, index - 1);
+        }
+        this.elemento.requeridos = [...this.elemento.requeridos];
+    }
+
+    onDownRequerido(index: number) {
+        if (index < this.elemento.requeridos.length - 1) {
+            arraymove(this.elemento.requeridos, index, index + 1);
+        }
+        this.elemento.requeridos = [...this.elemento.requeridos];
+    }
+
+    onUpSugerido(index: number) {
+        if (index > 0) {
+            arraymove(this.elemento.frecuentes, index, index - 1);
+        }
+        this.elemento.frecuentes = [...this.elemento.frecuentes];
+    }
+
+    onDownSugerido(index: number) {
+        if (index < this.elemento.frecuentes.length - 1) {
+            arraymove(this.elemento.frecuentes, index, index + 1);
+        }
+        this.elemento.frecuentes = [...this.elemento.frecuentes];
+    }
+}
+
+function arraymove(arr, fromIndex, toIndex) {
+    const element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
 }

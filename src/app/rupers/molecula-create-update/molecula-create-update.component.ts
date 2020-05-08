@@ -69,7 +69,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
 
     onSave() {
         this.elemento.conceptos = [this.concepto];
-        // this.elemento.requeridos.forEach((elem) => elem.elementoRUP = this.elementoSeccion.id);
+        this.elemento.requeridos.forEach((elem) => {
+            const elementoRUP = this.elementosRUPService.buscarElemento(elem.concepto, false);
+            elem.params = elementoRUP.params;
+        });
         this.elementosRUPService.save(this.elemento).subscribe(() => {
             this.router.navigate(['/elementos-rup'], { replaceUrl: true });
         });
@@ -100,4 +103,29 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         return elementoRUP.componente;
     }
 
+    onUpRequerido(index: number) {
+        if (index > 0) {
+            arraymove(this.elemento.requeridos, index, index - 1);
+        }
+        this.elemento.requeridos = [...this.elemento.requeridos];
+    }
+
+    onDownRequerido(index: number) {
+        if (index < this.elemento.requeridos.length - 1) {
+            arraymove(this.elemento.requeridos, index, index + 1);
+        }
+        this.elemento.requeridos = [...this.elemento.requeridos];
+    }
+
+    onRemoveRequerido(index: number) {
+        this.elemento.requeridos.splice(index, 1);
+        this.elemento.requeridos = [...this.elemento.requeridos];
+    }
+
+}
+
+function arraymove(arr, fromIndex, toIndex) {
+    const element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
 }
