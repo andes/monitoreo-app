@@ -13,9 +13,9 @@ const routes = [
         path: 'elementos-rup',
         component: RUPElementosRupListadoComponent,
         canActivate: [RoutingGuard],
-        resolve: {
-            elementos: ElementosRupResolver
-        }
+        // resolve: {
+        //     elementos: ElementosRupResolver
+        // }
     },
     {
         path: 'elementos-rup/seccion/nuevo',

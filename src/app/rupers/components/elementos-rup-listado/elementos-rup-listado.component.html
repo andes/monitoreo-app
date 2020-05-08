@@ -1,12 +1,12 @@
 <plex-layout>
     <plex-layout-main>
-        <plex-title titulo="Elementos RUP">
-            <!-- <plex-button type="info" routerLink="seccion/nuevo"> NUEVO </plex-button> -->
-
-            <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
-            </plex-dropdown>
-
-        </plex-title>
+        <header>
+            <plex-title titulo="Elementos RUP">
+                <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
+                </plex-dropdown>
+            </plex-title>
+            <rup-filtros-elementos-rup></rup-filtros-elementos-rup>
+        </header>
         <plex-list>
             <plex-heading>
                 <b label>Concepto</b>
@@ -15,7 +15,7 @@
                 <b label>Requeridos</b>
                 <b button></b>
             </plex-heading>
-            <plex-item *ngFor="let elemento of elementosRup">
+            <plex-item *ngFor="let elemento of elementosRup$ | async">
                 <plex-label titulo="{{ elemento.conceptos[0].term }}"> </plex-label>
                 <plex-label titulo="{{ elemento.componente }}" [tituloBold]="false"> </plex-label>
                 <plex-label titulo="{{ elemento.tipo }}" [tituloBold]="false"> </plex-label>

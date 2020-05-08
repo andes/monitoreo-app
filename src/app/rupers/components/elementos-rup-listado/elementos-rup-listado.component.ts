@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { IElementoRUP } from 'src/app/shared/IElementoRUP';
+import { ElementosRupListadoService } from './elementos-rup-listado.service';
 
 @Component({
     selector: 'rup-elementos-rup-listado',
     templateUrl: 'elementos-rup-listado.component.html',
+    providers: [ElementosRupListadoService]
 })
 export class RUPElementosRupListadoComponent implements OnInit {
-    elementosRup = [];
+    elementosRup$: Observable<IElementoRUP[]>;
     constructor(
-        private actr: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private listadoService: ElementosRupListadoService
     ) { }
 
     public items = [
@@ -21,9 +25,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
     ];
 
     ngOnInit() {
-        this.elementosRup = this.actr.snapshot.data.elementos.filter(e => {
-            return !!e.updatedAt || !!e.createdAt;
-        });
+        this.elementosRup$ = this.listadoService.elementosRup$;
     }
 
     goto(url) {

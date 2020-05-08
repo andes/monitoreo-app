@@ -12,6 +12,7 @@ import { RUPSeccionCreateUpdateComponent } from './components/seccion-create-upd
 import { RUPPrestacionCreateUpdateComponent } from './components/prestacion-create-update/prestacion-create-update.component';
 import { RUPAtomoCreateUpdateComponent } from './components/atomo-create-update/atomo-create-update.component';
 import { RUPMoleculaCreateUpdateComponent } from './components/molecula-create-update/molecula-create-update.component';
+import { RUPFiltrosElementosRupComponent } from './components/elementos-rup-listado/filtros-elementos-rup/filtros-elementos-rup.component';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { RUPMoleculaCreateUpdateComponent } from './components/molecula-create-u
         RUPSeccionCreateUpdateComponent,
         RUPPrestacionCreateUpdateComponent,
         RUPAtomoCreateUpdateComponent,
-        RUPMoleculaCreateUpdateComponent
+        RUPMoleculaCreateUpdateComponent,
+        RUPFiltrosElementosRupComponent
     ]
 })
 export class RupersModule { }

@@ -1,0 +1,7 @@
+<plex-wrapper>
+    <plex-select label="Componente" [data]="componente$ | async" name="componente" [(ngModel)]="componenteSelected"
+                 (change)="onChange('componente', $event)">
+    </plex-select>
+    <plex-select label="Tipo" [data]="tipos$ | async" name="tipo" [(ngModel)]="tipoSelected"
+                 (change)="onChange('tipo', $event)"></plex-select>
+</plex-wrapper>

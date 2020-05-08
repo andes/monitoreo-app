@@ -53,6 +53,8 @@ export interface IElementoRUP {
     frecuentes: ISnomedConcept[];
 
     inactiveAt?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export type SemanticTag =
