@@ -57,7 +57,7 @@ export class QueryExecuteComponent implements OnInit {
             this.biService.descargar(this.selectConsulta, params).subscribe(data => {
                 if (data.size) {
                     const blob = new Blob([data], { type: data.type });
-                    saveAs(blob, this.slug.slugify(nombre + ' ' + moment().format('DD-MM-YYYY-hmmss')) + '.xlsx');
+                    saveAs(blob, this.slug.slugify(nombre + ' ' + moment().format('DD-MM-YYYY-hmmss')) + '.csv');
                 } else {
                     this.plex.info('warning', 'Su búsqueda no arrojó ningún resultado', 'Consultas');
                 }
