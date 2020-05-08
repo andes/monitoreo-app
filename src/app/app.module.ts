@@ -18,7 +18,6 @@ import { ConceptosTurneablesComponent } from './conceptos-turneables/components/
 import { ConceptoTruneableService } from './conceptos-turneables/services/concepto-turneable.service';
 import { DetalleConceptoTurneableComponent } from './conceptos-turneables/components/detalle-concepto-turneable.component';
 import { NuevoConceptoTurneableComponent } from './conceptos-turneables/components/nuevo-concepto-turneable.component';
-import { SnomedService } from './shared/snomed.service';
 import { BuscadorSnomedComponent } from './buscador-snomed/buscador-snomed.component';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
@@ -29,14 +28,6 @@ import { WebhookLogService } from './webhook-log/services/webhook-log.service';
 import { ModulosService } from './modulos/services/modulos.service';
 import { ModulosModule } from './modulos/modulos.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { RUPElementosRupListadoComponent } from './rupers/elementos-rup-listado/elementos-rup-listado.component';
-import { RUPSeccionCreateUpdateComponent } from './rupers/seccion-create-update/seccion-create-update.component';
-import { RUPPrestacionCreateUpdateComponent } from './rupers/prestacion-create-update/prestacion-create-update.component';
-import { RUPAtomoCreateUpdateComponent } from './rupers/atomo-create-update/atomo-create-update.component';
-import { RUPMoleculaCreateUpdateComponent } from './rupers/molecula-create-update/molecula-create-update.component';
-
-
 
 @NgModule({
   declarations: [
@@ -49,11 +40,7 @@ import { RUPMoleculaCreateUpdateComponent } from './rupers/molecula-create-updat
     NuevoConceptoTurneableComponent,
     MonitoreoActivacionesComponent,
     BuscadorSnomedComponent,
-    RUPElementosRupListadoComponent,
-    RUPSeccionCreateUpdateComponent,
-    RUPPrestacionCreateUpdateComponent,
-    RUPAtomoCreateUpdateComponent,
-    RUPMoleculaCreateUpdateComponent
+
   ],
   imports: [
     BrowserModule,
@@ -75,7 +62,6 @@ import { RUPMoleculaCreateUpdateComponent } from './rupers/molecula-create-updat
     RoutingNavBar,
     WebHookService,
     ConceptoTruneableService,
-    SnomedService,
     PacienteAppService,
     OrganizacionService,
     SendMessageCacheService,

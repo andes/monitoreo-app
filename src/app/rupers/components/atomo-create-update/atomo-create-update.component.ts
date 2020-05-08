@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnomedService } from 'src/app/shared/snomed.service';
-import { ElementosRupService } from '../elementos-rup.service';
+import { ElementosRupService } from '../../services/elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 
@@ -87,12 +87,11 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     }
 
     onSave() {
-        debugger;
         this.elemento.conceptos = [this.concepto];
         this.elemento.componente = this.tipoAtomo.id;
         this.elemento.params = this.params;
         this.elementosRUPService.save(this.elemento).subscribe(() => {
-            this.router.navigate(['/elementos-rup'], { replaceUrl: true });
+            this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnomedService } from 'src/app/shared/snomed.service';
-import { ElementosRupService } from '../elementos-rup.service';
+import { ElementosRupService } from '../../services/elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { IElementoRUP } from 'src/app/shared/IElementoRUP';
@@ -72,7 +72,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
         this.elemento.conceptos = [this.concepto];
         // this.elemento.requeridos.forEach((elem) => elem.elementoRUP = this.elementoSeccion.id);
         this.elementosRUPService.save(this.elemento).subscribe(() => {
-            this.router.navigate(['/elementos-rup'], { replaceUrl: true });
+            this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });
     }
 

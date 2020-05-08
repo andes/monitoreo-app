@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnomedService } from 'src/app/shared/snomed.service';
-import { ElementosRupService } from '../elementos-rup.service';
+import { ElementosRupService } from '../../services/elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { Plex } from '@andes/plex';
@@ -74,7 +74,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             elem.params = elementoRUP.params;
         });
         this.elementosRUPService.save(this.elemento).subscribe(() => {
-            this.router.navigate(['/elementos-rup'], { replaceUrl: true });
+            this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });
     }
 

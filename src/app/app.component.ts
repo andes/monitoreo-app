@@ -71,7 +71,6 @@ export class AppComponent {
         }
 
         this.menuList.push({ label: 'Elementos RUP', icon: 'magnify', route: '/elementos-rup' });
-
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
         this.plex.updateMenu(this.menuList);
     }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ResourceBaseHttp, Server, cache } from '@andes/shared';
 import { tap } from 'rxjs/operators';
-import { ISnomedConcept } from '../shared/ISnomedConcept';
-import { IElementoRUP } from '../shared/IElementoRUP';
+import { ISnomedConcept } from '../../shared/ISnomedConcept';
+import { IElementoRUP } from '../../shared/IElementoRUP';
 
 @Injectable({ providedIn: 'root' })
 export class ElementosRupService extends ResourceBaseHttp {

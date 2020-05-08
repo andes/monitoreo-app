@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { SnomedService } from 'src/app/shared/snomed.service';
 import { Unsubscribe } from '@andes/shared';
-import { ElementosRupService } from '../elementos-rup.service';
+import { ElementosRupService } from '../../services/elementos-rup.service';
 
 @Component({
     selector: 'rup-seccion-create-update',
@@ -78,7 +78,7 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
         this.elemento.conceptos = [this.concepto];
         this.elemento.requeridos.forEach((elem) => elem.elementoRUP = this.elementoSeccion.id);
         this.elementosRUPService.save(this.elemento).subscribe(() => {
-            this.router.navigate(['/elementos-rup'], { replaceUrl: true });
+            this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });
     }
 
