@@ -48,7 +48,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
                 this.timeoutHandle = null;
                 this.conceptoTurneableService.get({
                     conceptId: this.conceptID,
-                    term: this.term
+                    term: '^' + this.term
                 }).subscribe(
                     resultado => {
                         this.loading = false;
