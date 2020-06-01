@@ -1,0 +1,108 @@
+<plex-layout main={{main}}>
+    <plex-layout-main>
+        <plex-title titulo="Modulos" main>
+            <plex-button label="Nuevo módulo" type="primary" (click)="nuevo()"></plex-button>
+        </plex-title>
+        <fieldset>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <plex-text label="Nombre" placeholder="Nombre" [(ngModel)]="filtroNombre" name="nombre"
+                               #filtroConceptID="ngModel" (ngModelChange)="filtrarResultados();"></plex-text>
+                </div>
+            </div>
+        </fieldset>
+        <div class="row">
+            <div class="col" *ngIf="modulos.length != 0">
+                <plex-list [striped]="true">
+                    <plex-heading>
+                        <b label>Nombre</b>
+                        <b label>Subtítulo</b>
+                        <b label>Color</b>
+                        <b label>Link</b>
+                        <b badge></b>
+                    </plex-heading>
+                    <ng-container *ngFor="let mod of modulos ;index as i">
+                        <plex-item [botonera]="false" (click)="verRegistro(mod)" [selected]="mod._id === modulo?._id">
+                            <plex-label>
+                                <span>#{{mod.orden}} | {{mod.nombre}}</span>
+                            </plex-label>
+                            <plex-label>
+                                <span>{{mod.subtitulo}}</span>
+                            </plex-label>
+                            <plex-label>
+                                <span>{{mod.color}}</span>
+                            </plex-label>
+                            <plex-label>
+                                <span>{{mod.linkAcceso}}</span>
+                            </plex-label>
+                            <plex-badge type="success" *ngIf="mod.activo"> Activo </plex-badge>
+                            <plex-badge type="danger" *ngIf="!mod.activo"> Inactivo</plex-badge>
+                        </plex-item>
+                    </ng-container>
+                </plex-list>
+            </div>
+            <plex-loader *ngIf="loader" type="ball-beat"></plex-loader>
+            <div *ngIf="!modulos?.length && !loader" class="alert alert-default col-12">
+                No se han encontrado módulos
+            </div>
+        </div>
+    </plex-layout-main>
+
+    <plex-layout-sidebar>
+        <plex-title titulo={{titleABM}} size="sm" main>
+            <plex-button label="Cancelar" type="danger" (click)="cerrarSidebar();formulario.reset()" size="sm">
+            </plex-button>
+            <plex-button class="float-right" size="sm" type="success" label="Guardar"
+                         (click)="saveModulo();formulario.reset()" [validateForm]="formulario"
+                         [disabled]="!formulario.form.valid">
+            </plex-button>
+        </plex-title>
+        <br>
+        <form #formulario="ngForm">
+            <div class="row" justify>
+                <div class="col-6">
+                    <plex-text required label="nombre" [(ngModel)]="modulo.nombre" name="nombre">
+                    </plex-text>
+                </div>
+                <div class="col-6">
+                    <plex-bool label="Activo" [(ngModel)]="modulo.activo" type="slide" name="activo" class="float-left">
+                    </plex-bool>
+                </div>
+            </div>
+            <div class="row" justify>
+                <div class="col-12">
+                    <plex-text label="subtitulo" [(ngModel)]="modulo.subtitulo" name="subtitulo" required>
+                    </plex-text>
+                </div>
+            </div>
+            <div class="row" justify>
+                <div class="col-12">
+                    <plex-text label="descripcion" [(ngModel)]="modulo.descripcion" name="descripcion" required>
+                    </plex-text>
+                </div>
+            </div>
+            <div class="row" justify>
+                <div class="col-12">
+                    <plex-text label="Link" [(ngModel)]="modulo.linkAcceso" name="link" required>
+                    </plex-text>
+                </div>
+            </div>
+            <div class="row" justify>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Color:</label>
+                        <input type="color" class="form-control" name="color" [(ngModel)]="modulo.color">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <plex-text required label="Icono" [(ngModel)]="modulo.icono" name="icono">
+                    </plex-text>
+                </div>
+                <div class="col-4">
+                    <plex-int required label="Orden" [(ngModel)]="modulo.orden" name="orden">
+                    </plex-int>
+                </div>
+            </div>
+        </form>
+    </plex-layout-sidebar>
+</plex-layout>
