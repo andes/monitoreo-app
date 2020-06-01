@@ -1,4 +1,5 @@
-import { IModulo } from './IModulo.interface';
+import { IModulo } from 'src/app/modulos/interfaces/IModulo.interface';
+
 export interface INovedad {
     _id?: string;
     titulo: string;

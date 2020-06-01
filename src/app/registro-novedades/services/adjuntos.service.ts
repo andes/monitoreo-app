@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Auth } from '@andes/auth';
 import { Server } from '@andes/shared';
 // import { IPrestacion } from '../interfaces/prestacion.interface';

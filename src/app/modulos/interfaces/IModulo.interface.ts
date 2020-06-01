@@ -1,10 +1,12 @@
 export interface IModulo {
-    _id: string;
+    _id?: string;
     nombre: string;
     descripcion: string;
     subtitulo: string;
-    claseCss: string;
+    color: string;
     icono: string;
     linkAcceso: string;
     permisos: [string];
+    activo: boolean;
+    orden: number;
 }
