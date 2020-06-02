@@ -102,7 +102,7 @@ export class NovedadesComponent implements OnInit {
             fecha: new Date(),
             descripcion: '',
             imagenes: [],
-            modulo: this.listModulos[0],
+            modulo: null,
             activa: true
         };
     }
