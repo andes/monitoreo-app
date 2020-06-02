@@ -4,7 +4,7 @@
             <plex-button label="Registrar Novedad" type="primary" (click)="nuevo()"></plex-button>
         </plex-title>
         <fieldset>
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-6 pr-0">
                     <plex-text label="Título" placeholder="Título de novedad" [(ngModel)]="titulo" name="titulo"
                                #filtroConceptID="ngModel" (ngModelChange)="loadData(false);"></plex-text>
@@ -25,21 +25,18 @@
                         <b label>Titulo</b>
                         <b label>Fecha</b>
                         <b label>Módulo</b>
-                        <b badge>Estado</b>
+                        <b badge></b>
                     </plex-heading>
                     <ng-container *ngFor="let nov of listRegNovedades;index as i">
                         <plex-item [botonera]="false" (click)="verRegistro(nov)" [selected]="nov._id === regNov?._id">
                             <plex-label>
-                                <span *ngIf="nov.titulo !== ''">{{nov.titulo}}</span>
-                                <span *ngIf="nov.titulo === ''">N/D</span>
+                                <span>{{nov.titulo? nov.titulo : 'N/D'}}</span>
                             </plex-label>
                             <plex-label>
-                                <span *ngIf="nov.fecha !== null">{{nov.fecha | date: 'dd/MM/yyyy'}}</span>
-                                <span *ngIf="nov.fecha === null"> N/D</span>
+                                <span>{{nov.fecha? (nov.fecha | date: 'dd/MM/yyyy') : 'N/D'}}</span>
                             </plex-label>
                             <plex-label>
-                                <span *ngIf="nov.modulo.nombre !== null">{{nov.modulo.nombre}}</span>
-                                <span *ngIf="nov.modulo.nombre === null"> N/D</span>
+                                <span>{{nov.modulo? nov.modulo.nombre+ ': ' + nov.modulo.subtitulo : 'N/D'}}</span>
                             </plex-label>
                             <plex-badge type="success" *ngIf="nov.activa"> Activa </plex-badge>
                             <plex-badge type="danger" *ngIf="!nov.activa"> Inactiva</plex-badge>
@@ -74,7 +71,7 @@
                 </plex-bool>
             </div>
             <div class="align-items-end" justify>
-                <plex-select class="w-100 mr-4" *ngIf="listModulos" required [(ngModel)]="regNov.modulo" name="select"
+                <plex-select class="w-100 mr-4" *ngIf="listModulos" [(ngModel)]="regNov.modulo" name="select"
                              [data]="listModulos" labelField="nombre + '' + subtitulo" label="Seleccione Módulo"
                              idField="_id">
                 </plex-select>
