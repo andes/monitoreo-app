@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { WebHookService } from '../services/webhook.service';
 import { IWebhook } from '../interfaces/IWebhook';
+import { Auth } from '@andes/auth';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-webkook',
@@ -25,10 +27,15 @@ export class WebHookComponent implements OnInit {
 
     constructor(
         public plex: Plex,
-        private webhookService: WebHookService
+        private webhookService: WebHookService,
+        private auth: Auth,
+        private router: Router
     ) { }
 
     ngOnInit() {
+        if (!this.auth.check('monitoreo:webhook')) {
+            this.router.navigate(['./inicio']);
+        }
         this.filtrarPorNombre('');
         this.webHook = {
             id: '',

@@ -2,6 +2,9 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
 import { ConceptoTruneableService } from '../services/concepto-turneable.service';
+import { Auth } from '@andes/auth';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-conceptos-turneables',
@@ -19,12 +22,16 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
 
     constructor(
         public plex: Plex,
-        private conceptoTurneableService: ConceptoTruneableService
+        private conceptoTurneableService: ConceptoTruneableService,
+        private auth: Auth,
+        private router: Router
     ) {
     }
 
     ngOnInit() {
-
+        if (!this.auth.check('monitoreo:conceptosTurneables')) {
+            this.router.navigate(['./inicio']);
+        }
     }
 
     ngOnDestroy(): void {

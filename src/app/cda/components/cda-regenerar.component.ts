@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { Router } from '@angular/router';
 import { CdaService } from '../services/cda.service';
+import { Auth } from '@andes/auth';
 
 
 const sizeSide = 12;
@@ -21,10 +22,13 @@ export class CdaRegenerarComponent implements OnInit {
   listaCDA = [];
   public disabledBtn = false;
 
-  constructor(private plex: Plex, private router: Router, private cdaService: CdaService) {
+  constructor(private plex: Plex, private router: Router, private cdaService: CdaService, private auth: Auth) {
   }
 
   ngOnInit() {
+    if (!this.auth.check('monitoreo:regenerarCda')) {
+      this.router.navigate(['./inicio']);
+    }
   }
 
   onSearchStart() {
