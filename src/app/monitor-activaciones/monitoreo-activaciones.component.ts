@@ -6,6 +6,8 @@ import { SendMessageCacheService } from './services/sendMessageCache.service';
 import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IDevice } from './interfaces/IDevice';
+import { Auth } from '@andes/auth';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-monitoreo-activaciones',
@@ -27,10 +29,15 @@ export class MonitoreoActivacionesComponent implements OnInit {
     constructor(
         private pacienteAppService: PacienteAppService,
         private sendMessageCacheService: SendMessageCacheService,
-        private plex: Plex
+        private plex: Plex,
+        private auth: Auth,
+        private router: Router
     ) { }
 
     ngOnInit() {
+        if (!this.auth.check('monitoreo:monitoreoActivaciones')) {
+            this.router.navigate(['./inicio']);
+        }
     }
 
 

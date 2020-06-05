@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { WebhookLogService } from './services/webhook-log.service';
 import { IWebhooklog } from './interfaces/IWebhook-log';
+import { Auth } from '@andes/auth';
+import { Router } from '@angular/router';
 
 const limit = 20;
 const side = 8;
@@ -24,7 +26,7 @@ export class WebhookLogComponent implements OnInit {
   skip = 0;
 
 
-  constructor(public plex: Plex, private webhooklogService: WebhookLogService) {
+  constructor(public plex: Plex, private webhooklogService: WebhookLogService, private auth: Auth, private router: Router) {
     this.textoBuscar = null;
     this.listFiltrar = [
       { id: 1, nombre: 'Fecha' },
@@ -34,6 +36,9 @@ export class WebhookLogComponent implements OnInit {
     this.listMostrar = [];
   }
   ngOnInit() {
+    if (!this.auth.check('monitoreo:webhookLog')) {
+      this.router.navigate(['./inicio']);
+    }
     this.loadData(false);
     this.skip = 0;
   }
