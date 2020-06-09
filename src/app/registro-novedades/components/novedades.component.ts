@@ -7,6 +7,7 @@ import { INovedad } from '../interfaces/INovedad.interface';
 import { IModulo } from '../interfaces/IModulo.interface';
 import { NovedadesService } from '../services/novedades.service';
 import { AdjuntosService } from '../services/adjuntos.service';
+import { Router } from '@angular/router';
 
 const limit = 10;
 const maxMain = 12;
@@ -50,13 +51,17 @@ export class NovedadesComponent implements OnInit {
     private regNovService: NovedadesService,
     private moduloService: ModulosService,
     public adjuntosService: AdjuntosService,
-    public auth: Auth) {
+    private router: Router,
+    private auth: Auth) {
     this.regNov = null;
     this.listRegNovedades = [];
     this.modoEdit = false;
   }
 
   ngOnInit() {
+    if (!this.auth.check('monitoreo:novedades')) {
+      this.router.navigate(['./inicio']);
+    }
 
     this.loadData(false);
     this.skip = 0;
@@ -230,7 +235,7 @@ export class NovedadesComponent implements OnInit {
   getFotos() {
     if (this.regNov && this.regNov.imagenes) {
       return this.regNov.imagenes.map((doc: any) => {
-        doc = {...doc};
+        doc = { ...doc };
         doc.url = this.createUrl(doc);
         return doc;
       });

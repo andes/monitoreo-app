@@ -2,7 +2,7 @@
     <plex-box>
         <div class="text-center">
             <div class="andes-inicio row">
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:conceptosTurneables')">
                     <div label="Boton Conceptos Turneables" class="boton color-celeste"
                          routerLink="/conceptos-turneables">
                         <i class="icono mdi mdi-playlist-check"></i>
@@ -13,7 +13,7 @@
                             <br>identificación de conceptos turneables</div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:webhook')">
                     <div label="Boton WebHook" class="boton color-violeta" routerLink="/webhook">
                         <i class="icono mdi mdi-hook"></i>
                         <div class="titulo">WebHook</div>
@@ -23,7 +23,7 @@
                             <br>identificación de WebHook</div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:monitoreoActivaciones')">
                     <div label="Boton Monitoreo de activaciones" class="boton color-verde"
                          routerLink="/monitor-activaciones">
                         <i class="icono mdi mdi-cellphone-basic"></i>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:webhookLog')">
                     <div label="Boton webhooklog" class="boton color-azul-oscuro" routerLink="/webhooklog">
                         <i class="icono mdi mdi-webhook"></i>
                         <div class="titulo">WebhookLog</div>
@@ -45,7 +45,7 @@
                             <br>de servicios conectados a WebHook</div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:regenerarCda')">
                     <div label="Boton Regenerar CDA" class="boton color-salmon" routerLink="/cda-regenerar">
                         <i class="icono mdi mdi-refresh"></i>
                         <div class="titulo">Regenerar CDA</div>

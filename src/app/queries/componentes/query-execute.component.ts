@@ -6,6 +6,8 @@ import { QueriesGeneratorService } from '../services/query-generator.service';
 import { Slug } from 'ng2-slugify';
 import { ConceptoTruneableService } from '../../conceptos-turneables/services/concepto-turneable.service';
 import { OrganizacionService } from '../../services/organizacion.service';
+import { Router } from '@angular/router';
+import { Auth } from '@andes/auth';
 
 @Component({
     selector: 'app-query-execute',
@@ -24,12 +26,17 @@ export class QueryExecuteComponent implements OnInit {
     constructor(
         private plex: Plex, private biService: QueriesGeneratorService,
         private conceptoTurneableService: ConceptoTruneableService,
-        private servicioOrganizacion: OrganizacionService
+        private servicioOrganizacion: OrganizacionService,
+        private router: Router,
+        private auth: Auth
     ) {
 
     }
 
     ngOnInit() {
+        if (!this.auth.check('monitoreo:biQueries')) {
+            this.router.navigate(['./inicio']);
+        }
         this.biService.getAllQueries({}).subscribe(
             resultado => this.listaFiltro = resultado,
             err => this.mostrarError()
