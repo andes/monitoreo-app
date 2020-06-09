@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { ISnomedConcept } from '../shared/ISnomedConcept';
 import { SnomedService } from '../shared/snomed.service';
+import { Router } from '@angular/router';
+import { Auth } from '@andes/auth';
 
 @Component({
     selector: 'app-buscador-snomed',
@@ -15,10 +17,15 @@ export class BuscadorSnomedComponent implements OnInit {
 
     constructor(
         private plex: Plex,
-        private snomedService: SnomedService
+        private snomedService: SnomedService,
+        private router: Router,
+        private auth: Auth
     ) { }
 
     ngOnInit() {
+        if (!this.auth.check('monitoreo:buscadorSnomed')) {
+            this.router.navigate(['./inicio']);
+        }
     }
 
     buscarConcepto() {
