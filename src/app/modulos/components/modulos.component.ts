@@ -5,6 +5,7 @@ import { Auth } from '@andes/auth';
 import { IModulo } from '../interfaces/IModulo.interface';
 import { cache } from '@andes/shared';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 const sizeSidebar = 4;
 @Component({
@@ -28,6 +29,7 @@ export class ModulosComponent implements OnInit {
     constructor(
         public plex: Plex,
         private moduloService: ModulosService,
+        private router: Router,
         public auth: Auth) {
         this.modulo = null;
         this.modulos = [];
@@ -35,6 +37,9 @@ export class ModulosComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (!this.auth.check('monitoreo:modulos')) {
+            this.router.navigate(['./inicio']);
+        }
         this.modulos$ = this.moduloService.search().pipe(cache());
         this.filtrarResultados();
         this.loadRegModulo();
