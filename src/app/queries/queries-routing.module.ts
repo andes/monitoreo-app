@@ -4,7 +4,7 @@ import { RoutingGuard } from '../login/routing-guard';
 import { QueryExecuteComponent } from '../queries/componentes/query-execute.component';
 
 const routes = [
-    { path: 'queries', component: QueryExecuteComponent, canActivate: [RoutingGuard] }
+    { path: '', component: QueryExecuteComponent, canActivate: [RoutingGuard] }
 ];
 
 @NgModule({

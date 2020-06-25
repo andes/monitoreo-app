@@ -5,7 +5,7 @@ import { RoutingGuard } from '../login/routing-guard';
 import { CdaRegenerarComponent } from './components/cda-regenerar.component';
 
 const routes = [
-    { path: 'cda-regenerar', component: CdaRegenerarComponent, canActivate: [RoutingGuard] }
+    { path: '', component: CdaRegenerarComponent, canActivate: [RoutingGuard] }
 ];
 
 @NgModule({
