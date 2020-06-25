@@ -5,7 +5,7 @@ import { RoutingGuard } from '../login/routing-guard';
 import { NovedadesComponent } from './components/novedades.component';
 
 const routes = [
-    { path: 'novedades', component: NovedadesComponent, canActivate: [RoutingGuard] }
+    { path: '', component: NovedadesComponent, canActivate: [RoutingGuard] }
 ];
 
 @NgModule({

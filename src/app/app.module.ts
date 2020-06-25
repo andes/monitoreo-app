@@ -1,4 +1,3 @@
-import { LoginModule } from './login/login.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -27,9 +26,6 @@ import { OrganizacionService } from './services/organizacion.service';
 import { SendMessageCacheService } from './monitor-activaciones/services/sendMessageCache.service';
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { WebhookLogService } from './webhook-log/services/webhook-log.service';
-import { QueriesModule } from './queries/queries.module';
-import { CdaModule } from './cda/cda.module';
-import { NovedadesModule } from './registro-novedades/novedades.module';
 import { ModulosService } from './modulos/services/modulos.service';
 import { ModulosModule } from './modulos/modulos.module';
 
@@ -53,10 +49,6 @@ import { ModulosModule } from './modulos/modulos.module';
     routing,
     AuthModule,
     InfiniteScrollModule,
-    QueriesModule,
-    CdaModule,
-    NovedadesModule,
-    LoginModule,
     ModulosModule
   ],
   providers: [
