@@ -52,8 +52,9 @@ export class QueryExecuteComponent implements OnInit {
             this.listaArgumentos.forEach(arg => {
                 const key = arg.key;
                 const valor = this.listaValores[key];
+                params[key] = valor;
                 if (valor instanceof Date) {
-                    params[key] = moment(valor).startOf('d').format();
+                    params[key] = moment(valor).format();
                 }
                 if (valor && valor.id) {  // select
                     params[key] = valor.id;

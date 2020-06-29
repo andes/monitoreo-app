@@ -28,6 +28,10 @@
                                      name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                      [required]="argumento.required" (getData)="loadConceptosTurneables($event)">>
                         </plex-select>
+                        <plex-text *ngSwitchCase="'string'" [label]="argumento.key" grow="full"
+                                   name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
+                                   [required]="argumento.required">
+                        </plex-text>
                     </ng-container>
                 </plex-wrapper>
             </ng-container>
