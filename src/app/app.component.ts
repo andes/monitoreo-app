@@ -52,7 +52,7 @@ export class AppComponent {
             this.menuList.push({ label: 'WebhookLogs', icon: 'webhook', route: '/webhooklog' });
         }
         if (this.auth.check('monitoreo:buscadorSnomed')) {
-            this.menuList.push({ label: 'Buscador SNOMESeleccionarD', icon: 'magnify', route: '/buscador-snomed' });
+            this.menuList.push({ label: 'Buscador SNOMED', icon: 'magnify', route: '/buscador-snomed' });
         }
         if (this.auth.check('monitoreo:biQueries')) {
             this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/queries' });
