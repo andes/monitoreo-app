@@ -17,12 +17,15 @@ export class AppComponent {
         server.setBaseURL(environment.API);
 
         this.plex.updateTitle('ANDES | Monitoreo');
+
+        this.auth.session().subscribe(() => {
+            this.plex.updateUserInfo({ usuario: this.auth.usuario });
+            this.crearMenu();
+        });
+
         const token = this.auth.getToken();
         if (token) {
-            this.auth.session().subscribe(() => {
-                // Inicializa el menú
-                this.crearMenu();
-            });
+            this.auth.setToken(token);
         }
     }
 
