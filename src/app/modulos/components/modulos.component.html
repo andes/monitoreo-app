@@ -22,7 +22,7 @@
                         <b badge></b>
                     </plex-heading>
                     <ng-container *ngFor="let mod of modulos ;index as i">
-                        <plex-item [botonera]="false" (click)="verRegistro(mod)" [selected]="mod._id === modulo?._id">
+                        <plex-item (click)="verRegistro(mod)" [selected]="mod._id === modulo?._id">
                             <plex-label>
                                 <span>#{{mod.orden}} | {{mod.nombre}}</span>
                             </plex-label>

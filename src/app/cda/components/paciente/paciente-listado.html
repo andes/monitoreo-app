@@ -7,7 +7,7 @@
             <b></b>
         </plex-heading>
         <ng-container *ngFor="let paciente of listado">
-            <plex-item [botonera]="false" (click)="seleccionar(paciente)" (mouseenter)="hoverPaciente(paciente)"
+            <plex-item (click)="seleccionar(paciente)" (mouseenter)="hoverPaciente(paciente)"
                        [selected]="paciente.id == seleccionado?.id">
                 <plex-label>
                     <img *ngIf="paciente.foto" src="{{ paciente.foto }}">

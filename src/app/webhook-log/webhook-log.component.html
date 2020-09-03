@@ -29,7 +29,7 @@
                     <b badge class="col-md-2">Status</b>
                 </plex-heading>
                 <ng-container *ngFor="let e of listMostrar">
-                    <plex-item class="hover text-md-center" [botonera]="false" (click)="seleccionarElem(e)">
+                    <plex-item class="hover text-md-center" (click)="seleccionarElem(e)">
                         <plex-label class="col-md-3">{{e.updatedAt | date: 'dd/MM/yyyy  hh:mm:ss'}} </plex-label>
                         <plex-label class="col-md-3">{{e.event}}</plex-label>
                         <plex-label class="col-md-3">{{e.url}}</plex-label>
