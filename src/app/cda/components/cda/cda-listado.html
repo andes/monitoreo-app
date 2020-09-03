@@ -6,7 +6,7 @@
             <b label>Efector</b>
         </plex-heading>
         <ng-container *ngFor="let cda of listado , let i = index">
-            <plex-item [botonera]="false">
+            <plex-item>
                 <plex-label *ngIf="cda.fecha && cda.fecha !== ''" size="sm">{{cda.fecha | fecha:'utc'}} </plex-label>
                 <plex-label *ngIf="!cda.fecha || cda.fecha === ''" size="sm">N/D</plex-label>
                 <plex-label *ngIf="cda.prestacion.snomed.term !== null" size="sm">{{ cda.prestacion.snomed.term}}

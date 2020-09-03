@@ -11,7 +11,7 @@
                 <b></b>
             </plex-heading>
             <ng-container *ngFor="let concepto of conceptos">
-                <plex-item class="hover" [botonera]="false">
+                <plex-item class="hover">
                     <plex-label class="text-capitalize">{{ concepto.conceptId }}</plex-label>
                     <plex-label class="text-capitalize">{{ concepto.term }}</plex-label>
                     <plex-badge type="buscador">{{ concepto.semanticTag }}</plex-badge>

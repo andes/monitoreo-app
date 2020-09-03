@@ -28,7 +28,7 @@
                         <b badge></b>
                     </plex-heading>
                     <ng-container *ngFor="let nov of listRegNovedades;index as i">
-                        <plex-item [botonera]="false" (click)="verRegistro(nov)" [selected]="nov._id === regNov?._id">
+                        <plex-item (click)="verRegistro(nov)" [selected]="nov._id === regNov?._id">
                             <plex-label>
                                 <span>{{nov.titulo? nov.titulo : 'N/D'}}</span>
                             </plex-label>
