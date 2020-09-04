@@ -75,9 +75,9 @@
     </plex-title>
     <div class="row">
         <div class="col-lg-12">
-            <plex-text label="Ingrese Nombre" placeholder="Nombre" prefix="<i class='mdi mdi-format-text'></i>"
-                       [(ngModel)]="term" name="usuario" [required]="false" #filtroTerm="ngModel"
-                       (ngModelChange)="buscar();">
+            <plex-text label="Ingrese Nombre" placeholder="Nombre" [(ngModel)]="term" name="usuario" [required]="false"
+                       #filtroTerm="ngModel" (ngModelChange)="buscar();">
+                <plex-icon prefix="mdi" name="format-text" left></plex-icon>
             </plex-text>
         </div>
     </div>

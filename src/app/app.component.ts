@@ -43,28 +43,28 @@ export class AppComponent {
 
         }
         if (this.auth.check('monitoreo:conceptosTurneables')) {
-            this.menuList.push({ label: 'Conceptos Turneables', icon: 'clipboard-check', route: '/conceptos-turneables' });
+            this.menuList.push({ label: 'Conceptos Turneables', icon: 'mdi mdi-clipboard-check', route: '/conceptos-turneables' });
         }
         if (this.auth.check('monitoreo:monitoreoActivaciones')) {
-            this.menuList.push({ label: 'Monitoreo Activaciones', icon: 'cellphone-basic', route: '/monitor-activaciones' });
+            this.menuList.push({ label: 'Monitoreo Activaciones', icon: 'mdi mdi-cellphone-basic', route: '/monitor-activaciones' });
         }
         if (this.auth.check('monitoreo:webhookLog')) {
-            this.menuList.push({ label: 'WebhookLogs', icon: 'webhook', route: '/webhooklog' });
+            this.menuList.push({ label: 'WebhookLogs', icon: 'mdi mdi-webhook', route: '/webhooklog' });
         }
         if (this.auth.check('monitoreo:buscadorSnomed')) {
-            this.menuList.push({ label: 'Buscador SNOMED', icon: 'magnify', route: '/buscador-snomed' });
+            this.menuList.push({ label: 'Buscador SNOMED', icon: 'mdi mdi-magnify', route: '/buscador-snomed' });
         }
         if (this.auth.check('monitoreo:biQueries')) {
-            this.menuList.push({ label: 'BI Queries', icon: 'database-search', route: '/queries' });
+            this.menuList.push({ label: 'BI Queries', icon: 'mdi mdi-database-search', route: '/queries' });
         }
         if (this.auth.check('monitoreo:regenerarCda')) {
-            this.menuList.push({ label: 'Regenerar CDAs', icon: 'refresh', route: '/cda-regenerar' });
+            this.menuList.push({ label: 'Regenerar CDAs', icon: 'mdi mdi-refresh', route: '/cda-regenerar' });
         }
         if (this.auth.check('monitoreo:novedades')) {
-            this.menuList.push({ label: 'Novedades', icon: 'bell-outline', route: '/novedades' });
+            this.menuList.push({ label: 'Novedades', icon: 'mdi mdi-bell-outline', route: '/novedades' });
         }
         if (this.auth.check('monitoreo:modulos')) {
-            this.menuList.push({ label: 'Módulos', icon: 'card-plus', route: '/modulos' });
+            this.menuList.push({ label: 'Módulos', icon: 'mdi mdi-card-plus', route: '/modulos' });
         }
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
         this.plex.updateMenu(this.menuList);
