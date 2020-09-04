@@ -84,7 +84,7 @@
             <plex-title justify titulo="Cargar Imagen" size="sm" class="mt-4">
                 <input type="file" (change)="changeListener($event)" style="display:none;" #upload>
                 <ng-container *ngIf="!waiting">
-                    <plex-button type="primary" icon="image-plus" class="btn-sm" title="Elegir Imagen"
+                    <plex-button type="primary" icon="image" class="btn-sm" title="Elegir Imagen"
                                  (click)="upload.click()">
                     </plex-button>
                 </ng-container>
