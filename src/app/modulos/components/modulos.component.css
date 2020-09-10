@@ -1,3 +1,30 @@
 input[type=color].form-control {
     height: 35px!important;
 }
+
+.submodulo {
+    width: 70px;
+    height: 70px;
+    border-radius: 0;
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    text-align: center;
+    font-size: 0.75rem;
+
+    box-shadow: 4px 2px 6px #aaa;
+
+
+}
+.submodulo.hover {
+    transition: all ease-in-out 0.25s;
+    
+}
+.submodulo.hover:hover {
+    mix-blend-mode: multiply;
+    width: 90px;
+}
