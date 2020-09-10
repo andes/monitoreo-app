@@ -13,15 +13,15 @@
         </fieldset>
         <div class="row">
             <div class="col" *ngIf="modulos.length != 0">
-                <plex-list [striped]="true">
+                <plex-list [striped]="true" size="sm">
                     <plex-heading>
                         <b label>Nombre</b>
                         <b label>Subtítulo</b>
                         <b label>Color</b>
-                        <b label>Link</b>
+                        <b label>Ruta</b>
                         <b badge></b>
                     </plex-heading>
-                    <ng-container *ngFor="let mod of modulos ;index as i">
+                    <ng-container *ngFor="let mod of modulos">
                         <plex-item (click)="verRegistro(mod)" [selected]="mod._id === modulo?._id">
                             <plex-label>
                                 <span>#{{mod.orden}} | {{mod.nombre}}</span>
@@ -49,60 +49,124 @@
     </plex-layout-main>
 
     <plex-layout-sidebar>
-        <plex-title titulo={{titleABM}} size="sm" main>
-            <plex-button label="Cancelar" type="danger" (click)="cerrarSidebar();formulario.reset()" size="sm">
+        <plex-title titulo="{{ titleABM }}" size="sm" main>
+            <plex-button label="Cancelar" type="danger" (click)="cerrarSidebar()" size="sm">
             </plex-button>
-            <plex-button class="float-right" size="sm" type="success" label="Guardar"
-                         (click)="saveModulo();formulario.reset()" [validateForm]="formulario"
-                         [disabled]="!formulario.form.valid">
+            <plex-button size="sm" type="success" label="Guardar" (click)="saveModulo()"
+                         [disabled]="(formStatus$ | async) === 'invalid' || formulario.pristine">
             </plex-button>
         </plex-title>
         <br>
-        <form #formulario="ngForm">
+        <form [formGroup]="formulario">
+            <ng-container *ngIf="formStatus$ | async as formStatus">
+                <span class="text-warning" *ngIf="formStatus === 'invalid' && formulario.dirty">
+                    Hay campos requeridos sin completar
+                </span>
+            </ng-container>
             <div class="row" justify>
-                <div class="col-6">
-                    <plex-text required label="nombre" [(ngModel)]="modulo.nombre" name="nombre">
-                    </plex-text>
-                </div>
-                <div class="col-6">
-                    <plex-bool label="Activo" [(ngModel)]="modulo.activo" type="slide" name="activo" class="float-left">
+                <div class="col">
+                    <plex-bool label="Activo" type="slide" formControlName="activo">
                     </plex-bool>
                 </div>
             </div>
             <div class="row" justify>
-                <div class="col-12">
-                    <plex-text label="subtitulo" [(ngModel)]="modulo.subtitulo" name="subtitulo" required>
+                <div class="col-6">
+                    <plex-text label="Nombre" formControlName="nombre">
+                    </plex-text>
+                </div>
+                <div class="col-6">
+                    <plex-text label="Subtítulo" formControlName="subtitulo">
                     </plex-text>
                 </div>
             </div>
             <div class="row" justify>
-                <div class="col-12">
-                    <plex-text label="descripcion" [(ngModel)]="modulo.descripcion" name="descripcion" required>
+                <div class="col-6">
+                    <plex-text label="Descripción" formControlName="descripcion">
                     </plex-text>
                 </div>
-            </div>
-            <div class="row" justify>
-                <div class="col-12">
-                    <plex-text label="Link" [(ngModel)]="modulo.linkAcceso" name="link" required>
-                    </plex-text>
-                </div>
-            </div>
-            <div class="row" justify>
-                <div class="col-4">
+                <div class="col-3">
                     <div class="form-group">
                         <label class="form-control-label">Color:</label>
-                        <input type="color" class="form-control" name="color" [(ngModel)]="modulo.color">
+                        <input type="color" class="form-control" formControlName="color">
                     </div>
                 </div>
-                <div class="col-4">
-                    <plex-text required label="Icono" [(ngModel)]="modulo.icono" name="icono">
-                    </plex-text>
-                </div>
-                <div class="col-4">
-                    <plex-int required label="Orden" [(ngModel)]="modulo.orden" name="orden">
+                <div class="col-3">
+                    <plex-int label="Orden" formControlName="orden">
                     </plex-int>
                 </div>
             </div>
+            <div class="row" justify *ngIf="!modulo?.submodulos?.length && !submodulos.length">
+                <div class="col-8">
+                    <plex-text label="Ruta" formControlName="linkAcceso">
+                    </plex-text>
+                </div>
+                <div class="col-4">
+                    <plex-text label="Icono" formControlName="icono">
+                    </plex-text>
+                </div>
+            </div>
+            <hr>
+
+            <!-- SUBMÓDULOS -->
+            <ng-container formArrayName="submodulos">
+                <plex-title size="sm" titulo="Submódulos">
+                    <plex-button type="info" size="sm" label="Agregar submódulo" (click)="addSubmodulo()"></plex-button>
+
+                </plex-title>
+                <div class="mt-5" justify="center" *ngIf="!modulo?.submodulos?.length && !submodulos.length">
+                    <plex-label icon="informacion" type="warning" size="lg" direction="column"
+                                titulo="Este Módulo no tiene submódulos"
+                                subtitulo="Para agregar, hacé click en Agregar Submódulo">
+                    </plex-label>
+                </div>
+                <div *ngFor="let submodulo of submodulos.controls; index as m">
+                    <ng-container [formGroupName]="m">
+                        <div class="row">
+                            <div class="col-4">
+                                <b>{{ m + 1 }}.</b>
+                                <div class="submodulo hover" [style.background]="submodulo.get('color').value">
+                                    <plex-icon [name]="submodulo.get('icono').value" size="lg"></plex-icon>
+                                    <span [innerHTML]="submodulo.get('nombre').value"></span>
+                                </div>
+                                <small>(Previsualización HTML)</small>
+                            </div>
+                            <div class="col-8" justify>
+                                <plex-bool label="Activo" type="slide" formControlName="activo">
+                                </plex-bool>
+                                <plex-button type="danger" size="sm" label="Eliminar" (click)="removeSubmodulo(m)">
+                                </plex-button>
+                            </div>
+                        </div>
+                        <div class="row" justify>
+                            <div class="col-6">
+                                <plex-text html label="Nombre" formControlName="nombre">
+                                </plex-text>
+                            </div>
+                            <div class="col-6">
+                                <plex-text label="Ruta" formControlName="linkAcceso">
+                                </plex-text>
+                            </div>
+                        </div>
+                        <div class="row" justify>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Color:</label>
+                                    <input type="Color" class="form-control" formControlName="color">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <plex-text label="Icono" formControlName="icono">
+                                </plex-text>
+                            </div>
+                            <div class="col-4">
+                                <plex-int label="Orden submódulo" formControlName="orden">
+                                </plex-int>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <hr>
+                </div>
+            </ng-container>
         </form>
     </plex-layout-sidebar>
 </plex-layout>

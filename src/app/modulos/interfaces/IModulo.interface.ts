@@ -4,9 +4,10 @@ export interface IModulo {
     descripcion: string;
     subtitulo: string;
     color: string;
-    icono: string;
-    linkAcceso: string;
+    icono?: string;
+    linkAcceso?: string;
     permisos: [string];
     activo: boolean;
     orden: number;
+    submodulos?: [];
 }
