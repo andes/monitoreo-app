@@ -28,6 +28,7 @@ import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { WebhookLogService } from './webhook-log/services/webhook-log.service';
 import { ModulosService } from './modulos/services/modulos.service';
 import { ModulosModule } from './modulos/modulos.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { ModulosModule } from './modulos/modulos.module';
     routing,
     AuthModule,
     InfiniteScrollModule,
-    ModulosModule
+    ModulosModule,
+    NoopAnimationsModule
   ],
   providers: [
     Plex,
