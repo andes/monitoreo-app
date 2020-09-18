@@ -71,33 +71,33 @@
             </div>
             <div class="row" justify>
                 <div class="col-6">
-                    <plex-text label="Nombre" formControlName="nombre">
+                    <plex-text label="Nombre" formControlName="nombre" required="true">
                     </plex-text>
                 </div>
                 <div class="col-6">
-                    <plex-text label="Subtítulo" formControlName="subtitulo">
+                    <plex-text label="Subtítulo" formControlName="subtitulo" required="true">
                     </plex-text>
                 </div>
             </div>
             <div class="row" justify>
                 <div class="col-6">
-                    <plex-text label="Descripción" formControlName="descripcion">
+                    <plex-text label="Descripción" formControlName="descripcion" required="true">
                     </plex-text>
                 </div>
                 <div class="col-3">
                     <div class="form-group">
-                        <label class="form-control-label">Color:</label>
+                        <label class="form-control-label">Color</label>
                         <input type="color" class="form-control" formControlName="color">
                     </div>
                 </div>
                 <div class="col-3">
-                    <plex-int label="Orden" formControlName="orden">
+                    <plex-int label="Orden" formControlName="orden" required="true">
                     </plex-int>
                 </div>
             </div>
             <div class="row" justify *ngIf="(!modulo?.submodulos?.length && !submodulos.length) || !modoEdit">
                 <div class="col-8">
-                    <plex-text label="Ruta" formControlName="linkAcceso">
+                    <plex-text label="Ruta" formControlName="linkAcceso" required="true">
                     </plex-text>
                 </div>
                 <div class="col-4">
