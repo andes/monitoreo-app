@@ -95,7 +95,7 @@
                     </plex-int>
                 </div>
             </div>
-            <div class="row" justify *ngIf="!modulo?.submodulos?.length && !submodulos.length">
+            <div class="row" justify *ngIf="(!modulo?.submodulos?.length && !submodulos.length) || !modoEdit">
                 <div class="col-8">
                     <plex-text label="Ruta" formControlName="linkAcceso">
                     </plex-text>
@@ -119,7 +119,7 @@
                                 subtitulo="Para agregar, hacé click en Agregar Submódulo">
                     </plex-label>
                 </div>
-                <div *ngFor="let submodulo of submodulos.controls; index as m">
+                <div class="submodulos" *ngFor="let submodulo of submodulos.controls; index as m">
                     <ng-container [formGroupName]="m">
                         <div class="row">
                             <div class="col-4">
@@ -128,7 +128,10 @@
                                     <plex-icon [name]="submodulo.get('icono').value" size="lg"></plex-icon>
                                     <span [innerHTML]="submodulo.get('nombre').value"></span>
                                 </div>
-                                <small>(Previsualización HTML)</small>
+                                <small>(Previsualización
+                                    HTML)<b *ngIf="submodulo.invalid" hintType="info"
+                                       hint="Completá los campos nombre, color e icono para ver la previsualización"
+                                       detach="both"></b></small>
                             </div>
                             <div class="col-8" justify>
                                 <plex-bool label="Activo" type="slide" formControlName="activo">
@@ -151,7 +154,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label class="form-control-label">Color:</label>
-                                    <input type="Color" class="form-control" formControlName="color">
+                                    <input type="color" class="form-control" formControlName="color">
                                 </div>
                             </div>
                             <div class="col-4">

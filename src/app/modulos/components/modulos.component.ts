@@ -36,13 +36,13 @@ export class ModulosComponent implements OnInit {
     public modulos$: Observable<any[]>;
     public modulos: IModulo[];
     public titleABM: string;
-    private modoEdit: boolean;
+    public modoEdit: boolean;
     public filtroNombre: string;
     loader = true;
 
 
     formulario: FormGroup = new FormGroup({
-        activo: new FormControl(true, Validators.required),
+        activo: new FormControl(true, Validators.nullValidator),
         nombre: new FormControl('', Validators.required),
         subtitulo: new FormControl('', Validators.required),
         descripcion: new FormControl('', Validators.required),
@@ -89,26 +89,29 @@ export class ModulosComponent implements OnInit {
 
     addSubmodulo() {
         const group = new FormGroup({
-            activo: new FormControl(true, Validators.required),
+            activo: new FormControl(true, Validators.nullValidator),
             nombre: new FormControl('', Validators.required),
             linkAcceso: new FormControl('', Validators.required),
             color: new FormControl('', Validators.nullValidator),
             icono: new FormControl('', Validators.required),
             orden: new FormControl('', Validators.required),
+            permisos: new FormControl()
         });
         this.submodulos.push(group);
     }
 
     removeSubmodulo(index: number) {
-        this.plex.confirm(`Submódulo: ${this.submodulos.value[index].nombre}`, '¿Eliminar submódulo?', 'Eliminar').then(remover => {
-            if (remover) {
-                this.submodulos.removeAt(index);
-            }
-        });
+        this.plex.confirm(`Submódulo: ${(this.submodulos.value[index].nombre || '[módulo sin nombre]')}`,
+            '¿Eliminar submódulo?', 'Eliminar').then(remover => {
+                if (remover) {
+                    this.submodulos.removeAt(index);
+                }
+            });
     }
 
     nuevo() {
         this.abrirSidebar('Registar módulo');
+        this.modoEdit = false;
         this.formulario.reset();
         this.submodulos.clear();
     }
@@ -133,7 +136,7 @@ export class ModulosComponent implements OnInit {
         this.modulo = modulo; // Guardamos el id para luego poder guardar
         this.abrirSidebar('Editar módulo');
         this.submodulos.clear();
-        if (modulo.submodulos.length) {
+        if (modulo.submodulos && modulo.submodulos.length > 0) {
             modulo.submodulos.map(x => this.addSubmodulo());
         }
         this.formulario.patchValue(modulo); // patchValue quita valores que no usa el form (id)
@@ -144,7 +147,7 @@ export class ModulosComponent implements OnInit {
 
         if (this.formulario.valid) {
             if (this.submodulos.valid) {
-                this.formulario.get('submodulos').patchValue(this.submodulos.value);
+                this.formulario.get('submodulos').setValue(this.submodulos.value);
             } else {
                 this.submodulos = null;
             }
@@ -176,6 +179,7 @@ export class ModulosComponent implements OnInit {
                 );
             }
             this.formulario.reset();
+            this.submodulos.clear();
             this.cerrarSidebar();
         }
 
