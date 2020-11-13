@@ -41,9 +41,9 @@ export class AppComponent {
             });
         }
         this.menuList.push({ label: 'Página Principal', icon: 'home', route: '/home' });
+        this.menuList.push({ label: 'Fuentes auténticas', icon: 'adi-credencial-usuario', route: '/fuentes-autenticas' });
         if (this.auth.check('monitoreo:webhook')) {
             this.menuList.push({ label: 'Webhooks', icon: 'hook', route: '/webhook' });
-
         }
         if (this.auth.check('monitoreo:conceptosTurneables')) {
             this.menuList.push({ label: 'Conceptos Turneables', icon: 'mdi mdi-clipboard-check', route: '/conceptos-turneables' });
