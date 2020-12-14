@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IElementoRUP } from 'src/app/shared/IElementoRUP';
+import { ElementosRupService } from '../../services/elementos-rup.service';
 import { ElementosRupListadoService } from './elementos-rup-listado.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class RUPElementosRupListadoComponent implements OnInit {
     elementosRup$: Observable<IElementoRUP[]>;
     constructor(
         private router: Router,
-        private listadoService: ElementosRupListadoService
+        private listadoService: ElementosRupListadoService,
+        private elementosRupService: ElementosRupService
     ) { }
 
     public items = [
@@ -26,6 +28,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
 
     ngOnInit() {
         this.elementosRup$ = this.listadoService.elementosRup$;
+        this.elementosRupService.refresh.next(null);
     }
 
     goto(url) {

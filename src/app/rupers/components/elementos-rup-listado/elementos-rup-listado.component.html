@@ -9,6 +9,7 @@
         </header>
         <plex-list>
             <plex-heading>
+                <b label>Nombre</b>
                 <b label>Concepto</b>
                 <b label>Componente</b>
                 <b label>Tipo</b>
@@ -16,10 +17,13 @@
                 <b button></b>
             </plex-heading>
             <plex-item *ngFor="let elemento of elementosRup$ | async">
+                <plex-label titulo="{{ elemento.nombre }}"> </plex-label>
                 <plex-label titulo="{{ elemento.conceptos[0].term }}"> </plex-label>
                 <plex-label titulo="{{ elemento.componente }}" [tituloBold]="false"> </plex-label>
                 <plex-label titulo="{{ elemento.tipo }}" [tituloBold]="false"> </plex-label>
                 <plex-label [tituloBold]="false"> {{ elemento.requeridos?.length || 0 }} </plex-label>
+
+                <plex-button type="success" style="display: none;">hola</plex-button>
                 <ng-container [ngSwitch]="elemento.componente" ngProjectAs="plex-button">
                     <plex-button *ngSwitchCase="'MoleculaBaseComponent'" type="warning" icon="pencil" size="sm"
                                  [routerLink]="['molecula', elemento.id]">

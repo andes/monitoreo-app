@@ -5,6 +5,7 @@ import { ElementosRupService } from '../../services/elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { IElementoRUP } from 'src/app/shared/IElementoRUP';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'rup-prestacion-create-update',
@@ -14,6 +15,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
     titulo = 'Nueva prestación';
     elementosRup = [];
     public id: string;
+    public nombre: string;
     public elemento: IElementoRUP;
     public concepto;
     public requerido: ISnomedConcept;
@@ -27,13 +29,16 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.elementosRup = this.actr.snapshot.data.elementos;
         this.id = this.actr.snapshot.params.id;
 
         if (this.id) {
-            this.elemento = this.elementosRup.find(e => e.id === this.id);
-            this.titulo = this.elemento.conceptos[0].term;
-            this.concepto = this.elemento.conceptos[0];
+            this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
+                this.elementosRup = elementosRup;
+                this.elemento = this.elementosRup.find(e => e.id === this.id);
+                this.titulo = this.elemento.conceptos[0].term;
+                this.concepto = this.elemento.conceptos[0];
+                this.nombre = this.elemento.nombre;
+            });
         } else {
             this.createElemento();
         }
@@ -42,6 +47,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
 
     createElemento() {
         this.elemento = {
+            nombre: '',
             componente: 'PRESTACION',
             conceptos: [],
             requeridos: [],
@@ -69,6 +75,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
     }
 
     onSave() {
+        this.elemento.nombre = this.nombre;
         this.elemento.conceptos = [this.concepto];
         // this.elemento.requeridos.forEach((elem) => elem.elementoRUP = this.elementoSeccion.id);
         this.elementosRUPService.save(this.elemento).subscribe(() => {

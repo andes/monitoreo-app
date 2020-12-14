@@ -2,6 +2,8 @@ import { ISnomedConcept } from './ISnomedConcept';
 
 export interface IElementoRUP {
     id: string;
+
+    nombre: string;
     // Indica si este elemento está activo
     activo: boolean;
     // Vinculación al componente de la aplicación Angular

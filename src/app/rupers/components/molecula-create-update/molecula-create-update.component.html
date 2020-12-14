@@ -4,6 +4,10 @@
             <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
         </plex-title>
         <div class="grow">
+            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
+            </plex-text>
+        </div>
+        <div class="grow">
             <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
                          labelField="term + '(' + semanticTag + ')'">
             </plex-select>
@@ -26,10 +30,10 @@
                         <plex-button type="danger" icon="delete" size="sm" (click)="onRemoveRequerido(i)"></plex-button>
                         <ng-container ngProjectAs="plex-button">
                             <div class="d-flex flex-column">
-                                <plex-button type="info" icon="arrow-up-bold" size="sm" (click)="onUpRequerido(i)"
+                                <plex-button type="info" icon="flecha-arriba" size="sm" (click)="onUpRequerido(i)"
                                              *ngIf="!first$">
                                 </plex-button>
-                                <plex-button type="info" icon="arrow-down-bold" size="sm" (click)="onDownRequerido(i)"
+                                <plex-button type="info" icon="flecha-abajo" size="sm" (click)="onDownRequerido(i)"
                                              *ngIf="!last$">
                                 </plex-button>
                             </div>

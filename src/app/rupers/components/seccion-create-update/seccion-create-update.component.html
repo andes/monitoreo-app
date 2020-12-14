@@ -4,6 +4,10 @@
             <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
         </plex-title>
         <div class="grow">
+            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
+            </plex-text>
+        </div>
+        <div class="grow">
             <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
                          labelField="term + '(' + semanticTag + ')'"></plex-select>
             <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAdd()"></plex-button>

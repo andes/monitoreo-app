@@ -4,6 +4,7 @@ import { SnomedService } from 'src/app/shared/snomed.service';
 import { ElementosRupService } from '../../services/elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'rup-atomo-create-update',
@@ -30,6 +31,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     titulo = 'Nuevo átomo';
     elementosRup = [];
     public id: string;
+    public nombre: string;
     public elemento;
     public concepto;
 
@@ -58,15 +60,18 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.elementosRup = this.actr.snapshot.data.elementos;
         this.id = this.actr.snapshot.params.id;
 
         if (this.id) {
-            this.elemento = this.elementosRup.find(e => e.id === this.id);
-            this.titulo = this.elemento.conceptos[0].term;
-            this.concepto = this.elemento.conceptos[0];
-            this.params = this.elemento.params;
-            this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
+            this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
+                this.elementosRup = elementosRup;
+                this.elemento = this.elementosRup.find(e => e.id === this.id);
+                this.titulo = this.elemento.conceptos[0].term;
+                this.concepto = this.elemento.conceptos[0];
+                this.params = this.elemento.params || {};
+                this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
+                this.nombre = this.elemento.nombre;
+            });
         } else {
             this.createElemento();
         }
@@ -75,6 +80,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
 
     createElemento() {
         this.elemento = {
+            nombre: '',
             componente: 'PRESTACION',
             conceptos: [],
             requeridos: [],
@@ -90,6 +96,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         this.elemento.conceptos = [this.concepto];
         this.elemento.componente = this.tipoAtomo.id;
         this.elemento.params = this.params;
+        this.elemento.nombre = this.nombre;
         this.elementosRUPService.save(this.elemento).subscribe(() => {
             this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });

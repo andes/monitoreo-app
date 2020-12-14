@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ResourceBaseHttp, Server, cache } from '@andes/shared';
-import { tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { ISnomedConcept } from '../../shared/ISnomedConcept';
 import { IElementoRUP } from '../../shared/IElementoRUP';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ElementosRupService extends ResourceBaseHttp {
     protected url = '/modules/rup/elementos-rup';
 
-    public cache$ = this.search({ limit: 1000 }).pipe(
+
+    refresh = new BehaviorSubject(null);
+
+    public cache$ = this.refresh.pipe(
+        switchMap(() => this.search({ limit: 1000 })),
         tap(data => this.processData(data)),
         cache()
     );

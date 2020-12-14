@@ -41,6 +41,7 @@ export class AppComponent {
             });
         }
         this.menuList.push({ label: 'Página Principal', icon: 'home', route: '/home' });
+
         if (this.auth.check('monitoreo:webhook')) {
             this.menuList.push({ label: 'Webhooks', icon: 'hook', route: '/webhook' });
 
@@ -70,7 +71,8 @@ export class AppComponent {
             this.menuList.push({ label: 'Módulos', icon: 'mdi mdi-card-plus', route: '/modulos' });
         }
 
-        this.menuList.push({ label: 'Elementos RUP', icon: 'magnify', route: '/elementos-rup' });
+        this.menuList.push({ label: 'Elementos RUP', icon: 'magnify', route: '/rupers/elementos-rup' });
+
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
         this.plex.updateMenu(this.menuList);
     }
