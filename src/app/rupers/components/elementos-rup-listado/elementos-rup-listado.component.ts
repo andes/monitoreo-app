@@ -1,3 +1,4 @@
+import { Auth } from '@andes/auth';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -15,7 +16,8 @@ export class RUPElementosRupListadoComponent implements OnInit {
     constructor(
         private router: Router,
         private listadoService: ElementosRupListadoService,
-        private elementosRupService: ElementosRupService
+        private elementosRupService: ElementosRupService,
+        private auth: Auth
     ) { }
 
     public items = [
@@ -27,6 +29,9 @@ export class RUPElementosRupListadoComponent implements OnInit {
     ];
 
     ngOnInit() {
+        if (!this.auth.check('monitoreo:rupers')) {
+            return this.router.navigate(['./inicio']);
+        }
         this.elementosRup$ = this.listadoService.elementosRup$;
         this.elementosRupService.refresh.next(null);
     }

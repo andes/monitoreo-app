@@ -15,13 +15,13 @@ const appRoutes: Routes = [
     { path: 'conceptos-turneables', component: ConceptosTurneablesComponent, canActivate: [RoutingGuard] },
     { path: 'monitor-activaciones', component: MonitoreoActivacionesComponent, canActivate: [RoutingGuard] },
     { path: 'buscador-snomed', component: BuscadorSnomedComponent, canActivate: [RoutingGuard] },
-    { path: 'login', loadChildren: './login/login.module#LoginModule' },
-    { path: 'queries', loadChildren: './queries/queries.module#QueriesModule' },
+    { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+    { path: 'queries', loadChildren: () => import('./queries/queries.module').then(m => m.QueriesModule) },
     // { path: 'login', loadChildren: () => import('./login/login.module').then(l=>l.LoginModule)},
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
-    { path: 'cda-regenerar', loadChildren: './cda/cda.module#CdaModule' },
-    { path: 'novedades', loadChildren: './registro-novedades/novedades.module#NovedadesModule' },
-    { path: 'rupers', loadChildren: './rupers/rupers.module#RupersModule' },
+    { path: 'cda-regenerar', loadChildren: () => import('./cda/cda.module').then(m => m.CdaModule) },
+    { path: 'novedades', loadChildren: () => import('./registro-novedades/novedades.module').then(m => m.NovedadesModule) },
+    { path: 'rupers', loadChildren: () => import('./rupers/rupers.module').then(m => m.RupersModule) },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 

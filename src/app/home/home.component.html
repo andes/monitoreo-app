@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:rupers')">
                     <div label="Boton Regenerar CDA" class="boton color-salmon" routerLink="/rupers/elementos-rup">
                         <i class="icono mdi mdi-refresh"></i>
                         <div class="titulo">RUPERS</div>
