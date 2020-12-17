@@ -1,0 +1,126 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title [titulo]="titulo">
+            <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
+        </plex-title>
+        <div class="grow">
+            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
+            </plex-text>
+        </div>
+        <div class="grow">
+            <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
+                         labelField="term + '(' + semanticTag + ')'">
+            </plex-select>
+        </div>
+        <div>
+            <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo">
+
+            </plex-select>
+        </div>
+        <form>
+            <ng-container [ngSwitch]="tipoAtomo?.id">
+                <div *ngSwitchCase="'SelectOrganizacionComponent'">
+
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+
+                    <div justify class="ml-4 mr-4">
+                        <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
+                                   name="params-allowOther">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
+                                   name="params-preload">
+                        </plex-bool>
+                    </div>
+                </div>
+
+                <div *ngSwitchCase="'SelectProfesionalComponent'">
+
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+
+                    <div justify class="ml-4 mr-4">
+                        <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
+                                   name="params-allowOther">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
+                                   name="params-preload">
+                        </plex-bool>
+                    </div>
+                </div>
+
+                <div *ngSwitchCase="'SelectSnomedComponent'">
+
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+                    <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+
+                    <div justify class="ml-4 mr-4">
+                        <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
+                                   name="params-allowOther">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
+                                   name="params-preload">
+                        </plex-bool>
+                    </div>
+
+                </div>
+
+                <div *ngSwitchCase="'SelectStaticoComponent'">
+
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+
+                    <div justify class="ml-4 mr-4">
+                        <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
+                                   name="params-allowOther">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
+                                   name="params-preload">
+                        </plex-bool>
+                    </div>
+
+                    <!-- [TODO] crear lista de items staticos -->
+
+                </div>
+
+                <div *ngSwitchCase="'ObservacionesComponent'">
+
+                    <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                    </plex-bool>
+
+                </div>
+
+                <div *ngSwitchCase="'ValorNumericoComponent'">
+
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+
+                    <div justify class="ml-4 mr-4">
+                        <plex-int [(ngModel)]="params.min" label="Minimo" name="params-min"></plex-int>
+                        <plex-int [(ngModel)]="params.max" label="Maximo" name="params-max"></plex-int>
+                        <plex-text [(ngModel)]="params.unit" label="Unidad" name="params-unit"></plex-text>
+
+                        <plex-radio label="Tipo" [(ngModel)]="params.numericType" [data]="valorNumericoType"
+                                    type="horizontal" name="params-type"></plex-radio>
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+        </form>
+
+    </plex-layout-main>
+</plex-layout>

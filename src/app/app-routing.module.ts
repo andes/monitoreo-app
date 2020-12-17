@@ -20,9 +20,9 @@ const appRoutes: Routes = [
     { path: 'queries', loadChildren: () => import('./queries/queries.module').then(m => m.QueriesModule) },
     // { path: 'login', loadChildren: () => import('./login/login.module').then(l=>l.LoginModule)},
     { path: 'webhooklog', component: WebhookLogComponent, canActivate: [RoutingGuard] },
-
     { path: 'cda-regenerar', loadChildren: () => import('./cda/cda.module').then(m => m.CdaModule) },
     { path: 'novedades', loadChildren: () => import('./registro-novedades/novedades.module').then(m => m.NovedadesModule) },
+    { path: 'rupers', loadChildren: () => import('./rupers/rupers.module').then(m => m.RupersModule) },
     { path: 'fuentes-autenticas', component: EstadoFuentesAutenticasComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];

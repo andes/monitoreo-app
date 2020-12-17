@@ -8,9 +8,11 @@
                         <i class="icono mdi mdi-playlist-check"></i>
                         <div class="titulo">Conceptos Turneables</div>
                         <div class="subtitulo">Índice Maestro
-                            <br>de Conceptos Turneables</div>
+                            <br>de Conceptos Turneables
+                        </div>
                         <div class="detalle">Optimiza el proceso de
-                            <br>identificación de conceptos turneables</div>
+                            <br>identificación de conceptos turneables
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:webhook')">
@@ -18,9 +20,11 @@
                         <i class="icono mdi mdi-hook"></i>
                         <div class="titulo">WebHook</div>
                         <div class="subtitulo">Índice Maestro
-                            <br>de WebHook</div>
+                            <br>de WebHook
+                        </div>
                         <div class="detalle">Optimiza el proceso de
-                            <br>identificación de WebHook</div>
+                            <br>identificación de WebHook
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:monitoreoActivaciones')">
@@ -29,7 +33,8 @@
                         <i class="icono mdi mdi-cellphone-basic"></i>
                         <div class="titulo">Monitoreo de activaciones</div>
                         <div class="subtitulo">Índice Maestro
-                            <br>de Monitoreo de Activaciones</div>
+                            <br>de Monitoreo de Activaciones
+                        </div>
                         <div class="detalle">Verifica las activaciones
                             de la app movil</div>
                     </div>
@@ -40,9 +45,11 @@
                         <i class="icono mdi mdi-webhook"></i>
                         <div class="titulo">WebhookLog</div>
                         <div class="subtitulo">Índice Maestro
-                            <br>de WebhookLog</div>
+                            <br>de WebhookLog
+                        </div>
                         <div class="detalle">Optimiza el proceso de identificación
-                            <br>de servicios conectados a WebHook</div>
+                            <br>de servicios conectados a WebHook
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:regenerarCda')">
@@ -50,8 +57,20 @@
                         <i class="icono mdi mdi-refresh"></i>
                         <div class="titulo">Regenerar CDA</div>
                         <div class="subtitulo">Índice Maestro
-                            <br>de Regenerar CDAs</div>
+                            <br>de Regenerar CDAs
+                        </div>
                         <div class="detalle">Regenerar los CDA de un paciente </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-6" *ngIf="this.auth.check('monitoreo:rupers')">
+                    <div label="Boton Regenerar CDA" class="boton color-salmon" routerLink="/rupers/elementos-rup">
+                        <i class="icono mdi mdi-refresh"></i>
+                        <div class="titulo">RUPERS</div>
+                        <div class="subtitulo">
+                            ELEMENTOS RUP
+                        </div>
+                        <div class="detalle">Edición de átomos y moléculas</div>
                     </div>
                 </div>
             </div>

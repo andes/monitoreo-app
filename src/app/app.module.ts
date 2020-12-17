@@ -18,7 +18,6 @@ import { ConceptosTurneablesComponent } from './conceptos-turneables/components/
 import { ConceptoTruneableService } from './conceptos-turneables/services/concepto-turneable.service';
 import { DetalleConceptoTurneableComponent } from './conceptos-turneables/components/detalle-concepto-turneable.component';
 import { NuevoConceptoTurneableComponent } from './conceptos-turneables/components/nuevo-concepto-turneable.component';
-import { SnomedService } from './shared/snomed.service';
 import { BuscadorSnomedComponent } from './buscador-snomed/buscador-snomed.component';
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { PacienteAppService } from './monitor-activaciones/services/pacienteApp.service';
@@ -65,7 +64,6 @@ import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-
     RoutingNavBar,
     WebHookService,
     ConceptoTruneableService,
-    SnomedService,
     PacienteAppService,
     OrganizacionService,
     SendMessageCacheService,
