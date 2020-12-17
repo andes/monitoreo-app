@@ -1,0 +1,28 @@
+<plex-layout>
+    <plex-layout-main>
+        <plex-title titulo="Fuentes auténticas"></plex-title>
+
+        <plex-list>
+            <plex-item>
+                <plex-label class="pl-3" titulo="Estado de servicio RENAPER: " subtitulo="" grow="4"></plex-label>
+                <plex-loader class="pt-2" *ngIf="loadingRenaper" type="ball-beat"></plex-loader>
+                <plex-badge class="pl-3" type="{{renaperStatus ? 'success' : 'danger'}}">
+                    {{renaperStatus ? 'ONLINE' : 'OFFLINE'}}
+                </plex-badge>
+                <plex-button class="pl-3" type="info" label="Verificar" [disabled]="loadingRenaper" size="sm"
+                             (click)="checkStatus('renaper')"></plex-button>
+            </plex-item>
+
+            <plex-item>
+                <plex-label class="pl-3" titulo="Estado de servicio SISA: " subtitulo="" grow="4"></plex-label>
+                <plex-loader class="pt-2" *ngIf="loadingSisa" type="ball-beat"></plex-loader>
+                <plex-badge class="pl-3" type="{{sisaStatus ? 'success' : 'danger'}}">
+                    {{sisaStatus ? 'ONLINE' : 'OFFLINE'}}
+                </plex-badge>
+                <plex-button class="pl-3" type="info" label="Verificar" [disabled]="loadingSisa" size="sm"
+                             (click)="checkStatus('sisa')"></plex-button>
+            </plex-item>
+        </plex-list>
+
+    </plex-layout-main>
+</plex-layout>

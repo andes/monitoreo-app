@@ -28,6 +28,8 @@ import { WebhookLogService } from './webhook-log/services/webhook-log.service';
 import { ModulosService } from './modulos/services/modulos.service';
 import { ModulosModule } from './modulos/modulos.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
+import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-autenticas.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     NuevoConceptoTurneableComponent,
     MonitoreoActivacionesComponent,
     BuscadorSnomedComponent,
-
+    EstadoFuentesAutenticasComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     OrganizacionService,
     SendMessageCacheService,
     WebhookLogService,
-    ModulosService
+    ModulosService,
+    FuentesAutenticasService
   ],
   bootstrap: [AppComponent]
 })
