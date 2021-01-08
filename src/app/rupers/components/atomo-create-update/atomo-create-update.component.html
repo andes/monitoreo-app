@@ -120,6 +120,26 @@
 
                 </div>
 
+                <div *ngSwitchCase="'ChecklistComponent'">
+
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+                    <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+
+                    <div justify class="ml-4 mr-4">
+                        <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
+                        </plex-bool>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+                        <plex-text [(ngModel)]="params.allowOtherQuery" label="Otros Snomed Query"
+                                   name="params-query-otros"></plex-text>
+
+                        <plex-radio label="Horientacion" [(ngModel)]="params.type" [data]="checkOrientacionType"
+                                    type="horizontal" name="params-type"></plex-radio>
+
+                    </div>
+
+                </div>
+
             </ng-container>
 
         </form>

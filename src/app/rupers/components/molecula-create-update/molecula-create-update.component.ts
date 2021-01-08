@@ -76,10 +76,6 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
 
     onSave() {
         this.elemento.conceptos = [this.concepto];
-        this.elemento.requeridos.forEach((elem) => {
-            const elementoRUP = this.elementosRUPService.buscarElemento(elem.concepto, false);
-            elem.params = elementoRUP.params;
-        });
         this.elemento.nombre = this.nombre;
         this.elementosRUPService.save(this.elemento).subscribe(() => {
             this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
@@ -95,13 +91,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             const elementoRUP = this.elementosRUPService.buscarElemento(this.requerido, false);
             if (elementoRUP) {
                 this.elemento.requeridos.push({
-                    elementoRUP: elementoRUP.id,
                     concepto: this.requerido,
                     style: {
                         columns: 12
                     },
-                    // Obligatorio por ahora
-                    params: elementoRUP.params
                 });
                 this.requerido = null;
             } else {
