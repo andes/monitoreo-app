@@ -39,10 +39,7 @@ export class PacienteBuscarComponent implements OnInit {
         this.timeoutHandle = null;
 
         // Busca por texto libre
-        this.pacienteService.getMatch({
-          type: 'multimatch',
-          cadenaInput: textoBuscar
-        }).subscribe(
+        this.pacienteService.get({ search: textoBuscar }).subscribe(
           resultado => {
             this.searchEnd.emit({ pacientes: resultado, err: null });
           },

@@ -46,7 +46,6 @@ export class MonitoreoActivacionesComponent implements OnInit {
     }
 
     onSearchEnd(pacientes: any[]) {
-        this.searchClear = false;
         this.loader = false;
         this.resultadoBusqueda = pacientes;
     }
@@ -59,6 +58,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
     public loadPacientes() {
         this.onSearchStart();
         if (this.documento != null) {
+            this.searchClear = false;
             this.pacienteAppService.get({ documento: this.documento }).subscribe(
                 datos => {
                     this.onSearchEnd(datos);
@@ -66,6 +66,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
             );
         } else {
             this.onSearchEnd([]);
+            this.onSearchClear();
         }
 
     }
