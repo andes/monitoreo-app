@@ -6,10 +6,10 @@ import { Server } from '@andes/shared';
 export class PacienteService {
 
     // URL to web api
-    private pacienteUrl = '/core/mpi/pacientes';
+    private pacienteUrl = '/core-v2/mpi/pacientes';
 
     constructor(private server: Server) { }
-    getMatch(params: any): Observable<any[]> { // se obtienen los registros de novedades
-        return this.server.get(this.pacienteUrl, { params, showError: true });
+    get(params: any): Observable<any[]> { // se obtienen los registros de novedades
+        return this.server.get(this.pacienteUrl, { params });
     }
 }

@@ -3,12 +3,12 @@
         <div class="row">
             <div class="col-12">
                 <plex-text (change)="loadPacientes()" [(ngModel)]="documento" name="buscador"
-                           placeholder="Ingrese un documento">
+                           placeholder="Ingrese un documento" prefix="account-search">
                 </plex-text>
             </div>
         </div>
         <plex-loader *ngIf="loader" type="ball-beat"></plex-loader>
-        <div *ngIf="!resultadoBusqueda?.length && !loader" class="alert alert-default">
+        <div *ngIf="!resultadoBusqueda?.length && !loader && !searchClear" class="alert alert-default">
             <i class="mdi mdi-emoticon-sad"></i> No hay resultados que coincidan con los filtros de búsqueda
         </div>
         <div class="row">
