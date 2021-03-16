@@ -1,8 +1,7 @@
 <plex-layout main="{{side}}">
     <plex-layout-main>
-        <header>
-            <h3> Regenerar CDA </h3>
-        </header>
+        <plex-title titulo="Regenerar Registros">
+        </plex-title>
         <app-paciente-buscar (searchStart)="onSearchStart()" (searchEnd)="onSearchEnd($event.pacientes)"
                              (searchClear)="onSearchClear()">
         </app-paciente-buscar>
@@ -11,13 +10,17 @@
                               (selected)="seleccionar($event)">
         </app-paciente-listado>
         <div *ngIf="listaPacientes && !listaPacientes.length && !searchClear" class="alert alert-danger">
-            <i class="mdi mdi-account-alert"></i> No se encontró ningún paciente...
+            <i class="mdi mdi-account-alert"></i> No se encontró ningún paciente.
         </div>
     </plex-layout-main>
     <plex-layout-sidebar>
-        <plex-title titulo="CDA del paciente" size="sm" main>
+        <plex-title titulo="Registros del paciente" size="sm" main>
             <plex-button label="refrescar" type="primary" size="sm" (click)="refreshCDA()"></plex-button>
-            <plex-button [disabled]="disabledBtn" label="regenerar" type="success" size="sm" (click)="regenerarCDA()">
+            <plex-button [disabled]="disabledBtnCDA" label="regenerar" type="success" size="sm"
+                         (click)="regenerarCDA()">
+            </plex-button>
+            <plex-button [disabled]="disabledBtnVacunas" label="registrar vacunas" type="warning" size="sm"
+                         (click)="registrarVacunas()">
             </plex-button>
         </plex-title>
 

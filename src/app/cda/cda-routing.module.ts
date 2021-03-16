@@ -2,10 +2,10 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RoutingGuard } from '../login/routing-guard';
-import { CdaRegenerarComponent } from './components/cda-regenerar.component';
+import { RegenerarRegistrosComponent } from './components/regenerar-registros.component';
 
 const routes = [
-    { path: '', component: CdaRegenerarComponent, canActivate: [RoutingGuard] }
+    { path: '', component: RegenerarRegistrosComponent, canActivate: [RoutingGuard] }
 ];
 
 @NgModule({
