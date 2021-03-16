@@ -69,7 +69,7 @@ export class AppComponent {
         }
 
         if (this.auth.check('monitoreo:regenerarCda')) {
-            this.menuList.push({ label: 'Regenerar CDAs', icon: 'mdi mdi-refresh', route: '/cda-regenerar' });
+            this.menuList.push({ label: 'Regenerar Registros', icon: 'mdi mdi-refresh', route: '/regenerar-registros' });
         }
 
         if (this.auth.check('monitoreo:novedades')) {

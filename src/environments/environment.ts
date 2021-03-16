@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  API: 'https://demo.andes.gob.ar/api'
+    production: false,
+    API: 'http://localhost:3002/api'
 };
