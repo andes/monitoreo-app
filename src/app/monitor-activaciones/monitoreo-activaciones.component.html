@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <plex-text (change)="loadPacientes()" [(ngModel)]="documento" name="buscador"
-                           placeholder="Ingrese un documento" prefix="account-search">
+                           placeholder="Ingrese un documento o un email" prefix="account-search">
                 </plex-text>
             </div>
         </div>
@@ -165,7 +165,8 @@
                                                 <span *ngIf="mensaje?.phone">
                                                     <plex-icon name="cellphone-android"></plex-icon>
                                                     {{mensaje.phone}}
-                                                </span> </td>
+                                                </span>
+                                            </td>
                                             <td>{{mensaje.status}}</td>
                                             <td><span
                                                       *ngIf="mensaje.extras && mensaje.extras.codigo">{{mensaje.extras.codigo}}</span>
