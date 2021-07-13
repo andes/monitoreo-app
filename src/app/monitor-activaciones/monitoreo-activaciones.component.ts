@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
 })
 export class MonitoreoActivacionesComponent implements OnInit {
     loader = false;
-    documento: number;
+    documento: string;
+    email: string;
     resultadoBusqueda;
     resultadoMensajes;
     pacienteApp: IPacienteApp;
@@ -58,12 +59,22 @@ export class MonitoreoActivacionesComponent implements OnInit {
     public loadPacientes() {
         this.onSearchStart();
         if (this.documento != null) {
-            this.searchClear = false;
-            this.pacienteAppService.get({ documento: this.documento }).subscribe(
-                datos => {
-                    this.onSearchEnd(datos);
-                }
-            );
+            if (!isNaN(parseInt(this.documento, 10))) {
+                this.searchClear = false;
+                this.pacienteAppService.get({ documento: this.documento }).subscribe(
+                    datos => {
+                        this.onSearchEnd(datos);
+                    }
+                );
+            } else {
+                this.searchClear = false;
+                this.email = this.documento.toString();
+                this.pacienteAppService.get({ email: this.email }).subscribe(
+                    datos => {
+                        this.onSearchEnd(datos);
+                    }
+                );
+            }
         } else {
             this.onSearchEnd([]);
             this.onSearchClear();
