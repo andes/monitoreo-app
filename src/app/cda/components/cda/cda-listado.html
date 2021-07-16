@@ -18,6 +18,7 @@
                 <plex-label size="sm"
                             *ngIf="!cda.organizacion.nombre || cda.organizacion.nombre === '' || cda.organizacion.nombre === '-'">
                     N/D</plex-label>
+                <plex-button size="sm" label="" icon="delete" type="danger" (click)="deleteCda(cda)"></plex-button>
             </plex-item>
         </ng-container>
     </plex-list>

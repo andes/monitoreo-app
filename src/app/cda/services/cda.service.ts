@@ -17,4 +17,8 @@ export class CdaService {
     regenerarCda(params: any): Observable<any[]> {
         return this.server.post(`${this.CDAUrl}paciente`, params);
     }
+
+    deleteCda(idCda) {
+        return this.server.delete(`${this.CDAUrl}/${idCda}`);
+    }
 }
