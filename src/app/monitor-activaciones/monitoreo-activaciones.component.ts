@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
 export class MonitoreoActivacionesComponent implements OnInit {
     loader = false;
     documento: string;
-    email: string;
     resultadoBusqueda;
     resultadoMensajes;
     pacienteApp: IPacienteApp;
@@ -59,27 +58,25 @@ export class MonitoreoActivacionesComponent implements OnInit {
     public loadPacientes() {
         this.onSearchStart();
         if (this.documento != null) {
-            if (!isNaN(parseInt(this.documento, 10))) {
-                this.searchClear = false;
-                this.pacienteAppService.get({ documento: this.documento }).subscribe(
-                    datos => {
-                        this.onSearchEnd(datos);
-                    }
-                );
-            } else {
-                this.searchClear = false;
-                this.email = this.documento.toString();
-                this.pacienteAppService.get({ email: this.email }).subscribe(
-                    datos => {
-                        this.onSearchEnd(datos);
-                    }
-                );
-            }
+            this.searchClear = false;
+            const params = this.getQueryParams();
+            this.pacienteAppService.get(params).subscribe(
+                datos => {
+                    this.onSearchEnd(datos);
+                }
+            );
         } else {
             this.onSearchEnd([]);
             this.onSearchClear();
         }
+    }
 
+    private getQueryParams() {
+        if (!isNaN(parseInt(this.documento, 10))) {
+            return { documento: this.documento };
+        } else {
+            return { email: this.documento.toString() };
+        }
     }
 
     public loadMensajes(email: string) {
