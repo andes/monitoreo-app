@@ -4,6 +4,7 @@ import { Plex } from '@andes/plex';
 import { Router } from '@angular/router';
 import { CdaService } from '../services/cda.service';
 import { Auth } from '@andes/auth';
+import { forkJoin } from 'rxjs';
 
 
 const sizeSide = 12;
@@ -29,7 +30,7 @@ export class RegenerarRegistrosComponent implements OnInit {
         private router: Router,
         private cdaService: CdaService,
         private auth: Auth,
-        private registarVacunas: VacunasService) {
+        private vacunasService: VacunasService) {
     }
 
     ngOnInit() {
@@ -78,7 +79,7 @@ export class RegenerarRegistrosComponent implements OnInit {
     registrarVacunas() {
         // deshabilitamos boton registrar vacunas por unos segundos
         this.disabledBtnVacunas = true;
-        this.registarVacunas.registrarVacunas({ paciente: this.pacienteSelected }).subscribe((resultado: any) => {
+        this.vacunasService.registrarVacunas({ paciente: this.pacienteSelected }).subscribe((resultado: any) => {
             if (resultado.success) {
                 this.plex.toast('success', 'Las vacunas han sido registradas con éxito.');
             }
@@ -92,5 +93,21 @@ export class RegenerarRegistrosComponent implements OnInit {
                 this.listaCDA = resp;
             }
         });
+    }
+
+    // Borra la vacuna seleccionada y su cda
+    deleteRegistro(event) {
+        if (event) {
+            forkJoin([
+                this.vacunasService.deleteVacuna(event.extras.id),
+                this.cdaService.deleteCda(event.cda_id)
+            ]).subscribe((resp: any) => {
+                if (resp.success) {
+                    this.plex.toast('success', 'Registro eliminado con éxito');
+                }
+            }, error => {
+                this.plex.toast('danger', 'Ha habido un error realizando la operación');
+            });
+        }
     }
 }

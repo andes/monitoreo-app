@@ -23,6 +23,12 @@ export class CDAListadoComponent {
      */
     @Input() type: 'default' | 'sm' = 'default';
 
+    @Output() delete: EventEmitter<any> = new EventEmitter<any>();
+
     constructor(private plex: Plex) {
+    }
+
+    deleteCda(cda) {
+        this.delete.emit(cda);
     }
 }
