@@ -73,9 +73,9 @@ export class MonitoreoActivacionesComponent implements OnInit {
 
     private getQueryParams() {
         if (!isNaN(parseInt(this.documento, 10))) {
-            return { documento: this.documento };
+            return { documento: '^' + this.documento };
         } else {
-            return { email: this.documento.toString() };
+            return { email: '^' + this.documento.toString() };
         }
     }
 
