@@ -4,7 +4,8 @@ import { Plex } from '@andes/plex';
 import { Router } from '@angular/router';
 import { CdaService } from '../services/cda.service';
 import { Auth } from '@andes/auth';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { switchMap, mergeMap, map, find } from 'rxjs/operators';
 
 
 const sizeSide = 12;
@@ -88,25 +89,38 @@ export class RegenerarRegistrosComponent implements OnInit {
     }
 
     refreshCDA() {
-        this.cdaService.getCDAList(this.pacienteSelected.id).subscribe(resp => {
-            if (resp) {
-                this.listaCDA = resp;
-            }
+        forkJoin(
+            this.cdaService.getCDAList(this.pacienteSelected.id),
+            this.vacunasService.get(this.pacienteSelected.id)
+        ).subscribe(([cda, vacunas]) => {
+            let listado = [];
+            cda.map(cda => {
+                let vacunaCorrespondiente = vacunas.find(vac => vac.idvacuna.toString() === cda.extras.id);
+                if (vacunaCorrespondiente) {
+                    listado.push({ cda, vacuna: vacunaCorrespondiente });
+                }
+            });
+            this.listaCDA = listado;
         });
     }
 
     // Borra la vacuna seleccionada y su cda
     deleteRegistro(event) {
         if (event) {
-            forkJoin([
-                this.vacunasService.deleteVacuna(event.extras.id),
-                this.cdaService.deleteCda(event.cda_id)
-            ]).subscribe((resp: any) => {
-                if (resp.success) {
-                    this.plex.toast('success', 'Registro eliminado con éxito');
+            this.plex.confirm(event.vacuna.vacuna + ' ' + event.vacuna.dosis, '¿Desea eliminar?').then(confirmacion => {
+                if (confirmacion) {
+                    forkJoin([
+                        this.vacunasService.deleteVacuna(event.cda.extras.id),
+                        this.cdaService.deleteCda(event.cda.cda_id)
+                    ]).subscribe(([vacuna, cda]) => {
+                        if (vacuna.success && cda.success) {
+                            this.refreshCDA();
+                            this.plex.toast('success', 'Registro eliminado con éxito');
+                        }
+                    }, error => {
+                        this.plex.info('danger', 'Ha habido un error realizando la operación');
+                    });
                 }
-            }, error => {
-                this.plex.toast('danger', 'Ha habido un error realizando la operación');
             });
         }
     }
