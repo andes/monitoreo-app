@@ -9,6 +9,10 @@ export class VacunasService {
 
     constructor(private server: Server) { }
 
+    get(idPaciente: string): Observable<any[]> {
+        return this.server.get(`${this.VacunasUrl}/paciente/${idPaciente}`);
+    }
+
     registrarVacunas(params: any): Observable<any[]> {
         return this.server.post(`${this.VacunasUrl}/paciente`, params);
     }

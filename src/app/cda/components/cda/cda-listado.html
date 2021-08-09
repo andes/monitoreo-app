@@ -1,25 +1,15 @@
-<div *ngIf="type == 'sm' && listado && listado.length">
-    <plex-list [striped]="true">
-        <plex-heading>
-            <b label>Fecha</b>
-            <b label>Tipo prestación</b>
-            <b label>Efector</b>
-        </plex-heading>
-        <ng-container *ngFor="let cda of listado , let i = index">
-            <plex-item>
-                <plex-label *ngIf="cda.fecha && cda.fecha !== ''" size="sm">{{cda.fecha | fecha:'utc'}} </plex-label>
-                <plex-label *ngIf="!cda.fecha || cda.fecha === ''" size="sm">N/D</plex-label>
-                <plex-label *ngIf="cda.prestacion.snomed.term !== null" size="sm">{{ cda.prestacion.snomed.term}}
-                </plex-label>
-                <plex-label *ngIf="cda.prestacion.snomed.term === null" size="sm">N/D</plex-label>
-                <plex-label size="sm"
-                            *ngIf="cda.organizacion?.nombre && cda.organizacion.nombre !== '' && cda.organizacion.nombre !== '-'">
-                    {{cda.organizacion.nombre}}</plex-label>
-                <plex-label size="sm"
-                            *ngIf="!cda.organizacion.nombre || cda.organizacion.nombre === '' || cda.organizacion.nombre === '-'">
-                    N/D</plex-label>
-                <plex-button size="sm" label="" icon="delete" type="danger" (click)="deleteCda(cda)"></plex-button>
-            </plex-item>
-        </ng-container>
-    </plex-list>
-</div>
+<plex-list [striped]="true">
+    <ng-container *ngFor="let reg of listado , let i = index">
+        <plex-item>
+            <plex-label titulo="Fecha" subtitulo="{{ (reg.cda.fecha | fecha:'utc') || 'N/D' }}"> </plex-label>
+            <plex-label *ngIf="reg.cda && reg.vacuna" titulo="Descripción" subtitulo="{{ reg.cda.prestacion.snomed.term }}:
+                {{ reg.vacuna.vacuna }},
+                {{ reg.vacuna.dosis }}">
+            </plex-label>
+            <plex-label *ngIf="!reg.cda || !reg.vacuna" titulo="Descripción" subtitulo="N/D"></plex-label>
+            <plex-label titulo="Organización" subtitulo="{{ (reg.cda.organizacion.nombre) || 'N/D' }}">
+            </plex-label>
+            <plex-button size="sm" label="" icon="delete" type="danger" (click)="deleteCda(reg)"></plex-button>
+        </plex-item>
+    </ng-container>
+</plex-list>
