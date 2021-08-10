@@ -93,11 +93,11 @@ export class RegenerarRegistrosComponent implements OnInit {
             this.cdaService.getCDAList(this.pacienteSelected.id),
             this.vacunasService.get(this.pacienteSelected.id)
         ).subscribe(([cda, vacunas]) => {
-            let listado = [];
-            cda.map(cda => {
-                let vacunaCorrespondiente = vacunas.find(vac => vac.idvacuna.toString() === cda.extras.id);
+            const listado = [];
+            cda.map(itemCda => {
+                const vacunaCorrespondiente = vacunas.find(vac => vac.idvacuna.toString() === itemCda.extras.id);
                 if (vacunaCorrespondiente) {
-                    listado.push({ cda, vacuna: vacunaCorrespondiente });
+                    listado.push({ cda: itemCda, vacuna: vacunaCorrespondiente });
                 }
             });
             this.listaCDA = listado;
