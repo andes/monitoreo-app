@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { Plex, PlexModule } from '@andes/plex';
+import { Plex, PlexModule, PlexVisualizadorService } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -69,7 +69,8 @@ import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-
     SendMessageCacheService,
     WebhookLogService,
     ModulosService,
-    FuentesAutenticasService
+    FuentesAutenticasService,
+    PlexVisualizadorService
   ],
   bootstrap: [AppComponent]
 })

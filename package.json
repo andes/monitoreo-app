@@ -14,7 +14,7 @@
   "dependencies": {
     "@andes/auth": "^7.0.0",
     "@andes/icons": "^1.1.4",
-    "@andes/plex": "^7.9.0",
+    "@andes/plex": "^7.18.2",
     "@andes/shared": "^6.0.0",
     "@angular/animations": "~9.1.12",
     "@angular/cdk": "^9.2.4",
