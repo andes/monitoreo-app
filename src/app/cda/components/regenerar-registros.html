@@ -15,17 +15,16 @@
     </plex-layout-main>
     <plex-layout-sidebar>
         <plex-title titulo="Registros del paciente" size="sm" main>
-            <plex-button label="refrescar" type="primary" size="sm" (click)="refreshCDA()"></plex-button>
+            <plex-button label="refrescar" type="primary" size="sm" [autodisabled]="true" (click)="refreshCDA()"></plex-button>
             <plex-button [disabled]="disabledBtnCDA" label="regenerar" type="success" size="sm"
                          (click)="regenerarCDA()">
             </plex-button>
-            <plex-button [disabled]="disabledBtnVacunas" label="registrar vacunas" type="warning" size="sm"
+            <plex-button [disabled]="disabledBtnVacunas" label="registrar vacunas" type="warning" size="sm" [autodisabled]="true"
                          (click)="registrarVacunas()">
             </plex-button>
         </plex-title>
 
-        <app-cda-listado *ngIf="listaCDA && listaCDA.length; else mostrarVacio" [listaCda]="listaCDA"
-                         (delete)="deleteRegistro($event)">
+        <app-cda-listado *ngIf="listaCDA && listaCDA.length; else mostrarVacio" [listaCda]="listaCDA">
         </app-cda-listado>
         <ng-template #mostrarVacio>
             <div>
