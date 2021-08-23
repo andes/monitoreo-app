@@ -16,8 +16,4 @@ export class VacunasService {
     registrarVacunas(params: any): Observable<any[]> {
         return this.server.post(`${this.VacunasUrl}/paciente`, params);
     }
-
-    deleteVacuna(idVacuna: string) {
-        return this.server.delete(`${this.VacunasUrl}/${idVacuna}`);
-    }
 }

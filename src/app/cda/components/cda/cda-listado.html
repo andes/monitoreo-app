@@ -9,7 +9,6 @@
             <plex-label *ngIf="!reg.cda || !reg.vacuna" titulo="Descripción" subtitulo="N/D"></plex-label>
             <plex-label titulo="Organización" subtitulo="{{ (reg.cda.organizacion.nombre) || 'N/D' }}">
             </plex-label>
-            <plex-button size="sm" label="" icon="delete" type="danger" (click)="deleteCda(reg)"></plex-button>
         </plex-item>
     </ng-container>
 </plex-list>

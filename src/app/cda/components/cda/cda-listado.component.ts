@@ -27,8 +27,4 @@ export class CDAListadoComponent {
 
     constructor(private plex: Plex) {
     }
-
-    deleteCda(cda) {
-        this.delete.emit(cda);
-    }
 }
