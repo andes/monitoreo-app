@@ -1,5 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Plex } from '@andes/plex';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-cda-listado',
@@ -23,8 +22,6 @@ export class CDAListadoComponent {
      */
     @Input() type: 'default' | 'sm' = 'default';
 
-    @Output() delete: EventEmitter<any> = new EventEmitter<any>();
-
-    constructor(private plex: Plex) {
+    constructor() {
     }
 }
