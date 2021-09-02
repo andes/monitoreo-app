@@ -94,9 +94,7 @@ export class RegenerarRegistrosComponent implements OnInit {
             const listado = [];
             cda.map(itemCda => {
                 const vacunaCorrespondiente = vacunas.find(vac => vac.idvacuna.toString() === itemCda.extras.id);
-                if (vacunaCorrespondiente) {
-                    listado.push({ cda: itemCda, vacuna: vacunaCorrespondiente });
-                }
+                listado.push({ cda: itemCda, vacuna: vacunaCorrespondiente });
             });
             this.listaCDA = listado;
         });

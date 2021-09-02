@@ -2,11 +2,11 @@
     <ng-container *ngFor="let reg of listado , let i = index">
         <plex-item>
             <plex-label titulo="Fecha" subtitulo="{{ (reg.cda.fecha | fecha:'utc') || 'N/D' }}"> </plex-label>
-            <plex-label *ngIf="reg.cda && reg.vacuna" titulo="Descripción" subtitulo="{{ reg.cda.prestacion.snomed.term }}:
+            <plex-label *ngIf="reg.vacuna" titulo="Descripción" subtitulo="
                 {{ reg.vacuna.vacuna }},
                 {{ reg.vacuna.dosis }}">
             </plex-label>
-            <plex-label *ngIf="!reg.cda || !reg.vacuna" titulo="Descripción" subtitulo="N/D"></plex-label>
+            <plex-label *ngIf="!reg.vacuna" titulo="Descripción" subtitulo="{{ reg.cda.prestacion.snomed.term }}"></plex-label>
             <plex-label titulo="Organización" subtitulo="{{ (reg.cda.organizacion.nombre) || 'N/D' }}">
             </plex-label>
         </plex-item>
