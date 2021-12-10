@@ -24,6 +24,11 @@
                                      name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                      [required]="argumento.required" (getData)="loadOrganizaciones($event)">>
                         </plex-select>
+                        <plex-select *ngSwitchCase="'unidadOrganizativa'" [label]="argumento.key" grow="full"
+                                     name="{{ argumento.key }}" labelField="term"
+                                     [(ngModel)]="listaValores[argumento.key]" [required]="argumento.required"
+                                     (getData)="loadUnidadesOrganizativas($event)">
+                        </plex-select>
                         <plex-select *ngSwitchCase="'conceptoTurneable'" [label]="argumento.key" grow="full"
                                      name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                      [required]="argumento.required" (getData)="loadConceptosTurneables($event)">>
