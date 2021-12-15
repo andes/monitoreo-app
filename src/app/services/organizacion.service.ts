@@ -16,4 +16,8 @@ export class OrganizacionService {
         return this.server.get(this.organizacionUrl, { params: { params }, showError: true });
     }
 
+    unidadesOrganizativas(id: string) {
+        return this.server.get(`${this.organizacionUrl}/${id}/unidadesOrganizativas`);
+    }
+
 }

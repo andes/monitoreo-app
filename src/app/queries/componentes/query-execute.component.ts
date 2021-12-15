@@ -102,6 +102,16 @@ export class QueryExecuteComponent implements OnInit {
         }
     }
 
+    loadUnidadesOrganizativas(event) {
+        if (this.listaValores?.organizacion && event.query) {
+            const organizacion = this.listaValores.organizacion.id;
+            this.servicioOrganizacion.unidadesOrganizativas(organizacion).subscribe(resultado => {
+                event.callback(resultado);
+            });
+        } else {
+            event.callback([]);
+        }
+    }
     mostrarError() {
         this.plex.info('warning', 'En este momento no podemos procesar su pedido, intentelo más tarde', 'Error al obtener Queries');
     }
