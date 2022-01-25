@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Auth } from '@andes/auth';
 import { Plex } from '@andes/plex';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
-import { QueriesGeneratorService } from '../services/query-generator.service';
 import { Slug } from 'ng2-slugify';
 import { ConceptoTruneableService } from '../../conceptos-turneables/services/concepto-turneable.service';
 import { OrganizacionService } from '../../services/organizacion.service';
-import { Router } from '@angular/router';
-import { Auth } from '@andes/auth';
+import { QueriesGeneratorService } from '../services/query-generator.service';
 
 @Component({
     selector: 'app-query-execute',
@@ -52,12 +52,13 @@ export class QueryExecuteComponent implements OnInit {
             this.listaArgumentos.forEach(arg => {
                 const key = arg.key;
                 const valor = this.listaValores[key];
+                const idField = arg.idField || 'id';
                 params[key] = valor;
                 if (valor instanceof Date) {
                     params[key] = moment(valor).format();
                 }
-                if (valor && valor.id) {  // select
-                    params[key] = valor.id;
+                if (valor && valor[idField]) {  // select
+                    params[key] = valor[idField];
                 }
 
             });
