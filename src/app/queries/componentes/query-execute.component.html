@@ -4,6 +4,7 @@
             <plex-button size="sm" type="success" (click)="descargar($event)" [validateForm]="formulario">
                 Descargar CSV
             </plex-button>
+            
         </plex-title>
         <form #formulario="ngForm">
             <plex-wrapper>
@@ -11,39 +12,45 @@
                              labelField="nombre" label="Seleccione consulta" (change)="elegirConsulta()" idField="_id">
                 </plex-select>
             </plex-wrapper>
-            <ng-container *ngIf="selectConsulta; else noQuerySelected">
+            <ng-container *ngIf="selectConsulta">
                 <span *ngIf='selectConsulta.descripcion'><b>Descripción: </b> {{ selectConsulta.descripcion }}</span>
                 <plex-title titulo="Argumentos"></plex-title>
                 <plex-wrapper>
                     <ng-container *ngFor="let argumento of selectConsulta.argumentos" [ngSwitch]="argumento.tipo">
-                        <plex-datetime *ngSwitchCase="'date'" [label]="argumento.key" grow="full"
+                        <plex-datetime *ngSwitchCase="'date'" [label]="argumento.key" grow="auto"
                                        name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                        [required]="argumento.required">
                         </plex-datetime>
-                        <plex-select *ngSwitchCase="'organizacion'" [label]="argumento.key" grow="full"
+                        <plex-select *ngSwitchCase="'organizacion'" [label]="argumento.key" grow="2"
                                      name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                      [required]="argumento.required" (getData)="loadOrganizaciones($event)">>
                         </plex-select>
-                        <plex-select *ngSwitchCase="'unidadOrganizativa'" [label]="argumento.key" grow="full"
+                        <plex-select *ngSwitchCase="'unidadOrganizativa'" [label]="argumento.key" grow="2"
                                      name="{{ argumento.key }}" labelField="term"
                                      [(ngModel)]="listaValores[argumento.key]" [required]="argumento.required"
                                      (getData)="loadUnidadesOrganizativas($event)">
                         </plex-select>
-                        <plex-select *ngSwitchCase="'conceptoTurneable'" [label]="argumento.key" grow="full"
+                        <plex-select *ngSwitchCase="'conceptoTurneable'" [label]="argumento.key" grow="2"
                                      name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                      [required]="argumento.required" (getData)="loadConceptosTurneables($event)">>
                         </plex-select>
-                        <plex-text *ngSwitchCase="'string'" [label]="argumento.key" grow="full"
+                        <plex-select *ngSwitchCase="'select-static'"
+                                [label]="argumento.label?argumento.label:argumento.key" grow="auto"
+                                name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
+                                [required]="argumento.required" [data]="argumento.items">
+                        </plex-select>
+                        <plex-text *ngSwitchCase="'string'" [label]="argumento.key" grow="2"
                                    name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
                                    [required]="argumento.required">
                         </plex-text>
                     </ng-container>
                 </plex-wrapper>
             </ng-container>
-            <ng-template #noQuerySelected>
-                <h5>Seleccione una consulta para ejecutarla</h5>
-            </ng-template>
-
         </form>
+        <div justify="center" class="h-75">
+            <plex-label *ngIf="!selectConsulta" titulo="Comience seleccionando una consulta" direction="column"
+                        subtitulo="Complete los filtros requeridos y presione en el boton Descargar CSV para obtener su reporte "
+                        type="default" size="xl" icon="arrow-up"></plex-label>
+        </div>
     </plex-layout-main>
 </plex-layout>
