@@ -54,6 +54,13 @@
                         </tr>
 
                         <tr>
+                            <td>
+                                <plex-select [multiple]="true" [readonly]="!editable"  [(ngModel)]="ambitoActual"  [data]="ambitos" label-field="nombre" 
+                                placeholder="Seleccione los ambitos" >
+                                </plex-select>
+                            </td>
+                        </tr>
+                        <tr>
                             <td *ngIf="!editable">
                                 <strong>Nominalizada:</strong>
                                 <plex-text *ngIf="!conceptoTurneable.noNominalizada" [(ngModel)]="paraTrue"

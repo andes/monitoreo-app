@@ -16,6 +16,9 @@ export class DetalleConceptoTurneableComponent implements OnInit {
     editable = false;
     paraFalse = 'NO';
     paraTrue = 'SI';
+    public ambitoActual;
+    public ambito;
+    public ambitos: any[];
 
     constructor(
         public plex: Plex,
@@ -26,14 +29,20 @@ export class DetalleConceptoTurneableComponent implements OnInit {
         this.asignarAtributos();
     }
 
+    ngOnChange() {
+        console.log("en on chane");
+        this.asignarAtributos();
+    }
+
     editar() {
-        if (this.conceptoTurneable && this.conceptoTurneable.id) {
+         if (this.conceptoTurneable && this.conceptoTurneable.id) {
             this.plex.confirm('Guardar cambios de concepto turneable "' +
                 this.conceptoTurneable.conceptId + '"', '¿Desea guardar cambios?').then(confirmacion => {
                     if (confirmacion) {
                         const cambios = {
                             noNominalizada: !this.nominalizada,
                             auditable: this.auditable,
+                            ambito: this.objectSelect2array(this.ambitoActual),
                         };
                         this.toggleEdicion();
                         this.editarConceptoTurneable.emit(cambios);
@@ -60,6 +69,19 @@ export class DetalleConceptoTurneableComponent implements OnInit {
         } else {
             this.auditable = false;
         }
+        // set selections options of ambito
+        this.ambitos = [
+            {
+                id: 'ambulatorio',
+                nombre: 'AMBULATIORIO'
+            },
+            {
+                id: 'internacion',
+                nombre: 'INTERNACION'
+            }
+        ];
+        // save previus state of ambito
+        this.ambitoActual = this.array2objectSelect(this.conceptoTurneable.ambito);
     }
 
     cancelar() {
@@ -71,7 +93,53 @@ export class DetalleConceptoTurneableComponent implements OnInit {
         this.editable = !this.editable;
     }
 
+    // convert a array to an select object 
+    array2objectSelect(my_array){
+        let result = [];
+        try{
+            if ( !Array.isArray(my_array ) ) return result
+        }
+        catch { return result }
+        result = my_array.map(e => ({id:e, nombre:e.toUpperCase()}));
+        return result
+    }
+
+    // convert a select object to an array
+    objectSelect2array(my_objectSelect){
+        let result = [];        
+        try{
+            if ( !Array.isArray(my_objectSelect) ) return result
+        }
+        catch { return result }
+        result = my_objectSelect.map(e => e.id)
+        return result
+    }
+
+    // compare to arrays and return true if contains equals elements
+    arrayEquals(arr1,arr2) {
+        let equal = false
+        try{
+            if ( !Array.isArray(arr1) || !Array.isArray(arr1)) return equal
+        }
+        catch { return equal }
+        if ( arr1.length === arr2.length ){
+          arr1 = arr1.sort();
+          arr2 = arr2.sort();
+          equal = arr1.every((value, index) => value === arr2[index]);
+        }
+        return equal
+    }
+
+
     hayCambios() {
-        return ((this.conceptoTurneable.noNominalizada !== !this.nominalizada) || (this.conceptoTurneable.auditable !== this.auditable));
+        console.log("hayCambios: select "+JSON.stringify(this.objectSelect2array(this.ambitoActual)));
+        console.log("hayCambios: model "+JSON.stringify(this.conceptoTurneable.ambito));
+        console.log("hayCambios: equal "+!this.arrayEquals(this.conceptoTurneable.ambito,this.objectSelect2array(this.ambitoActual)));
+        
+        return (
+            (this.conceptoTurneable.noNominalizada !== !this.nominalizada) || 
+            (this.conceptoTurneable.auditable !== this.auditable) ||
+            (!this.arrayEquals(this.conceptoTurneable.ambito,this.objectSelect2array(this.ambitoActual)))
+        );
     }
 }

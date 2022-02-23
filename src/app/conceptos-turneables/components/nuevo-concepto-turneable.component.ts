@@ -24,6 +24,7 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         semanticTag: null,
         noNominalizada: null,
         auditable: null,
+        ambito: null,
     };
     nominalizada = false;
     auditable = false;
@@ -68,6 +69,8 @@ export class NuevoConceptoTurneableComponent implements OnInit {
     }
 
     onRowClick(concepto: IConceptoTurneable) {
+
+
         if (!this.conceptoSnomedSeleccionado || this.conceptoSnomedSeleccionado.id !== concepto.id) {
             this.conceptoSnomedSeleccionado = concepto;
             this.nuevoConceptoTurneable.conceptId = this.conceptoSnomedSeleccionado.conceptId;

@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
     selector: 'app-conceptos-turneables',
     templateUrl: './conceptos-turneables.component.html',
 })
+
+ 
 export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     public conceptosTurneables: IConceptoTurneable[];
     public conceptoSeleccionado: IConceptoTurneable;
@@ -19,7 +21,6 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     agregando = false;
     conceptID: string;
     term: string;
-
     constructor(
         public plex: Plex,
         private conceptoTurneableService: ConceptoTruneableService,
@@ -40,6 +41,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
 
     public buscar() {
         // Cancela la búsqueda anterior
+
         if (this.timeoutHandle) {
             window.clearTimeout(this.timeoutHandle);
             this.loading = false;
@@ -55,7 +57,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
                 this.timeoutHandle = null;
                 this.conceptoTurneableService.get({
                     conceptId: this.conceptID,
-                    term: '^' + this.term
+                    term: '^' + this.term,
                 }).subscribe(
                     resultado => {
                         this.loading = false;
@@ -73,6 +75,10 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     }
 
     onRowClick(concepto: IConceptoTurneable) {
+
+        console.log("model "+(JSON.stringify(this.conceptoSeleccionado)));
+      
+
         if (!this.conceptoSeleccionado || this.conceptoSeleccionado.id !== concepto.id) {
             this.agregando = false;
             this.conceptoSeleccionado = concepto;
@@ -94,7 +100,6 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     }
 
     onAgregarConceptoTurneable(conceptoTurneable) {
-        console.log(conceptoTurneable);
         this.plex.confirm('Agregar concepto turneable "' + conceptoTurneable.term + '"', '¿Desea agregar?').then(confirmacion => {
             if (confirmacion) {
                 this.conceptoTurneableService.post(conceptoTurneable).subscribe(resultado => {
@@ -118,6 +123,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
                     concepto = resultado;
                 }
             });
+            this.buscar();
         });
     }
 
