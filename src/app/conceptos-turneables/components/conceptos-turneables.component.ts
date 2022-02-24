@@ -75,10 +75,6 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     }
 
     onRowClick(concepto: IConceptoTurneable) {
-
-        console.log("model "+(JSON.stringify(this.conceptoSeleccionado)));
-      
-
         if (!this.conceptoSeleccionado || this.conceptoSeleccionado.id !== concepto.id) {
             this.agregando = false;
             this.conceptoSeleccionado = concepto;
