@@ -29,8 +29,7 @@ export class DetalleConceptoTurneableComponent implements OnInit {
         this.asignarAtributos();
     }
 
-    ngOnChange() {
-        console.log("en on chane");
+    ngOnChanges() {
         this.asignarAtributos();
     }
 
@@ -132,10 +131,6 @@ export class DetalleConceptoTurneableComponent implements OnInit {
 
 
     hayCambios() {
-        console.log("hayCambios: select "+JSON.stringify(this.objectSelect2array(this.ambitoActual)));
-        console.log("hayCambios: model "+JSON.stringify(this.conceptoTurneable.ambito));
-        console.log("hayCambios: equal "+!this.arrayEquals(this.conceptoTurneable.ambito,this.objectSelect2array(this.ambitoActual)));
-        
         return (
             (this.conceptoTurneable.noNominalizada !== !this.nominalizada) || 
             (this.conceptoTurneable.auditable !== this.auditable) ||
