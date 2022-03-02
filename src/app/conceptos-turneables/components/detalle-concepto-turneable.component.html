@@ -1,16 +1,12 @@
 <ng-container>
     <plex-title *ngIf="conceptoTurneable.id && !editable" titulo="Detalle Concepto">
+        <plex-button label="Eliminar" type="danger" (click)="eliminar()"></plex-button>
         <plex-button label="Editar" type="warning" (click)="toggleEdicion()"></plex-button>
-        <plex-button label="Eliminar" type="danger" (click)="eliminar()">
-        </plex-button>
     </plex-title>
     <plex-title *ngIf="conceptoTurneable.id && editable" titulo="Editar Concepto">
-        <plex-button *ngIf="hayCambios()" label="Guardar" type="success" (click)="editar()" >
-        </plex-button>
-        <plex-button *ngIf="!hayCambios()" label="Guardar" type="success" [disabled]="true">
-            </plex-button>
-        <plex-button label="Cancelar" type="danger" (click)="cancelar()">
-        </plex-button>
+        <plex-button label="Cancelar" type="danger" (click)="cancelar()"></plex-button>
+        <plex-button [disabled]="!hayCambios()" label="Guardar" type="success" (click)="editar()" ></plex-button>
+        <!-- <plex-button *ngIf="!hayCambios()" label="Guardar" type="success" [disabled]="true"></plex-button> -->
     </plex-title>
     <div class="row">
         <div class="col">
@@ -55,6 +51,7 @@
 
                         <tr>
                             <td>
+                                <strong>Ambito:</strong>
                                 <plex-select [multiple]="true" [readonly]="!editable"  [(ngModel)]="ambitoActual"  [data]="ambitos" label-field="nombre" 
                                 placeholder="Seleccione los ambitos" >
                                 </plex-select>
