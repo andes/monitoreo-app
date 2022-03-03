@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     templateUrl: './conceptos-turneables.component.html',
 })
 
- 
+
 export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     public conceptosTurneables: IConceptoTurneable[];
     public conceptoSeleccionado: IConceptoTurneable;

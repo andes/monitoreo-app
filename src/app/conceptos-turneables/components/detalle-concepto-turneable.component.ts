@@ -19,7 +19,7 @@ export class DetalleConceptoTurneableComponent implements OnInit {
     public ambitoActual;
     public ambito;
     public ambitos: any[];
-
+    
     constructor(
         public plex: Plex,
     ) {
