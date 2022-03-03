@@ -32,44 +32,44 @@ import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/component
 import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-autenticas.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    WebHookComponent,
-    WebhookLogComponent,
-    ConceptosTurneablesComponent,
-    DetalleConceptoTurneableComponent,
-    NuevoConceptoTurneableComponent,
-    MonitoreoActivacionesComponent,
-    BuscadorSnomedComponent,
-    EstadoFuentesAutenticasComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    PlexModule.forRoot({ networkLoading: true }),
-    routing,
-    AuthModule,
-    InfiniteScrollModule,
-    ModulosModule,
-    NoopAnimationsModule
-  ],
-  providers: [
-    Server,
-    Auth,
-    HttpClient,
-    RoutingGuard,
-    RoutingNavBar,
-    WebHookService,
-    ConceptoTruneableService,
-    PacienteAppService,
-    OrganizacionService,
-    SendMessageCacheService,
-    WebhookLogService,
-    ModulosService,
-    FuentesAutenticasService
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        WebHookComponent,
+        WebhookLogComponent,
+        ConceptosTurneablesComponent,
+        DetalleConceptoTurneableComponent,
+        NuevoConceptoTurneableComponent,
+        MonitoreoActivacionesComponent,
+        BuscadorSnomedComponent,
+        EstadoFuentesAutenticasComponent
     ],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        PlexModule.forRoot({ networkLoading: true }),
+        routing,
+        AuthModule,
+        InfiniteScrollModule,
+        ModulosModule,
+        NoopAnimationsModule
+    ],
+    providers: [
+        Server,
+        Auth,
+        HttpClient,
+        RoutingGuard,
+        RoutingNavBar,
+        WebHookService,
+        ConceptoTruneableService,
+        PacienteAppService,
+        OrganizacionService,
+        SendMessageCacheService,
+        WebhookLogService,
+        ModulosService,
+        FuentesAutenticasService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

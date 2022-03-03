@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class OrganizacionService {
-    private organizacionUrl = '/core/tm/organizaciones';  // URL to web api
+    private organizacionUrl = '/core/tm/organizaciones'; // URL to web api
     constructor(public server: Server) { }
 
     @Cache({ key: true })

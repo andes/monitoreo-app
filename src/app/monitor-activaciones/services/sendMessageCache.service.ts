@@ -6,7 +6,7 @@ import { Server } from '@andes/shared';
 @Injectable()
 export class SendMessageCacheService {
 
-    private sendMessageCacheUrl = '/modules/mobileApp/sendMessageCache';  // URL to web api
+    private sendMessageCacheUrl = '/modules/mobileApp/sendMessageCache'; // URL to web api
 
     constructor(private server: Server) { }
 

@@ -17,7 +17,7 @@ const sizeSide = 12;
 export class RegenerarRegistrosComponent implements OnInit {
     listaPacientes: any = [];
     loading = false;
-    searchClear = true;    // True si el campo de búsqueda se encuentra vacío
+    searchClear = true; // True si el campo de búsqueda se encuentra vacío
     side = sizeSide;
     pacienteSelected = null;
     listaCDA = [];

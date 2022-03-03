@@ -35,7 +35,7 @@ export class AppComponent {
             this.auth.organizaciones().subscribe(data => {
                 if (data.length > 1) {
                     this.menuList = [{ label: 'Seleccionar Organización', icon: 'hospital-building', route: '/login/select-organizacion' },
-                    ...this.menuList];
+                                     ...this.menuList];
                     this.plex.updateMenu(this.menuList);
                 }
             });

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
 
@@ -6,7 +6,7 @@ import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
     selector: 'app-concepto-turneable-detalle',
     templateUrl: './detalle-concepto-turneable.component.html',
 })
-export class DetalleConceptoTurneableComponent implements OnInit {
+export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     @Input() conceptoTurneable: IConceptoTurneable;
     @Output() eliminarConceptoTurneable = new EventEmitter<IConceptoTurneable>();
     @Output() editarConceptoTurneable = new EventEmitter<any>();
@@ -34,19 +34,19 @@ export class DetalleConceptoTurneableComponent implements OnInit {
     }
 
     editar() {
-         if (this.conceptoTurneable && this.conceptoTurneable.id) {
+        if (this.conceptoTurneable && this.conceptoTurneable.id) {
             this.plex.confirm('Guardar cambios de concepto turneable "' +
                 this.conceptoTurneable.conceptId + '"', '¿Desea guardar cambios?').then(confirmacion => {
-                    if (confirmacion) {
-                        const cambios = {
-                            noNominalizada: !this.nominalizada,
-                            auditable: this.auditable,
-                            ambito: this.objectSelect2array(this.ambitoActual),
-                        };
-                        this.toggleEdicion();
-                        this.editarConceptoTurneable.emit(cambios);
-                    }
-                });
+                if (confirmacion) {
+                    const cambios = {
+                        noNominalizada: !this.nominalizada,
+                        auditable: this.auditable,
+                        ambito: this.objectSelect2array(this.ambitoActual),
+                    };
+                    this.toggleEdicion();
+                    this.editarConceptoTurneable.emit(cambios);
+                }
+            });
         } else {
             this.plex.info('danger', 'No es posible editar este Concepto Turneable');
         }
@@ -92,49 +92,47 @@ export class DetalleConceptoTurneableComponent implements OnInit {
         this.editable = !this.editable;
     }
 
-    // convert a array to an select object 
-    array2objectSelect(my_array){
+    // convert a array to an select object
+    array2objectSelect(my_array) {
         let result = [];
-        try{
-            if ( !Array.isArray(my_array ) ) return result
-        }
-        catch { return result }
-        result = my_array.map(e => ({id:e, nombre:e.toUpperCase()}));
-        return result
+        try {
+            if ( !Array.isArray(my_array ) ) {return result;}
+        } catch { return result; }
+        result = my_array.map(e => ({ id:e, nombre:e.toUpperCase() }));
+        return result;
     }
 
     // convert a select object to an array
-    objectSelect2array(my_objectSelect){
-        let result = [];        
-        try{
-            if ( !Array.isArray(my_objectSelect) ) return result
-        }
-        catch { return result }
-        result = my_objectSelect.map(e => e.id)
-        return result
+    objectSelect2array(my_objectSelect) {
+        let result = [];
+        try {
+            if ( !Array.isArray(my_objectSelect) ) {return result;}
+        } catch { return result; }
+        result = my_objectSelect.map(e => e.id);
+        return result;
     }
 
     // compare to arrays and return true if contains equals elements
-    arrayEquals(arr1,arr2) {
-        let equal = false
-        try{
-            if ( !Array.isArray(arr1) || !Array.isArray(arr1)) return equal
+    arrayEquals(arr1, arr2) {
+        let equal = false;
+        try {
+            if ( !Array.isArray(arr1) || !Array.isArray(arr1)) {return equal;}
+        } catch { return equal; }
+        if ( arr1.length === arr2.length ) {
+            arr1 = arr1.sort();
+            arr2 = arr2.sort();
+            equal = arr1.every((value, index) => value === arr2[index]);
         }
-        catch { return equal }
-        if ( arr1.length === arr2.length ){
-          arr1 = arr1.sort();
-          arr2 = arr2.sort();
-          equal = arr1.every((value, index) => value === arr2[index]);
-        }
-        return equal
+        return equal;
     }
 
 
     hayCambios() {
         return (
-            (this.conceptoTurneable.noNominalizada !== !this.nominalizada) || 
+            (this.conceptoTurneable.noNominalizada !== !this.nominalizada) ||
             (this.conceptoTurneable.auditable !== this.auditable) ||
-            (!this.arrayEquals(this.conceptoTurneable.ambito,this.objectSelect2array(this.ambitoActual)))
+            (!this.arrayEquals(this.conceptoTurneable.ambito, this.objectSelect2array(this.ambitoActual)))
         );
     }
+
 }

@@ -26,7 +26,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         { id: 'ValorNumericoComponent', nombre: 'Valor Numerico' }
     ];
 
-    tipoAtomo: { id: string, nombre: string } = null;
+    tipoAtomo: { id: string; nombre: string } = null;
 
     titulo = 'Nuevo átomo';
     elementosRup = [];

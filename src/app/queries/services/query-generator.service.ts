@@ -7,7 +7,7 @@ import { IFiltroQuery } from '../interfaces/IFiltroQuery.interface';
 @Injectable()
 export class QueriesGeneratorService {
 
-    private biUrl = '/bi';  // URL to web api
+    private biUrl = '/bi'; // URL to web api
 
     constructor(private server: Server) {
     }
