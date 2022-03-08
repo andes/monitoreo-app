@@ -7,6 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+    "lint:fix": "eslint -c .eslintrc.js --ext .ts . --fix",
     "e2e": "ng e2e",
     "build:prod": "node --max_old_space_size=4096 ./node_modules/\\@angular/cli/bin/ng build --configuration=production"
   },
@@ -14,7 +15,7 @@
   "dependencies": {
     "@andes/auth": "^7.0.0",
     "@andes/icons": "^1.1.4",
-    "@andes/plex": "^7.18.2",
+    "@andes/plex": "^7.20.0",
     "@andes/shared": "^6.0.0",
     "@angular/animations": "~9.1.12",
     "@angular/cdk": "^9.2.4",
@@ -38,7 +39,6 @@
     "rxjs-compat": "^6.5.3",
     "socketio-wildcard": "^2.0.0",
     "tslib": "^1.10.0",
-    "tslint-to-eslint-config": "^2.12.3",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -50,10 +50,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
-    "@typescript-eslint/eslint-plugin": "^5.15.0",
-    "@typescript-eslint/parser": "^5.15.0",
     "codelyzer": "^5.1.2",
-    "eslint": "^8.11.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -63,7 +60,9 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tslint": ">=5.18.0",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "eslint": "^8.11.0",
     "typescript": "~3.8.3"
   }
 }
