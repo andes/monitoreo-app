@@ -94,7 +94,6 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     }
 
     onAgregarConceptoTurneable(conceptoTurneable) {
-        console.log(conceptoTurneable);
         this.plex.confirm('Agregar concepto turneable "' + conceptoTurneable.term + '"', '¿Desea agregar?').then(confirmacion => {
             if (confirmacion) {
                 this.conceptoTurneableService.post(conceptoTurneable).subscribe(resultado => {

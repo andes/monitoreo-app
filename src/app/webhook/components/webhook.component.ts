@@ -21,7 +21,7 @@ export class WebHookComponent implements OnInit {
         limit: 10
     };
     public opciones: any[] = [{ id: 'POST', nombre: 'POST' }, { id: 'GET', nombre: 'GET' },
-    { id: 'PUT', nombre: 'PUT' }, { id: 'PATCH', nombre: 'PATCH' }];
+                              { id: 'PUT', nombre: 'PUT' }, { id: 'PATCH', nombre: 'PATCH' }];
 
     public opcionesTrasform: any[] = [{ id: 'fhir', nombre: 'fhir' }];
 

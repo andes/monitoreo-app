@@ -3,13 +3,13 @@ import { Auth } from '@andes/auth';
 
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
+    selector: 'app-home',
+    templateUrl: './home.component.html',
 })
 export class HomeComponent {
 
-  constructor(
+    constructor(
 
-    public auth: Auth,
-  ) { }
+        public auth: Auth,
+    ) { }
 }

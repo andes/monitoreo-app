@@ -103,10 +103,10 @@ export class ModulosComponent implements OnInit {
     removeSubmodulo(index: number) {
         this.plex.confirm(`Submódulo: ${(this.submodulos.value[index].nombre || '[módulo sin nombre]')}`,
             '¿Eliminar submódulo?', 'Eliminar').then(remover => {
-                if (remover) {
-                    this.submodulos.removeAt(index);
-                }
-            });
+            if (remover) {
+                this.submodulos.removeAt(index);
+            }
+        });
     }
 
     nuevo() {

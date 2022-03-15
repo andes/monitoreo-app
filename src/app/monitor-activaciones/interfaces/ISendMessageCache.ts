@@ -12,7 +12,7 @@ export interface ISendMessageCache {
     updatedAt: Date;
     scheduledAt: Date;
     status: {
-        type: string,
-        enum: [string]
+        type: string;
+        enum: [string];
     };
 }
