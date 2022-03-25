@@ -18,18 +18,18 @@ import { OrganizacionService } from '../services/organizacion.service';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    PlexModule,
-    LoginRoutingModule
-  ],
-  declarations: [
-    LoginComponent,
-    LogoutComponent,
-    SelectOrganizacionComponent
-  ],
-  providers: [OrganizacionService]
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        PlexModule,
+        LoginRoutingModule
+    ],
+    declarations: [
+        LoginComponent,
+        LogoutComponent,
+        SelectOrganizacionComponent
+    ],
+    providers: [OrganizacionService]
 })
 export class LoginModule { }

@@ -12,18 +12,18 @@ import { OrganizacionService } from 'src/app/services/organizacion.service';
 import { ConceptoTruneableService } from 'src/app/conceptos-turneables/services/concepto-turneable.service';
 
 @NgModule({
-  declarations: [
-    QueryExecuteComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    PlexModule,
-    QueriesRoutingModule,
-  ],
-  providers: [QueriesGeneratorService, OrganizacionService, ConceptoTruneableService],
-  entryComponents: []
+    declarations: [
+        QueryExecuteComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        PlexModule,
+        QueriesRoutingModule,
+    ],
+    providers: [QueriesGeneratorService, OrganizacionService, ConceptoTruneableService],
+    entryComponents: []
 })
 
 export class QueriesModule { }

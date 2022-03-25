@@ -18,8 +18,8 @@ export interface IPacienteApp {
     activacionApp: boolean;
     permisos: [string];
     restablecerPassword: {
-        codigo: string,
-        fechaExpiracion: Date
+        codigo: string;
+        fechaExpiracion: Date;
     };
     devices: [IDevice];
 }

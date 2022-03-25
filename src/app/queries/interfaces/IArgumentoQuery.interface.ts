@@ -6,6 +6,6 @@ export interface IArgumentoQuery {
     componente: string;
     tipo: string;
     nombre: string; // name en html
-    valor: any;  // contenido del parámetro
+    valor: any; // contenido del parámetro
     required?: boolean; // campo requerido (aun no usado desde BD)
 }

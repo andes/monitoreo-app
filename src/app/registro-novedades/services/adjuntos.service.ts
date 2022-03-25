@@ -6,7 +6,7 @@ import { Server } from '@andes/shared';
 @Injectable()
 export class AdjuntosService {
 
-    private url = '/modules/registro-novedades/';  // URL to web api
+    private url = '/modules/registro-novedades/'; // URL to web api
 
     constructor(private server: Server, public auth: Auth) { }
 

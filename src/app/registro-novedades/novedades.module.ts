@@ -9,15 +9,15 @@ import { NovedadesComponent } from './components/novedades.component';
 import { NovedadesService } from './services/novedades.service';
 
 @NgModule({
-  declarations: [
-    NovedadesComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    PlexModule,
-    NovedadesRoutingModule
-  ],
-  providers: [NovedadesService, AdjuntosService]
+    declarations: [
+        NovedadesComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        PlexModule,
+        NovedadesRoutingModule
+    ],
+    providers: [NovedadesService, AdjuntosService]
 })
 export class NovedadesModule { }

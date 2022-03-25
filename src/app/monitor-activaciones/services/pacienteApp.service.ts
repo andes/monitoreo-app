@@ -6,7 +6,7 @@ import { Server } from '@andes/shared';
 @Injectable()
 export class PacienteAppService {
 
-    private pacienteAppUrl = '/modules/mobileApp/pacienteApp';  // URL to web api
+    private pacienteAppUrl = '/modules/mobileApp/pacienteApp'; // URL to web api
 
     constructor(private server: Server) { }
 

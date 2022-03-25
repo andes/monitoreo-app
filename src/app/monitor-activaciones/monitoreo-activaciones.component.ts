@@ -23,7 +23,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
     pacienteDevice: IDevice;
     pacienteSeleccionado = false;
     edicionActivada = false;
-    searchClear = true;    // True si el campo de búsqueda se encuentra vacío
+    searchClear = true; // True si el campo de búsqueda se encuentra vacío
 
 
     constructor(

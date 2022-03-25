@@ -57,7 +57,7 @@ export class QueryExecuteComponent implements OnInit {
                 if (valor instanceof Date) {
                     params[key] = moment(valor).format();
                 }
-                if (valor && valor[idField]) {  // select
+                if (valor && valor[idField]) { // select
                     params[key] = valor[idField];
                 }
 
@@ -71,7 +71,7 @@ export class QueryExecuteComponent implements OnInit {
                     this.plex.info('warning', 'Su búsqueda no arrojó ningún resultado', 'Consultas');
                 }
             },
-                err => this.mostrarError()
+            err => this.mostrarError()
             );
         }
 
