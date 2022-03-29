@@ -19,7 +19,6 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
     agregando = false;
     conceptID: string;
     term: string;
-
     constructor(
         public plex: Plex,
         private conceptoTurneableService: ConceptoTruneableService,
@@ -55,7 +54,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
                 this.timeoutHandle = null;
                 this.conceptoTurneableService.get({
                     conceptId: this.conceptID,
-                    term: '^' + this.term
+                    term: '^' + this.term,
                 }).subscribe(
                     resultado => {
                         this.loading = false;
@@ -117,6 +116,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
                     concepto = resultado;
                 }
             });
+            this.buscar();
         });
     }
 
