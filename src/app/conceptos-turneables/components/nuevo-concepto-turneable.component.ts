@@ -24,6 +24,7 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         semanticTag: null,
         noNominalizada: null,
         auditable: null,
+        ambito: null,
     };
     nominalizada = false;
     auditable = false;
