@@ -1,19 +1,19 @@
 
-import { ISendMessageCache } from './interfaces/ISendMessageCache';
 import { IPacienteApp } from './interfaces/IPacienteApp';
 import { PacienteAppService } from './services/pacienteApp.service';
 import { SendMessageCacheService } from './services/sendMessageCache.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IDevice } from './interfaces/IDevice';
 import { Auth } from '@andes/auth';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-monitoreo-activaciones',
     templateUrl: './monitoreo-activaciones.component.html',
 })
-export class MonitoreoActivacionesComponent implements OnInit {
+export class MonitoreoActivacionesComponent implements OnInit, OnDestroy {
     loader = false;
     documentoEmail: string;
     resultadoBusqueda;
@@ -24,7 +24,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
     pacienteSeleccionado = false;
     edicionActivada = false;
     searchClear = true; // True si el campo de búsqueda se encuentra vacío
-
+    searchSubscription: Subscription;
 
     constructor(
         private pacienteAppService: PacienteAppService,
@@ -40,6 +40,9 @@ export class MonitoreoActivacionesComponent implements OnInit {
         }
     }
 
+    ngOnDestroy(): void {
+        this.searchSubscription.unsubscribe();
+    }
 
     onSearchStart() {
         this.loader = true;
@@ -59,7 +62,10 @@ export class MonitoreoActivacionesComponent implements OnInit {
         this.onSearchStart();
         if (this.documentoEmail != null) {
             this.searchClear = false;
-            this.pacienteAppService.get({ search: '^' + this.documentoEmail }).subscribe(
+            if (this.searchSubscription) {
+                this.searchSubscription.unsubscribe();
+            }
+            this.searchSubscription = this.pacienteAppService.get({ search: '^' + this.documentoEmail }).subscribe(
                 datos => {
                     this.onSearchEnd(datos);
                 }
@@ -105,6 +111,20 @@ export class MonitoreoActivacionesComponent implements OnInit {
         const formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
         const mail = String(this.pacienteEditado.email);
         return formato.test(mail);
+    }
+
+    baja() {
+        if (this.pacienteApp) {
+            this.plex.confirm(`¿Dar de baja la cuenta con usuario <b>${this.pacienteApp.email}</b>?`, 'Confirmación').then(respuesta => {
+                if (respuesta) {
+                    this.pacienteAppService.baja(this.pacienteApp._id).subscribe(() =>{
+                        this.seleccionar(this.pacienteApp); // paciente seleccionado en null
+                        this.loadPacientes();
+                        this.plex.toast('success', 'Cuenta dada de baja con éxito.');
+                    });
+                }
+            });
+        }
     }
 
     cancelarEdicion() {
