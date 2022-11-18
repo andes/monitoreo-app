@@ -8,7 +8,6 @@ import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
 })
 export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     @Input() conceptoTurneable: IConceptoTurneable;
-    @Output() eliminarConceptoTurneable = new EventEmitter<IConceptoTurneable>();
     @Output() editarConceptoTurneable = new EventEmitter<any>();
 
     auditable;
@@ -52,10 +51,6 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
         }
     }
 
-    eliminar() {
-        this.eliminarConceptoTurneable.emit(this.conceptoTurneable);
-    }
-
     asignarAtributos() {
         if (this.conceptoTurneable.noNominalizada) {
             this.nominalizada = false;
@@ -96,11 +91,11 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     array2objectSelect(my_array) {
         let result = [];
         try {
-            if ( !Array.isArray(my_array ) ) {
+            if (!Array.isArray(my_array)) {
                 return result;
             }
         } catch { return result; }
-        result = my_array.map(e => ({ id:e, nombre:e.toUpperCase() }));
+        result = my_array.map(e => ({ id: e, nombre: e.toUpperCase() }));
         return result;
     }
 
@@ -108,7 +103,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     objectSelect2array(myObjectSelect) {
         let result = [];
         try {
-            if ( !Array.isArray(myObjectSelect) ) {return result;}
+            if (!Array.isArray(myObjectSelect)) { return result; }
         } catch { return result; }
         result = myObjectSelect.map(e => e.id);
         return result;
@@ -118,9 +113,9 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     arrayEquals(arr1, arr2) {
         let equal = false;
         try {
-            if ( !Array.isArray(arr1) || !Array.isArray(arr1)) {return equal;}
+            if (!Array.isArray(arr1) || !Array.isArray(arr1)) { return equal; }
         } catch { return equal; }
-        if ( arr1.length === arr2.length ) {
+        if (arr1.length === arr2.length) {
             arr1 = arr1.sort();
             arr2 = arr2.sort();
             equal = arr1.every((value, index) => value === arr2[index]);
