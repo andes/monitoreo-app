@@ -58,7 +58,6 @@
     </plex-layout-main>
     <plex-layout-sidebar *ngIf="conceptoSeleccionado">
         <app-concepto-turneable-detalle [conceptoTurneable]='conceptoSeleccionado'
-                                        (eliminarConceptoTurneable)="onEliminarConceptoTurneable($event)"
                                         (editarConceptoTurneable)="onEditarConceptoTurneable($event)">
         </app-concepto-turneable-detalle>
     </plex-layout-sidebar>

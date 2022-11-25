@@ -1,11 +1,10 @@
 <ng-container>
     <plex-title *ngIf="conceptoTurneable.id && !editable" titulo="Detalle Concepto">
-        <plex-button label="Eliminar" type="danger" (click)="eliminar()"></plex-button>
         <plex-button label="Editar" type="warning" (click)="toggleEdicion()"></plex-button>
     </plex-title>
     <plex-title *ngIf="conceptoTurneable.id && editable" titulo="Editar Concepto">
         <plex-button label="Cancelar" type="danger" (click)="cancelar()"></plex-button>
-        <plex-button [disabled]="!hayCambios()" label="Guardar" type="success" (click)="editar()" ></plex-button>
+        <plex-button [disabled]="!hayCambios()" label="Guardar" type="success" (click)="editar()"></plex-button>
     </plex-title>
     <div class="row">
         <div class="col">
@@ -16,7 +15,7 @@
                             <td>
                                 <strong>Concept ID:</strong>
                                 <plex-text placeholder="Concept ID" name="usuario"
-                                    [(ngModel)]="conceptoTurneable.conceptId" [disabled]="true">
+                                           [(ngModel)]="conceptoTurneable.conceptId" [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -24,7 +23,7 @@
                             <td>
                                 <strong>Term:</strong>
                                 <plex-text placeholder="Term" name="usuario" [(ngModel)]="conceptoTurneable.term"
-                                    [disabled]="true">
+                                           [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -33,7 +32,7 @@
                             <td>
                                 <strong>FSN:</strong>
                                 <plex-text placeholder="fsn" name="usuario" [(ngModel)]="conceptoTurneable.fsn"
-                                    [disabled]="true">
+                                           [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -42,7 +41,7 @@
                             <td>
                                 <strong>Semantic Tag:</strong>
                                 <plex-text placeholder="Semantic Tag" name="usuario"
-                                    [(ngModel)]="conceptoTurneable.semanticTag" [disabled]="true">
+                                           [(ngModel)]="conceptoTurneable.semanticTag" [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -50,8 +49,8 @@
                         <tr>
                             <td>
                                 <strong>Ambito:</strong>
-                                <plex-select [multiple]="true" [readonly]="!editable"  [(ngModel)]="ambitoActual"  [data]="ambitos" label-field="nombre" 
-                                placeholder="Seleccione los ambitos" >
+                                <plex-select [multiple]="true" [readonly]="!editable" [(ngModel)]="ambitoActual"
+                                             [data]="ambitos" label-field="nombre" placeholder="Seleccione los ambitos">
                                 </plex-select>
                             </td>
                         </tr>
@@ -59,10 +58,10 @@
                             <td *ngIf="!editable">
                                 <strong>Nominalizada:</strong>
                                 <plex-text *ngIf="!conceptoTurneable.noNominalizada" [(ngModel)]="paraTrue"
-                                    name="usuario" [disabled]="true">
+                                           name="usuario" [disabled]="true">
                                 </plex-text>
                                 <plex-text *ngIf="conceptoTurneable.noNominalizada" [(ngModel)]="paraFalse"
-                                    name="usuario" [disabled]="true">
+                                           name="usuario" [disabled]="true">
                                 </plex-text>
                             </td>
                             <td *ngIf="editable">
@@ -76,10 +75,10 @@
                             <td *ngIf="!editable">
                                 <strong>Auditable:</strong>
                                 <plex-text *ngIf="!conceptoTurneable.auditable" [(ngModel)]="paraFalse" name="usuario"
-                                    [disabled]="true">
+                                           [disabled]="true">
                                 </plex-text>
                                 <plex-text *ngIf="conceptoTurneable.auditable" [(ngModel)]="paraTrue" name="usuario"
-                                    [disabled]="true">
+                                           [disabled]="true">
                                 </plex-text>
                             </td>
                             <td *ngIf="editable">
