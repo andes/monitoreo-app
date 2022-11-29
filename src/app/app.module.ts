@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
@@ -30,6 +30,7 @@ import { ModulosModule } from './modulos/modulos.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
 import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-autenticas.service';
+import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,12 @@ import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-
         SendMessageCacheService,
         WebhookLogService,
         ModulosService,
-        FuentesAutenticasService
+        FuentesAutenticasService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenExpiredInterceptor,
+            multi: true,
+        }
     ],
     bootstrap: [AppComponent]
 })
