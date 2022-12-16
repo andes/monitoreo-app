@@ -101,4 +101,8 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
             this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });
     }
+
+    volver() {
+        this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
+    }
 }

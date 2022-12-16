@@ -134,6 +134,10 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
         }
         this.elemento.frecuentes = [...this.elemento.frecuentes];
     }
+
+    volver() {
+        this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
+    }
 }
 
 function arraymove(arr, fromIndex, toIndex) {

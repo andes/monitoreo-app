@@ -86,6 +86,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         });
     }
 
+    volver() {
+        this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
+    }
+
     onAddRequerido() {
         if (this.requerido) {
             const elementoRUP = this.elementosRUPService.buscarElemento(this.requerido, false);
