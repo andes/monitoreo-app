@@ -89,6 +89,10 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
         });
     }
 
+    volver() {
+        this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
+    }
+
     nuevoRequerido() {
         return {
             elementoRUP: this.elementoSeccion.id,

@@ -1,18 +1,25 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title [titulo]="titulo">
-            <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
+            <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
+            <plex-button type="success" (click)="onSave()" [validateForm]="formulario"
+                         [disabled]="!formulario.form.valid">GUARDAR</plex-button>
         </plex-title>
-        <div class="grow">
-            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
-            </plex-text>
-        </div>
-        <div class="grow">
-            <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
-                         labelField="term + '(' + semanticTag + ')'"></plex-select>
-            <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAdd()"></plex-button>
-        </div>
-        <ng-container *ngFor="let requerido of elemento.requeridos">
+
+        <form #formulario="ngForm">
+            <div class="grow">
+                <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="false">
+                </plex-text>
+            </div>
+            <div class="grow">
+                <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
+                             labelField="term + '(' + semanticTag + ')'" name="concepto" [required]="true">
+                </plex-select>
+                <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAdd()"></plex-button>
+            </div>
+        </form>
+
+        <ng-container *ngFor="let requerido of elemento?.requeridos">
             <hr>
             <div class="row">
                 <div class="col-4">

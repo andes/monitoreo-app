@@ -1,14 +1,15 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title [titulo]="titulo">
-            <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
+            <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
+            <plex-button type="success" (click)="onSave()" [disabled]="!concepto">GUARDAR</plex-button>
         </plex-title>
         <div class="grow">
             <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
             </plex-text>
         </div>
         <div class="grow">
-            <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
+            <plex-select label="Concepto" (getData)="searchConcept($event)" [(ngModel)]="concepto" idField="conceptId"
                          labelField="term + '(' + semanticTag + ')'">
             </plex-select>
         </div>

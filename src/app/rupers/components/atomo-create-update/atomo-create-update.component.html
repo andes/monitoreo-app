@@ -1,23 +1,25 @@
 <plex-layout>
     <plex-layout-main>
         <plex-title [titulo]="titulo">
-            <plex-button type="success" (click)="onSave()">GUARDAR</plex-button>
+            <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
+            <plex-button type="success" (click)="onSave()" [validateForm]="formulario"
+                         [disabled]="!formulario.form.valid">GUARDAR
+            </plex-button>
         </plex-title>
-        <div class="grow">
-            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
-            </plex-text>
-        </div>
-        <div class="grow">
-            <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
-                         labelField="term + '(' + semanticTag + ')'">
-            </plex-select>
-        </div>
-        <div>
-            <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo">
-
-            </plex-select>
-        </div>
-        <form>
+        <form #formulario="ngForm">
+            <div class="grow">
+                <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true">
+                </plex-text>
+            </div>
+            <div class="grow">
+                <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
+                             labelField="term + '(' + semanticTag + ')'" [required]="true" name="concepto">
+                </plex-select>
+            </div>
+            <div>
+                <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
+                             name="tipoAtomo"> </plex-select>
+            </div>
             <ng-container [ngSwitch]="tipoAtomo?.id">
                 <div *ngSwitchCase="'SelectOrganizacionComponent'">
 
