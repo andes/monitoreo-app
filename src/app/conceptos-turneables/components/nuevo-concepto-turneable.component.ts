@@ -1,14 +1,18 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Plex } from '@andes/plex';
-import { SnomedService } from 'src/app/shared/snomed.service';
+import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
+import { SnomedService } from 'src/app/shared/snomed.service';
 import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
+import { ConceptoTruneableService } from '../services/concepto-turneable.service';
 
 @Component({
     selector: 'app-concepto-turneable-nuevo',
     templateUrl: './nuevo-concepto-turneable.component.html',
 })
-export class NuevoConceptoTurneableComponent implements OnInit {
+export class NuevoConceptoTurneableComponent {
+    @ViewChild('modal', { static: true }) modal: PlexModalComponent;
     @Output() agregarConceptoTurneable = new EventEmitter<IConceptoTurneable>();
     @Output() cancelarAgregarConceptoTurneable = new EventEmitter<any>();
 
@@ -29,15 +33,30 @@ export class NuevoConceptoTurneableComponent implements OnInit {
     nominalizada = false;
     auditable = false;
     loading = false;
+    showAlert = false;
 
     constructor(
         public plex: Plex,
         private snomedService: SnomedService,
+        private conceptoTurneableService: ConceptoTruneableService,
     ) {
     }
 
-    ngOnInit() {
+    mostrarMensaje() {
+        this.plex.info('warning', 'Ya existe un concepto turneable para el conceptId seleccionado. Para mayor información comunicarse con <b>soporteandes@neuquen.gov.ar</b>.', 'Información');
+    }
 
+    buscarConcepto(concepto: IConceptoTurneable) {
+        const existe = new Subject<boolean>();
+
+        this.conceptoTurneableService.get({
+            conceptId: concepto.conceptId
+        }).subscribe(
+            resultado => existe.next(resultado.length > 0),
+            () => existe.next(true)
+        );
+
+        return existe.asObservable();
     }
 
     buscar() {
@@ -58,6 +77,7 @@ export class NuevoConceptoTurneableComponent implements OnInit {
                     search: this.term,
                     semanticTag: ['procedimiento']
                 };
+
                 this.snomedService.get(query).subscribe((resultado: ISnomedConcept[]) => {
                     this.loading = false;
                     this.conceptosSnomed = resultado;
@@ -68,16 +88,20 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         }
     }
 
-    onRowClick(concepto: IConceptoTurneable) {
-        if (!this.conceptoSnomedSeleccionado || this.conceptoSnomedSeleccionado.id !== concepto.id) {
-            this.conceptoSnomedSeleccionado = concepto;
-            this.nuevoConceptoTurneable.conceptId = this.conceptoSnomedSeleccionado.conceptId;
-            this.nuevoConceptoTurneable.term = this.conceptoSnomedSeleccionado.term;
-            this.nuevoConceptoTurneable.fsn = this.conceptoSnomedSeleccionado.fsn;
-            this.nuevoConceptoTurneable.semanticTag = this.conceptoSnomedSeleccionado.semanticTag;
-        } else {
-            this.conceptoSnomedSeleccionado = null;
-        }
+    seleccionarConcepto(concepto: IConceptoTurneable) {
+        this.buscarConcepto(concepto).subscribe(existe => {
+            if (existe) { this.mostrarMensaje(); } else {
+                if (!this.conceptoSnomedSeleccionado || this.conceptoSnomedSeleccionado.id !== concepto.id) {
+                    this.conceptoSnomedSeleccionado = concepto;
+                    this.nuevoConceptoTurneable.conceptId = this.conceptoSnomedSeleccionado.conceptId;
+                    this.nuevoConceptoTurneable.term = this.conceptoSnomedSeleccionado.term;
+                    this.nuevoConceptoTurneable.fsn = this.conceptoSnomedSeleccionado.fsn;
+                    this.nuevoConceptoTurneable.semanticTag = this.conceptoSnomedSeleccionado.semanticTag;
+                } else {
+                    this.conceptoSnomedSeleccionado = null;
+                }
+            }
+        });
     }
 
     agregar() {
@@ -89,6 +113,4 @@ export class NuevoConceptoTurneableComponent implements OnInit {
     cancelarAgregar() {
         this.cancelarAgregarConceptoTurneable.emit();
     }
-
-
 }

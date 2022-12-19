@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
 import { ConceptoTruneableService } from '../services/concepto-turneable.service';
 import { Auth } from '@andes/auth';
 import { Router } from '@angular/router';
+import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
 
 
 @Component({
@@ -51,10 +52,11 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
         if (conceptID || term) {
             this.loading = true;
             this.timeoutHandle = window.setTimeout(() => {
+                const termino = this.term;
                 this.timeoutHandle = null;
                 this.conceptoTurneableService.get({
                     conceptId: this.conceptID,
-                    term: '^' + this.term,
+                    term: conceptID && !term ? this.term : '^' + this.term,
                 }).subscribe(
                     resultado => {
                         this.loading = false;
