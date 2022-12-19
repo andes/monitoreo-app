@@ -33,7 +33,6 @@ export class NuevoConceptoTurneableComponent {
     nominalizada = false;
     auditable = false;
     loading = false;
-    showAlert = false;
 
     constructor(
         public plex: Plex,

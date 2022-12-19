@@ -28,8 +28,4 @@ export class ConceptoTruneableService {
     patch(id: string, cambios: any, options: any = {}): Observable<IConceptoTurneable> {
         return this.server.patch(`${this.conceptoTurneableUrl}/${id}`, cambios);
     }
-
-    delete(conceptoTurneable: IConceptoTurneable): Observable<any> {
-        return this.server.delete(`${this.conceptoTurneableUrl}/${conceptoTurneable.id}`);
-    }
 }

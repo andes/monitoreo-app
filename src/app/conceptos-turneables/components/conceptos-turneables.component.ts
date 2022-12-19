@@ -1,11 +1,9 @@
-import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Auth } from '@andes/auth';
 import { Plex } from '@andes/plex';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IConceptoTurneable } from '../Interfaces/IConceptoTurneable';
 import { ConceptoTruneableService } from '../services/concepto-turneable.service';
-import { Auth } from '@andes/auth';
-import { Router } from '@angular/router';
-import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
-
 
 @Component({
     selector: 'app-conceptos-turneables',
@@ -52,7 +50,6 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
         if (conceptID || term) {
             this.loading = true;
             this.timeoutHandle = window.setTimeout(() => {
-                const termino = this.term;
                 this.timeoutHandle = null;
                 this.conceptoTurneableService.get({
                     conceptId: this.conceptID,
@@ -120,30 +117,5 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
             });
             this.buscar();
         });
-    }
-
-    onEliminarConceptoTurneable(conceptoTurneable) {
-        if (this.conceptoSeleccionado && this.conceptoSeleccionado.id) {
-            this.plex.confirm('Eliminar concepto turneable "' + conceptoTurneable.term + '"', '¿Desea eliminar?').then(confirmacion => {
-                if (confirmacion) {
-                    this.conceptoTurneableService.delete(conceptoTurneable).subscribe(resultado => {
-                        this.plex.info('info', 'El Concepto Turneable fue eliminado');
-                        this.conceptoSeleccionado = null;
-                        let i = 0;
-                        let index;
-                        this.conceptosTurneables.forEach(concepto => {
-                            if (concepto.id === conceptoTurneable.id) {
-                                index = i;
-                            }
-                            i++;
-                        });
-
-                        this.conceptosTurneables.splice(index, 1);
-                    });
-                }
-            });
-        } else {
-            this.plex.info('danger', 'No es posible dar de baja este Concepto Turneable');
-        }
     }
 }
