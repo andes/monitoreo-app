@@ -31,6 +31,7 @@ export class NovedadesComponent implements OnInit {
     public regNov: INovedad;
     public listRegNovedades: INovedad[];
     public titulo: string;
+    public palabra: string;
     public modulo: IModulo;
     public titleABM: string;
     public listModulos: IModulo[] = [];
@@ -99,6 +100,7 @@ export class NovedadesComponent implements OnInit {
         this.modoEdit = false;
         this.regNov = {
             titulo: ' ',
+            palabra: ' ',
             fecha: new Date(),
             descripcion: '',
             imagenes: [],
@@ -154,6 +156,9 @@ export class NovedadesComponent implements OnInit {
         if (this.titulo) {
             params.titulo = '^' + this.titulo;
         }
+        if (this.palabra) {
+            params.palabra = '^' + this.palabra;
+        }
         if (this.modulo) {
             params.modulos = this.modulo._id;
         }
@@ -186,6 +191,8 @@ export class NovedadesComponent implements OnInit {
     }
 
     readThis(inputValue: any): void {
+        const file: File = inputValue.files[0];
+        const myReader: FileReader = new FileReader();
         const ext = this.fileExtension(inputValue.value); // obtenemos la extensión de archivo
         this.errorExt = false;
         if (!this.extensions.find((item) => item === ext.toLowerCase())) {
@@ -194,8 +201,10 @@ export class NovedadesComponent implements OnInit {
             this.plex.toast('danger', 'Tipo de archivo incorrecto');
             return;
         }
-        const file: File = inputValue.files[0];
-        const myReader: FileReader = new FileReader();
+        if (file.size > 5242880) {
+            this.plex.toast('danger', 'El tamaño de la imágen supera el máximo permitido de 5MB');
+            return;
+        }
 
         myReader.onloadend = (e) => {
             this.uploadElement.nativeElement.value = '';

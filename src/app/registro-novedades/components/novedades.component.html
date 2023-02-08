@@ -10,6 +10,10 @@
                                #filtroConceptID="ngModel" (ngModelChange)="loadData(false);"></plex-text>
                 </div>
                 <div class="col-6">
+                    <plex-text label="Palabra significativa" [(ngModel)]="palabra" name="palabra"
+                               #filtroConceptID="ngModel" (ngModelChange)="loadData(false);"></plex-text>
+                </div>
+                <div class="col-6 pr-0">
                     <plex-select label="Módulo" [(ngModel)]="modulo" name="modulo" [data]="listModulos"
                                  labelField="nombre + '(' + subtitulo + ')'" label="Seleccione Módulo" idField="_id"
                                  (ngModelChange)="loadData(false);">
@@ -64,13 +68,17 @@
         </plex-title>
         <br>
         <form #formulario="ngForm">
-            <div class="align-items-end" justify>
-                <plex-text class="w-100 mr-4" required label="titulo" [(ngModel)]="regNov.titulo" name="titulo">
+            <div class="d-flex justify-content-between align-items-end">
+                <plex-text class="w-100" required label="titulo" [(ngModel)]="regNov.titulo" name="titulo">
+                </plex-text>
+            </div>
+            <div class="d-flex justify-content-between align-items-end">
+                <plex-text class="w-100 mr-4" label="Palabra significativa" [(ngModel)]="regNov.palabra" name="palabra">
                 </plex-text>
                 <plex-bool label="Activa" [(ngModel)]="regNov.activa" type="slide" name="activo" class="float-left">
                 </plex-bool>
             </div>
-            <div class="align-items-end" justify>
+            <div class="d-flex justify-content-between align-items-end">
                 <plex-select class="w-100 mr-4" *ngIf="listModulos" [(ngModel)]="regNov.modulo" name="select"
                              [data]="listModulos" labelField="nombre + '' + subtitulo" label="Seleccione Módulo"
                              idField="_id">
@@ -89,6 +97,10 @@
                     </plex-button>
                 </ng-container>
             </plex-title>
+            <div class="d-flex flex-column justify-content-start">
+                <span>Archivos permitidos: .bmp, .jpg, .jpeg, .gif, .png, .tif, .tiff, .raw</span>
+                <span>Tamaño máximo: 5MB</span>
+            </div>
             <span *ngIf="waiting">
                 <plex-loader class="app-waiting" type="ball-pulse-sync"></plex-loader>
                 <plex-button type="danger" class="btn-sm" label="Cancelar" (click)="cancelarAdjunto()">
