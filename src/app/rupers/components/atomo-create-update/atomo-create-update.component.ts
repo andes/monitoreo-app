@@ -1,16 +1,26 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnomedService } from 'src/app/shared/snomed.service';
 import { ElementosRupService } from '../../services/elementos-rup.service';
 import { Unsubscribe } from '@andes/shared';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { take } from 'rxjs/operators';
+import { Plex } from '@andes/plex';
+import { OnInit, Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'rup-atomo-create-update',
     templateUrl: 'atomo-create-update.component.html'
 })
 export class RUPAtomoCreateUpdateComponent implements OnInit {
+
+    @Input() items = [];
+    @Output() itemsNew: EventEmitter<any[]> = new EventEmitter<any[]>();
+
+    nuevoItem: any = {
+        id: '',
+        label: ''
+    };
+    showAgregarItem = false;
 
     valorNumericoType = [
         { id: 'integer', label: 'Entero' },
@@ -41,13 +51,14 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     public elemento;
     public concepto;
 
-    params: { [key: string]: any } = {};
+    params: any = {};
 
     constructor(
         private actr: ActivatedRoute,
         private snomedService: SnomedService,
         private elementosRUPService: ElementosRupService,
-        private router: Router
+        private router: Router,
+        private plex: Plex
     ) { }
 
     @Unsubscribe()
@@ -75,6 +86,9 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
                 this.titulo = this.elemento.conceptos[0].term;
                 this.concepto = this.elemento.conceptos[0];
                 this.params = this.elemento.params || {};
+                if (this.elemento.params.items) {
+                    this.items = this.elemento.params.items;
+                }
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
                 this.nombre = this.elemento.nombre;
             });
@@ -94,7 +108,8 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
             tipo: 'atomo',
             activo: true,
             defaultFor: [],
-            frecuentes: []
+            frecuentes: [],
+            params: {}
         };
     }
 
@@ -103,12 +118,38 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         this.elemento.componente = this.tipoAtomo.id;
         this.elemento.params = this.params;
         this.elemento.nombre = this.nombre;
-        this.elementosRUPService.save(this.elemento).subscribe(() => {
-            this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
-        });
+        if (this.items.length) {
+            this.elemento.params.items = this.items;
+        }
+        this.elementosRUPService.save(this.elemento).subscribe(
+            () => {
+                this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
+                this.plex.toast('success', 'Los datos se guardaron correctamente');
+            },
+            (err) => {
+                this.plex.toast('danger', 'Error al guardar los datos');
+            }
+        );
     }
 
     volver() {
         this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
     }
+    addItem() {
+
+        (this.items) ? this.items.push(this.nuevoItem) : (this.items = [this.nuevoItem]);
+        this.itemsNew.emit(this.items);
+        this.nuevoItem = '';
+        this.showAgregarItem = false;
+        this.nuevoItem = {
+            id: '',
+            label: ''
+        };
+    }
+    removeItem(i: number) {
+        if (i >= 0) {
+            this.items.splice(i, 1);
+        }
+    }
+
 }
