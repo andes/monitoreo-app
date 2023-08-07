@@ -37,9 +37,10 @@
                     <plex-button *ngSwitchDefault type="warning" icon="pencil" size="sm"
                                  [routerLink]="['atomo', elemento.id]">
                     </plex-button>
-
                 </ng-container>
-
+                <plex-button type="danger" size="sm" icon="delete" tooltip="Eliminar"
+                             (click)="removeElemento(elemento)">
+                </plex-button>
             </plex-item>
         </plex-list>
     </plex-layout-main>
