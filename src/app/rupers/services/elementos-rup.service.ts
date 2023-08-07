@@ -8,12 +8,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ElementosRupService extends ResourceBaseHttp {
     protected url = '/modules/rup/elementos-rup';
-
-
     refresh = new BehaviorSubject(null);
-
     public cache$ = this.refresh.pipe(
-        switchMap(() => this.search({ limit: 1000 })),
+        switchMap(() => this.search({ activo: true, limit: 1000 })),
         tap(data => this.processData(data)),
         cache()
     );

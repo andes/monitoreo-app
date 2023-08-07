@@ -31,6 +31,10 @@
                 <td *plTableCol="'col-3'">{{ elemento.componente }}</td>
                 <td *plTableCol="'col-4'">{{ elemento.tipo }}</td>
                 <td *plTableCol="'col-5'">{{ elemento.requeridos?.length || 0 }}</td>
+                <td>
+                    <plex-button type="danger" size="sm" icon="prohibido" tooltip="Dar de baja" tooltipPosition="left"
+                        (click)="removeElemento(elemento)"></plex-button>
+                </td>
 
             </tr>
         </plex-table>
