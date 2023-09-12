@@ -17,13 +17,19 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         { id: 'float', label: 'Decimales' }
     ];
 
+    checkOrientacionType = [
+        { id: 'vertical', label: 'Vertical' },
+        { id: 'horizontal', label: 'Horizontal' }
+    ];
+
     tipoAtomos = [
         { id: 'SelectOrganizacionComponent', nombre: 'Select Organizaciones' },
         { id: 'SelectProfesionalComponent', nombre: 'Select Profesionales' },
         { id: 'SelectSnomedComponent', nombre: 'Select Snomed Concept' },
         { id: 'SelectStaticoComponent', nombre: 'Select Estatico' },
         { id: 'ObservacionesComponent', nombre: 'Observaciones' },
-        { id: 'ValorNumericoComponent', nombre: 'Valor Numerico' }
+        { id: 'ValorNumericoComponent', nombre: 'Valor Numerico' },
+        { id: 'ChecklistComponent', nombre: 'CheckList' }
     ];
 
     tipoAtomo: { id: string; nombre: string } = null;
