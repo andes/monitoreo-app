@@ -48,7 +48,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
     createElemento() {
         this.elemento = {
             nombre: '',
-            componente: 'PRESTACION',
+            componente: 'ObservacionesComponent',
             conceptos: [],
             requeridos: [],
             esSolicitud: false,
@@ -95,6 +95,7 @@ export class RUPPrestacionCreateUpdateComponent implements OnInit {
             this.elemento.requeridos.push({ concepto: this.requerido });
             this.requerido = null;
         }
+        this.elemento.componente = 'MoleculaBaseComponent';
     }
 
     onRemoveRequerido(index: number) {
