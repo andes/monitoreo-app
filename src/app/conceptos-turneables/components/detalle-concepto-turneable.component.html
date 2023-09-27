@@ -88,6 +88,23 @@
                                 </plex-bool>
                             </td>
                         </tr>
+                        <tr>
+                            <td *ngIf="!editable">
+                                <strong>Agenda dinámica:</strong>
+                                <plex-text *ngIf="!conceptoTurneable.agendaDinamica" [(ngModel)]="paraFalse"
+                                           name="usuario" [disabled]="true">
+                                </plex-text>
+                                <plex-text *ngIf="conceptoTurneable.agendaDinamica" [(ngModel)]="paraTrue"
+                                           name="usuario" [disabled]="true">
+                                </plex-text>
+                            </td>
+                            <td *ngIf="editable">
+                                <strong>Agenda dinámica:</strong>
+                                &nbsp;
+                                <plex-bool [(ngModel)]="agendaDinamica" type="slide" name="agendaDinamica">
+                                </plex-bool>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

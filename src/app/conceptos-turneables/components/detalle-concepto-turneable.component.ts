@@ -12,6 +12,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
 
     auditable;
     nominalizada;
+    agendaDinamica;
     editable = false;
     paraFalse = 'NO';
     paraTrue = 'SI';
@@ -40,6 +41,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
                     const cambios = {
                         noNominalizada: !this.nominalizada,
                         auditable: this.auditable,
+                        agendaDinamica: this.agendaDinamica,
                         ambito: this.objectSelect2array(this.ambitoActual),
                     };
                     this.toggleEdicion();
@@ -63,6 +65,13 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
         } else {
             this.auditable = false;
         }
+
+        if (this.conceptoTurneable.agendaDinamica) {
+            this.agendaDinamica = true;
+        } else {
+            this.agendaDinamica = false;
+        }
+
         // carga los posibles ambitos
         this.ambitos = [
             {
@@ -128,6 +137,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
         return (
             (this.conceptoTurneable.noNominalizada !== !this.nominalizada) ||
             (this.conceptoTurneable.auditable !== this.auditable) ||
+            (this.conceptoTurneable.agendaDinamica !== this.agendaDinamica) ||
             (!this.arrayEquals(this.conceptoTurneable.ambito, this.objectSelect2array(this.ambitoActual)))
         );
     }
