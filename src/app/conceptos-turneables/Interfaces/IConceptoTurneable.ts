@@ -7,5 +7,6 @@ export interface IConceptoTurneable {
     semanticTag: string;
     noNominalizada: boolean;
     auditable: boolean;
+    agendaDinamica: boolean;
     ambito: string[];
 }

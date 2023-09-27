@@ -28,6 +28,7 @@ export class NuevoConceptoTurneableComponent {
         semanticTag: null,
         noNominalizada: null,
         auditable: null,
+        agendaDinamica: null,
         ambito: null,
     };
     nominalizada = false;
