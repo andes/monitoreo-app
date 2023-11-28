@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <plex-text (change)="loadPacientes()" [(ngModel)]="documentoEmail" name="buscador"
-                           placeholder="Ingrese un documento o un email" prefix="account-search">
+                           placeholder="Ingrese un documento o un email" prefix="account-search" [debounce]="400">
                 </plex-text>
             </div>
         </div>
@@ -56,16 +56,22 @@
             <!-- Contenedor lateral -->
             <fieldset>
                 <plex-title titulo="Datos del paciente">
-                    <plex-button icon="pencil" type="primary" *ngIf="!edicionActivada" (click)="habilitarEdicion()">
-                    </plex-button>
-                    <plex-button icon="close" type="danger" *ngIf="!edicionActivada"
-                                 (click)="seleccionar(this.pacienteApp)">
-                    </plex-button>
-                    <plex-button icon="check" type="success" *ngIf="edicionActivada" [validateForm]="formEdicion"
-                                 (click)="guardarEdicion()" [disabled]="!formEdicion.valid">
-                    </plex-button>
-                    <plex-button icon="close" type="danger" *ngIf="edicionActivada" (click)="cancelarEdicion()">
-                    </plex-button>
+                    <ng-container *ngIf="!edicionActivada">
+                        <plex-button *ngIf="!pacienteApp?.baja" class="mr-1" icon="account-off" tooltip="Inactivar cuenta" type="danger"
+                                     (click)="baja()">
+                        </plex-button>
+                        <plex-button class="mr-1" icon="pencil" tooltip="Editar" type="warning" (click)="habilitarEdicion()">
+                        </plex-button>
+                        <plex-button class="mr-1" icon="close" tooltip="Cerrar" type="danger" (click)="seleccionar(this.pacienteApp)">
+                        </plex-button>
+                    </ng-container>
+                    <ng-container *ngIf="edicionActivada">
+                        <plex-button class="mr-1" icon="check" type="success" tooltip="Guardar"  [validateForm]="formEdicion"
+                                     (click)="guardarEdicion()" [disabled]="!formEdicion.valid">
+                        </plex-button>
+                        <plex-button icon="close" tooltip="Cerrar" type="danger" (click)="cancelarEdicion()">
+                        </plex-button>
+                    </ng-container>
                 </plex-title>
 
                 <div *ngIf="!pacienteSeleccionado" class="alert alert-danger">
