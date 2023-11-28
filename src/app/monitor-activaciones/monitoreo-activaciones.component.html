@@ -114,7 +114,7 @@
                             <label>Teléfono</label>
                             <span *ngIf="!edicionActivada">{{pacienteApp.telefono}}</span>
                             <plex-phone *ngIf="edicionActivada" name="telefono" [(ngModel)]="pacienteEditado.telefono"
-                                        [required]="true">
+                                        [required]="false">
                             </plex-phone>
                         </div>
                     </div>
