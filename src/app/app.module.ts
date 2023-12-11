@@ -7,6 +7,9 @@ import { Server } from '@andes/shared';
 import { routing } from './app-routing.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
+// pipes
+import { SharedModule } from '@andes/shared';
+
 // Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -30,7 +33,17 @@ import { ModulosModule } from './modulos/modulos.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
 import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-autenticas.service';
-import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
+import { restriccionHudsComponent } from './restriccion-huds/restriccion-huds';
+import { UsuariosHttp } from './services/usuarios.service';
+import { PermisosService } from './services/permisos.service';
+import { PacienteBuscarComponent } from './restriccion-huds/paciente-buscar.component';
+import { PacienteListadoComponent } from './restriccion-huds/paciente-listado.component';
+import { PacienteBuscarService } from './services/paciente-buscar.service';
+import { PacienteCacheService } from './services/pacienteCache.service';
+import { PacienteService } from './services/paciente.service';
+import { AdjuntosService } from './services/adjuntos.service';
+import { GaleriaArchivosComponent } from './shared/galeria-archivos.component';
+import { ProfesionalService } from './services/profesional.service';
 
 @NgModule({
     declarations: [
@@ -43,7 +56,11 @@ import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
         NuevoConceptoTurneableComponent,
         MonitoreoActivacionesComponent,
         BuscadorSnomedComponent,
-        EstadoFuentesAutenticasComponent
+        EstadoFuentesAutenticasComponent,
+        restriccionHudsComponent,
+        PacienteBuscarComponent,
+        PacienteListadoComponent,
+        GaleriaArchivosComponent
     ],
     imports: [
         BrowserModule,
@@ -54,7 +71,8 @@ import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
         AuthModule,
         InfiniteScrollModule,
         ModulosModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        SharedModule
     ],
     providers: [
         Server,
@@ -70,11 +88,13 @@ import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
         WebhookLogService,
         ModulosService,
         FuentesAutenticasService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenExpiredInterceptor,
-            multi: true,
-        }
+        UsuariosHttp,
+        PermisosService,
+        PacienteCacheService,
+        PacienteService,
+        PacienteBuscarService,
+        AdjuntosService,
+        ProfesionalService
     ],
     bootstrap: [AppComponent]
 })

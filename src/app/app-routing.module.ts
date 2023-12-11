@@ -8,6 +8,7 @@ import { ConceptosTurneablesComponent } from './conceptos-turneables/components/
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
+import { restriccionHudsComponent } from './restriccion-huds/restriccion-huds';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
     { path: 'novedades', loadChildren: () => import('./registro-novedades/novedades.module').then(m => m.NovedadesModule) },
     { path: 'rupers', loadChildren: () => import('./rupers/rupers.module').then(m => m.RupersModule) },
     { path: 'fuentes-autenticas', component: EstadoFuentesAutenticasComponent, canActivate: [RoutingGuard] },
+    { path: 'restriccion-huds', component: restriccionHudsComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
