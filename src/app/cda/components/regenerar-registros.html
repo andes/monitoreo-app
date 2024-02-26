@@ -15,12 +15,13 @@
     </plex-layout-main>
     <plex-layout-sidebar>
         <plex-title titulo="Registros del paciente" size="sm" main>
-            <plex-button label="refrescar" type="primary" size="sm" [autodisabled]="true" (click)="refreshCDA()"></plex-button>
-            <plex-button [disabled]="disabledBtnCDA" label="regenerar" type="success" size="sm"
-                         (click)="regenerarCDA()">
+            <plex-button *ngIf="pacienteSelected?.activo" label="refrescar" type="primary" size="sm"
+                         [autodisabled]="true" (click)="refreshCDA()"></plex-button>
+            <plex-button *ngIf="pacienteSelected?.activo" [disabled]="disabledBtnCDA" label="regenerar" type="success"
+                         size="sm" (click)="regenerarCDA()">
             </plex-button>
-            <plex-button [disabled]="disabledBtnVacunas" label="registrar vacunas" type="warning" size="sm" [autodisabled]="true"
-                         (click)="registrarVacunas()">
+            <plex-button *ngIf="pacienteSelected?.activo" [disabled]="disabledBtnVacunas" label="registrar vacunas"
+                         type="warning" size="sm" [autodisabled]="true" (click)="registrarVacunas()">
             </plex-button>
         </plex-title>
 
