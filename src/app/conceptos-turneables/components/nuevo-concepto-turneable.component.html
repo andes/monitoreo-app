@@ -97,7 +97,7 @@
                     <tbody>
                         <tr class="hover" *ngFor="let concepto of conceptosSnomed" label="elemento conceptos snomed"
                             [ngClass]="{'bg-inverse text-white': conceptoSnomedSeleccionado && concepto.id === conceptoSnomedSeleccionado.id}"
-                            (click)="onRowClick(concepto)">
+                            (click)="seleccionarConcepto(concepto)">
                             <td class="">
                                 <span *ngIf="concepto?.term !== ''" class="d-block">{{concepto.term}}</span>
                             </td>
