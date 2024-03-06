@@ -2,11 +2,11 @@
     <plex-layout-main>
         <plex-title [titulo]="titulo">
             <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
-            <plex-button type="success" (click)="onSave()" [validateForm]="formulario"
-                         [disabled]="!formulario.form.valid">GUARDAR
+            <plex-button type="success" (click)="onSave()" [validateForm]="formulario1 && formulario2"
+                         [disabled]="!formulario1.form.valid || !formulario2.form.valid || !items.length">GUARDAR
             </plex-button>
         </plex-title>
-        <form #formulario="ngForm">
+        <form #formulario1="ngForm">
             <div class="grow">
                 <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true">
                 </plex-text>
@@ -94,8 +94,6 @@
                         </plex-bool>
                     </div>
 
-                    <!-- [TODO] crear lista de items staticos -->
-
                 </div>
 
                 <div *ngSwitchCase="'ObservacionesComponent'">
@@ -108,7 +106,6 @@
                 <div *ngSwitchCase="'ValorNumericoComponent'">
 
                     <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-
                     <div justify class="ml-4 mr-4">
                         <plex-int [(ngModel)]="params.min" label="Minimo" name="params-min"></plex-int>
                         <plex-int [(ngModel)]="params.max" label="Maximo" name="params-max"></plex-int>
@@ -117,7 +114,6 @@
                         <plex-radio label="Tipo" [(ngModel)]="params.numericType" [data]="valorNumericoType"
                                     type="horizontal" name="params-type"></plex-radio>
                     </div>
-
                 </div>
 
                 <div *ngSwitchCase="'ChecklistComponent'">
@@ -141,8 +137,37 @@
                 </div>
 
             </ng-container>
-
         </form>
-
+        <!--Items del SelectStaticoComponent-->
+        <form #formulario2="ngForm">
+            <section class="mt-2" *ngIf="tipoAtomo?.id=='SelectStaticoComponent'">
+                <plex-title titulo="Items de {{nombre}}" size="sm">
+                    <plex-button name="nuevoItem" label="Agregar item" type="info" size="sm"
+                                 (click)="showAgregarItem = true">
+                    </plex-button>
+                </plex-title>
+                <plex-wrapper justify *ngIf="showAgregarItem">
+                    <plex-text columns="4" label="Id" placeholder="Ingrese el id." [(ngModel)]="nuevoItem.id" name="id"
+                               [required]="true">
+                    </plex-text>
+                    <plex-text columns="6" label="Label" placeholder="Ingrese el label." [(ngModel)]="nuevoItem.label"
+                               name="label" [required]="true">
+                    </plex-text>
+                    <plex-button class="pt-4" name="confirmarItem" type="success" icon="plus" size="sm"
+                                 tooltip="Agregar" tooltipPosition="left" justify="end"
+                                 [disabled]="!nuevoItem?.id?.trim().length || !nuevoItem?.label?.trim().length"
+                                 (click)="addItem()">
+                    </plex-button>
+                </plex-wrapper>
+                <plex-list *ngIf="items?.length">
+                    <plex-item *ngFor="let item of items; let i = index">
+                        <plex-icon name="documento" type="info" size="md"></plex-icon>
+                        <plex-label titulo="{{ item.id }}" subtitulo="{{ item.label }}"></plex-label>
+                        <plex-button type="danger" size="sm" icon="delete" tooltip="Eliminar" (click)="removeItem(i)">
+                        </plex-button>
+                    </plex-item>
+                </plex-list>
+            </section>
+        </form>
     </plex-layout-main>
 </plex-layout>
