@@ -45,7 +45,7 @@ export class ElementosRupListadoService {
      */
     elementosVisibles(elementos: IElementoRUP[]) {
         return elementos.filter(e => {
-            return !!e.updatedAt || !!e.createdAt;
+            return e.activo;
         });
     }
 
