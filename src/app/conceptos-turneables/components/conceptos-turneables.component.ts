@@ -95,7 +95,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
         this.plex.confirm('Agregar concepto turneable "' + conceptoTurneable.term + '"', '¿Desea agregar?').then(confirmacion => {
             if (confirmacion) {
                 this.conceptoTurneableService.post(conceptoTurneable).subscribe(resultado => {
-                    this.plex.info('info', 'El concepto turneable fue agregado');
+                    this.plex.info('success', 'El concepto turneable fue agregado');
                     this.toggleAgregar();
                 });
             }
@@ -108,7 +108,7 @@ export class ConceptosTurneablesComponent implements OnInit, OnDestroy {
 
     onEditarConceptoTurneable(cambios) {
         this.conceptoTurneableService.patch(this.conceptoSeleccionado.id, cambios).subscribe(resultado => {
-            this.plex.info('info', 'El concepto turneable fue editado');
+            this.plex.info('success', 'El concepto turneable fue editado');
             this.conceptoSeleccionado = resultado;
             this.conceptosTurneables.forEach(concepto => {
                 if (concepto.id === resultado.id) {
