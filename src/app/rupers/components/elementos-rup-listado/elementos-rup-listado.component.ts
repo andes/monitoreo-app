@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { IElementoRUP } from 'src/app/shared/IElementoRUP';
 import { ElementosRupService } from '../../services/elementos-rup.service';
 import { ElementosRupListadoService } from './elementos-rup-listado.service';
-
+import { Plex } from '@andes/plex';
 @Component({
     selector: 'rup-elementos-rup-listado',
     templateUrl: 'elementos-rup-listado.component.html',
@@ -17,7 +17,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
         private router: Router,
         private listadoService: ElementosRupListadoService,
         private elementosRupService: ElementosRupService,
-        private auth: Auth
+        private auth: Auth, private plex: Plex
     ) { }
 
     public items = [
@@ -38,5 +38,25 @@ export class RUPElementosRupListadoComponent implements OnInit {
 
     goto(url) {
         this.router.navigate([url]);
+    }
+
+    removeElemento(elementoRup: IElementoRUP) {
+        if (elementoRup.activo) {
+            this.plex.confirm(' Ud. está por eliminar el/la ' + elementoRup.tipo + ' "' + elementoRup.nombre + '", está seguro?').then((resultado) => {
+                const rta = resultado;
+                if (rta) {
+                    elementoRup.activo = false;
+                    this.elementosRupService.save(elementoRup).subscribe(() => {
+                        this.elementosRupService.refresh.next(null);
+                        this.plex.toast('success', 'El elemento se borró correctamente', 'Información', 2000);
+                    },
+                    err => {
+                        if (err) {
+                            this.plex.toast('danger', 'No fue posible eliminar el elemento');
+                        }
+                    });
+                }
+            });
+        }
     }
 }
