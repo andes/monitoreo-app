@@ -19,7 +19,7 @@ export class RegenerarRegistrosComponent implements OnInit {
     loading = false;
     searchClear = true; // True si el campo de búsqueda se encuentra vacío
     side = sizeSide;
-    pacienteSelected = null;
+    public pacienteSelected = null;
     listaCDA = [];
     public disabledBtnCDA = false;
     public disabledBtnVacunas = false;
