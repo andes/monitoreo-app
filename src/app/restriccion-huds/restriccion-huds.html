@@ -6,7 +6,12 @@
         </plex-text>
 
         <ng-container *ngIf="(usuarios$ | async) as usuarios">
-            <plex-table [columns]="columns" #table="plTable" *ngIf="usuarios.length > 0" [offset]="50">
+            <div *ngIf="!loading && !usuarios.length && search?.length >= 3" class="alert alert-danger">
+                <plex-icon name="account-alert"></plex-icon> No hay usuarios que coincidan con los filtros de
+                búsqueda
+            </div>
+
+            <plex-table [columns]="columns" #table="plTable" *ngIf="usuarios.length" [offset]="80">
                 <plex-table-columns>
                 </plex-table-columns>
                 <tr class="hover" [class.selected]="selected(user)" [class.selectable]="selectable"
@@ -24,20 +29,22 @@
                 </tr>
             </plex-table>
 
-            <div *ngIf="usuarios.length === 0" justify="center" class="mt-5">
-                <plex-label *ngIf="!agendas?.length" class="flex-column" icon="account-off" size="lg" direction="column"
-                            titulo="No hay usuarios que coincidan con los filtros de búsqueda">
+            <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
+
+            <!-- Pantalla inicial listado vacio -->
+            <div *ngIf="!loading && !usuarios.length && search?.length < 3" justify="center" class="mt-5">
+                <plex-label *ngIf="!agendas?.length" type="info" class="flex-column" icon="account-search" size="lg"
+                            direction="column" titulo="Comience filtrando por documento, nombre y/o apellido">
                 </plex-label>
             </div>
-
         </ng-container>
     </plex-layout-main>
 
-    <plex-layout-sidebar type="invert">
 
+    <plex-layout-sidebar type="invert">
         <ng-container *ngIf="userSelected">
             <plex-list [selectable]="false">
-                <plex-title titulo="Usuario" size="lg">
+                <plex-title titulo="Usuario" size="md">
                     <plex-button size="sm" type="danger" class="mr-1" icon="close" tooltip="Cerrar"
                                  tooltipPosition="left" (click)="cerrarSideBar()">
                     </plex-button>
@@ -65,13 +72,23 @@
                 </plex-item>
             </plex-list>
             <plex-list [selectable]="false">
-                <plex-title titulo="{{ !showBuscarPaciente ? 'Pacientes restringidos' : 'Buscar paciente' }}" size="md">
-                    <plex-button *ngIf="!showBuscarPaciente" size="sm" type="primary" class="mr-1" icon="account-plus"
-                                 tooltip="Agregar" tooltipPosition="left" (click)="buscarPaciente()">
-                    </plex-button>
-                    <plex-button *ngIf="showBuscarPaciente" size="sm" type="danger" class="mr-1" icon="arrow-up"
-                                 tooltip="Volver" tooltipPosition="left" (click)="buscarPaciente()">
-                    </plex-button>
+                <plex-title titulo="{{ !showBuscarPaciente ? 'Pacientes restringidos' : 'Buscar paciente' }}" size="sm">
+                    <ng-container *ngIf="!showEditarPaciente && !agregarPaciente">
+                        <plex-button *ngIf="!showBuscarPaciente" size="sm" type="primary" class="mr-1"
+                                     icon="account-plus" tooltip="Agregar" tooltipPosition="left"
+                                     (click)="buscarPaciente()">
+                        </plex-button>
+                        <plex-button *ngIf="showBuscarPaciente" size="sm" type="danger" class="mr-1" icon="arrow-left"
+                                     tooltip="Volver" tooltipPosition="left" (click)="buscarPaciente()">
+                        </plex-button>
+                    </ng-container>
+                    <ng-container *ngIf="showEditarPaciente || agregarPaciente">
+                        <plex-button class="mr-1" [disabled]="!observaciones" icon="check" tooltip="Guardar"
+                                     type="success" size="sm" (click)="guardar(pacienteSelected)">
+                        </plex-button>
+                        <plex-button icon="arrow-left" tooltip="Volver" type="danger" size="sm" (click)="onCancelar()">
+                        </plex-button>
+                    </ng-container>
                 </plex-title>
                 <ng-container *ngIf="restringidos.length && !showBuscarPaciente && !showEditarPaciente">
                     <plex-item *ngFor="let paciente of restringidos; let i = index">
@@ -110,7 +127,7 @@
                               (selected)="onSelect($event)">
             </paciente-listado>
             <div *ngIf="resultadoBusqueda && !resultadoBusqueda.length && !loading" class="alert">
-                <i class="adi adi-account-alert"></i> No se encontró ningún paciente.
+                <plex-icon name="account-alert"></plex-icon> No se encontró ningun paciente..
             </div>
         </ng-container>
         <ng-container *ngIf="pacienteSelected && (showEditarPaciente || agregarPaciente)">
@@ -132,15 +149,15 @@
                     </plex-badge>
                 </plex-item>
                 <plex-item>
-                    <plex-text [(ngModel)]="observaciones" name='observ' [autoFocus]="autoFocus" label="Observaciones">
-                        <plex-icon name="account-search" left></plex-icon>
+                    <plex-text [(ngModel)]="observaciones" name='observaciones' [autoFocus]="autoFocus"
+                               label="Observaciones" placeholder="Ingrese una observación...">
                     </plex-text>
                 </plex-item>
             </plex-list>
             <plex-list [selectable]="false">
                 <plex-title titulo="Documentos" size="sm">
                     <input type="file" (change)="changeListener($event)" #upload style="display:none;">
-                    <plex-button *ngIf="!waiting" type="primary" icon="upload" size="sm" tooltip="Seleccionar Archivo"
+                    <plex-button *ngIf="!waiting" type="primary" icon="upload" size="sm" tooltip="Adjuntar archivo"
                                  tooltipPosition="left" class="mr-1" (click)="upload.click()">
                     </plex-button>
                 </plex-title>
@@ -151,11 +168,10 @@
                     <span *ngIf="errorExt">
                         <plex-badge type="danger" size="sm"
                                     hint="Estos son los archivos que podes subir: {{ extensions }}" detach="top"
-                                    hintType="danger">Archivo inválido.</plex-badge>
+                                    hintType="danger">Archivo inválido
+                        </plex-badge>
                     </span>
 
-                    <!-- <shared-galeria-archivos *ngIf="archivos?.length" [files]="getArchivos()" [readonly]="false"
-                                             (remove)="removeArchivo($event)"></shared-galeria-archivos> -->
                     <plex-grid size="md" type="auto" *ngIf="files?.length">
                         <plex-card *ngFor="let archivo of files; let i = index">
                             <img [src]="archivo.url" alt="" *ngIf="archivo.isImage" (click)="open(i)" width="100px">
@@ -178,15 +194,9 @@
                                          (click)="removeArchivo(archivo)" tooltip="Eliminar"></plex-button>
                         </plex-card>
                     </plex-grid>
-                    <!-- ... -->
 
                 </plex-item>
             </plex-list>
-            <br />
-            <plex-button [disabled]="!observaciones" label="Guardar" type="success" size="sm"
-                         (click)="guardar(pacienteSelected)"></plex-button>
-            <plex-button label="Cancelar" type="danger" size="sm" (click)="Cancelar()"
-                         class="float-right mr-1"></plex-button>
         </ng-container>
     </plex-layout-sidebar>
 </plex-layout>

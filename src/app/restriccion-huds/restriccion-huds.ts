@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { Router, ActivatedRoute } from '@angular/router';
-import { merge, BehaviorSubject } from 'rxjs';
-import { switchMap, tap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { merge, BehaviorSubject, of } from 'rxjs';
+import { switchMap, tap, distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
 import { PermisosService } from '../services/permisos.service';
 import { UsuariosHttp } from '../services/usuarios.service';
 import { asObject, mergeObject, cache, Unsubscribe } from '@andes/shared';
@@ -103,9 +103,10 @@ export class restriccionHudsComponent implements OnInit {
 
         this.usuarios$ = this.permisosService.organizaciones().pipe(
             switchMap(() => {
+                this.loading = true;
                 return merge(
                     this.refresh$,
-                    this.search$.pipe(asObject('search', t => t.length ? t : null)) // ,
+                    this.search$.pipe(asObject('search', t => t.length ? t : null))
                 );
             }),
             mergeObject(),
@@ -118,13 +119,18 @@ export class restriccionHudsComponent implements OnInit {
                 });
             }),
             switchMap((query: any) => {
-                query = { ...query };
-                if (query.search) {
+                if (query.search?.length > 2) {
+                    query = { ...query };
                     query.search = '^' + query.search;
+                    return this.usuariosService.find({ ...query, fields: '-password -permisosGlobales', limit: 50 });
                 }
-                return this.usuariosService.find({ ...query, fields: '-password -permisosGlobales', limit: 50 });
+                return of([]);
             }),
-            tap(() => this.userSelected = null),
+            map(response => {
+                this.userSelected = null;
+                this.loading = false;
+                return response;
+            }),
             cache()
         );
 
@@ -209,6 +215,7 @@ export class restriccionHudsComponent implements OnInit {
             }
             if (select) {
                 this.pacienteSelected = paciente;
+                this.showBuscarPaciente = false;
                 this.agregarPaciente = true;
                 this.files = this.getArchivos();
                 this.filesAdd = [];
@@ -314,13 +321,13 @@ export class restriccionHudsComponent implements OnInit {
         this.cancelar();
     }
 
-    Cancelar() {
+    onCancelar() {
         this.cancelar();
         this.eliminarAgregados();
         this.backFilesDel();
     }
 
-    cancelar() {
+    private cancelar() {
         this.resultadoBusqueda = null;
         this.showBuscarPaciente = false;
         this.showEditarPaciente = false;
