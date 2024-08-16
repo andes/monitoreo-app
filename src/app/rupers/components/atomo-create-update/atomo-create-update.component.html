@@ -3,7 +3,7 @@
         <plex-title [titulo]="titulo">
             <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
             <plex-button type="success" (click)="onSave()" [validateForm]="formulario1 && formulario2"
-                         [disabled]="!formulario1.form.valid || !formulario2.form.valid || !items.length">GUARDAR
+                         [disabled]="!formulario1.form.valid || (tipoAtomo?.id=='SelectStaticoComponent' && (!formulario2.form.valid || !items.length))">GUARDAR
             </plex-button>
         </plex-title>
         <form #formulario1="ngForm">
