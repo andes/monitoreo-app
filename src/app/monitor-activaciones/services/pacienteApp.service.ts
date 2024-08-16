@@ -7,6 +7,7 @@ import { Server } from '@andes/shared';
 export class PacienteAppService {
 
     private pacienteAppUrl = '/modules/mobileApp/pacienteApp'; // URL to web api
+    private accountUrl = '/modules/mobileApp/account'; // URL to web api
 
     constructor(private server: Server) { }
 
@@ -20,6 +21,10 @@ export class PacienteAppService {
 
     patch(pacienteApp: IPacienteApp): Observable<IPacienteApp> {
         return this.server.patch(this.pacienteAppUrl + `/${pacienteApp._id}`, pacienteApp);
+    }
+
+    baja(accountId: string): Observable<any> {
+        return this.server.patch(`${this.accountUrl}/baja/${accountId}`, { baja: true });
     }
 }
 
