@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { environment } from './../environments/environment';
+import { environment } from '../environments/environment';
 import { Server } from '@andes/shared';
 import { Plex } from '@andes/plex';
 import { Auth } from '@andes/auth';
@@ -34,8 +34,7 @@ export class AppComponent {
         if (this.auth.loggedIn()) {
             this.auth.organizaciones().subscribe(data => {
                 if (data.length > 1) {
-                    this.menuList = [{ label: 'Seleccionar Organización', icon: 'hospital-building', route: '/login/select-organizacion' },
-                                     ...this.menuList];
+                    this.menuList = [{ label: 'Seleccionar Organización', icon: 'hospital-building', route: '/login/select-organizacion' }, ...this.menuList];
                     this.plex.updateMenu(this.menuList);
                 }
             });
@@ -82,6 +81,10 @@ export class AppComponent {
 
         if (this.auth.check('monitoreo:rupers')) {
             this.menuList.push({ label: 'Elementos RUP', icon: 'magnify', route: '/rupers/elementos-rup' });
+        }
+
+        if (this.auth.check('monitoreo:restriccionHuds')) {
+            this.menuList.push({ label: 'Restricciones a la HUDS', icon: 'magnify', route: '/restriccion-huds' });
         }
 
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });
