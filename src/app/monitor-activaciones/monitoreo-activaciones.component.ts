@@ -115,10 +115,11 @@ export class MonitoreoActivacionesComponent implements OnInit {
         if (this.verificarCorreoValido()) {
             this.pacienteAppService.get({ email: this.pacienteEditado.email }).subscribe(
                 resultadoCuentas => {
-                    const cuentas = resultadoCuentas.filter(p => p.documento !== this.pacienteApp.documento);
-                    if (cuentas.length > 0) {
+                    // verifica que no exista otra cuenta, es decir que tenga otro dni con el mail que estamos agregando
+                    if (resultadoCuentas.some((p) => p.documento !== this.pacienteApp.documento)) {
                         this.plex.info('danger', 'El correo que ingresó ya se encuentra asociado a otra cuenta.');
                     } else {
+                        this.pacienteEditado.telefono = (this.pacienteEditado.telefono) ? this.pacienteEditado.telefono : '';
                         const mensajeTelefono = `<b>Teléfono: </b>${this.pacienteEditado.telefono}`;
                         const mensajeEmail = `<br><b>Email: </b>${this.pacienteEditado.email}`;
                         this.plex.confirm(`${mensajeTelefono} ${mensajeEmail}`, '¿Desea continuar?').then(confirmacion => {
@@ -143,4 +144,5 @@ export class MonitoreoActivacionesComponent implements OnInit {
             this.plex.info('danger', 'El formato del correo no es válido');
         }
     }
+
 }
