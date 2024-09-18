@@ -4,16 +4,22 @@
             <plex-button size="sm" type="success" (click)="descargar($event)" [validateForm]="formulario">
                 Descargar CSV
             </plex-button>
-            
         </plex-title>
         <form #formulario="ngForm">
             <plex-wrapper>
                 <plex-select [(ngModel)]="selectConsulta" name="select" [data]="listaFiltro" [required]="false"
                              labelField="nombre" label="Seleccione consulta" (change)="elegirConsulta()" idField="_id">
                 </plex-select>
+                <ng-container *ngIf="selectConsulta">
+                    <ng-container *ngFor="let argumento of selectConsulta.argumentos">
+                        <plex-bool *ngIf="argumento.tipo === 'salida'" [(ngModel)]="argumento.check"
+                                   [label]="argumento.label?argumento.label:argumento.key" name={{argumento.key}}>
+                        </plex-bool>
+                    </ng-container>
+                </ng-container>
             </plex-wrapper>
             <ng-container *ngIf="selectConsulta">
-                <span *ngIf='selectConsulta.descripcion'><b>Descripción: </b> {{ selectConsulta.descripcion }}</span>
+                <span *ngIf="selectConsulta.descripcion"><b>Descripción: </b> {{ selectConsulta.descripcion }}</span>
                 <plex-title titulo="Argumentos"></plex-title>
                 <plex-wrapper>
                     <ng-container *ngFor="let argumento of selectConsulta.argumentos" [ngSwitch]="argumento.tipo">
@@ -35,13 +41,12 @@
                                      [required]="argumento.required" (getData)="loadConceptosTurneables($event)">>
                         </plex-select>
                         <plex-select *ngSwitchCase="'select-static'"
-                                [label]="argumento.label?argumento.label:argumento.key" grow="auto"
-                                name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
-                                [required]="argumento.required" [data]="argumento.items">
+                                     [label]="argumento.label?argumento.label:argumento.key" grow="auto"
+                                     name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
+                                     [required]="argumento.required" [data]="argumento.items">
                         </plex-select>
-                        <plex-text *ngSwitchCase="'string'" [label]="argumento.key" grow="2"
-                                   name="{{ argumento.key }}" [(ngModel)]="listaValores[argumento.key]"
-                                   [required]="argumento.required">
+                        <plex-text *ngSwitchCase="'string'" [label]="argumento.key" grow="2" name="{{ argumento.key }}"
+                                   [(ngModel)]="listaValores[argumento.key]" [required]="argumento.required">
                         </plex-text>
                     </ng-container>
                 </plex-wrapper>
