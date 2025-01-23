@@ -19,6 +19,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     public conceptos: ISnomedConcept[] = [];
     public requerido: ISnomedConcept;
     moleculaSeleccionado: any = null;
+    public habilitarPlantilla = null;
     nombre = '';
     nombreOrientativo = '';
     items: any[] = [];
@@ -62,7 +63,8 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             if (this.id) {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
                 this.conceptos = [...(this.elemento.conceptos || [])];
-                this.params = { ...this.elemento.params };
+                this.params = this.elemento.params || {};
+                this.habilitarPlantilla = this.elemento.params?.habilitarPlantilla ?? this.habilitarPlantilla;
                 this.items = this.params.items ? [...this.params.items] : [];
                 this.tipoAtomo = this.tipoAtomos.find(t => t.id === this.elemento.componente) || null;
                 this.titulo = this.elemento.conceptos[0].term;
@@ -140,6 +142,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     onSave() {
         this.elemento.nombre = this.nombre;
         this.elemento.conceptos = [...this.conceptos];
+        if (this.habilitarPlantilla !== null) {
+            this.params.habilitarPlantilla = this.habilitarPlantilla;
+        }
+        this.elemento.params = this.params;
         const conceptosIds = this.conceptos.map(c => String(c.conceptId));
         const conceptoDuplicado = this.elementosRup
             .filter(e => e.id !== this.id)
