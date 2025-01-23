@@ -51,7 +51,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     public elemento;
     public concepto;
     public conceptos: ISnomedConcept[] = [];
-
+    public habilitarPlantilla = null;
 
     params: any = {};
 
@@ -71,6 +71,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
                 this.conceptos = [...(this.elemento.conceptos || [])];
                 this.params = this.elemento.params ? { ...this.elemento.params } : {};
+                this.habilitarPlantilla = this.elemento.params?.habilitarPlantilla ?? this.habilitarPlantilla;
                 this.items = this.params.items ? [...this.params.items] : [];
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
                 this.nombre = this.elemento.nombre;
@@ -143,6 +144,9 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         }
         this.elemento.conceptos = [...this.conceptos];
         this.elemento.componente = this.tipoAtomo.id;
+        if (this.habilitarPlantilla !== null) {
+            this.params.habilitarPlantilla = this.habilitarPlantilla;
+        }
         this.elemento.nombre = this.nombre || this.conceptos[0]?.term || 'Átomo sin nombre';
         this.elemento.params = { ...this.params };
 

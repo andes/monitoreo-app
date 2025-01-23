@@ -17,12 +17,18 @@
                              [(ngModel)]="conceptos" idField="conceptId" labelField="fsn" required="true"
                              name="conceptos">
                 </plex-select>
+                </div>
+                <div class="grow">
+                    <plex-bool label="Carga de plantillas" type="slide" [(ngModel)]="habilitarPlantilla">
+                    </plex-bool>
+                </div>
+                <div>
+                    <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
+                                 name="tipoAtomo" class="mx-2">
+                    </plex-select>
 
-                <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
-                             name="tipoAtomo" class="mx-2">
-                </plex-select>
-
-                <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title" class="mx-2"></plex-text>
+                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"
+                               class="mx-2"></plex-text>
 
             </plex-grid>
 
