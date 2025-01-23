@@ -18,6 +18,8 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     public elemento;
     public concepto;
     public requerido: ISnomedConcept;
+    public habilitarPlantilla = null;
+    params: any = {};
 
     nombre = '';
 
@@ -38,6 +40,9 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
                 this.titulo = this.elemento.conceptos[0].term;
                 this.concepto = this.elemento.conceptos[0];
+                this.params = this.elemento.params || {};
+
+                this.habilitarPlantilla = this.elemento.params?.habilitarPlantilla ?? this.habilitarPlantilla;
                 this.nombre = this.elemento.nombre;
             });
         } else {
@@ -77,6 +82,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     onSave() {
         this.elemento.conceptos = [this.concepto];
         this.elemento.nombre = this.nombre;
+        if (this.habilitarPlantilla !== null) {
+            this.params.habilitarPlantilla = this.habilitarPlantilla;
+        }
+        this.elemento.params = this.params;
         this.elementosRUPService.save(this.elemento).subscribe(() => {
             this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
         });
