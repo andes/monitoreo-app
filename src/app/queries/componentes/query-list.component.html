@@ -1,0 +1,135 @@
+<plex-layout [main]="QuerySeleccionada ? 6 : 12">
+    <plex-layout-main>
+
+        <!-- Buscador -->
+        <div class="row">
+            <div class="col-12">
+                <!-- Campo de texto para buscar queries por nombre o descripción -->
+                <plex-text
+                    [(ngModel)]="buscador"
+                    (input)="loadQueries()"
+                    placeholder="Buscar por nombre o descripción"
+                    prefix="account-search">
+                </plex-text>
+            </div>
+        </div>
+
+        <!-- Loader animado mientras se busca -->
+        <plex-loader *ngIf="loader" type="ball-beat"></plex-loader>
+
+        <div class="row">
+            <div class="col">
+                <!-- Tabla principal de resultados si hay búsquedas -->
+                <table *ngIf="buscador && queries?.length" class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Colección</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Fila de resultados encontrados por búsqueda -->
+                        <tr class="hover" *ngFor="let query of queries" (click)="seleccionar(query)">
+                            <td>{{ query.nombre }}</td>
+                            <td>{{ query.descripcion }}</td>
+                            <td>{{ query.coleccion }}</td>
+                            <td>{{ query.estado || 'sin estado' }}</td>
+                        </tr>
+
+                        <!-- Resultados por búsqueda secundaria -->
+                        <tr *ngFor="let query of resultadoBusqueda" (click)="seleccionar(query)">
+                            <td class="text-center">
+                                <span *ngIf="query?.nombre !== ''" class="d-block">{{ query.nombre }}</span>
+                                <span *ngIf="query?.descripcion !== ''" class="d-block">{{ query.descripcion }}</span>
+                            </td>
+                            <td>{{ query.nombre }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mensaje si no hay resultados -->
+        <div *ngIf="buscador && !queries?.length && !loader && !searchClear" class="alert alert-default">
+            <i class="mdi mdi-emoticon-sad"></i> No hay resultados que coincidan con los filtros de búsqueda
+        </div>
+
+    </plex-layout-main>
+
+    <!-- Sidebar lateral para ver o editar una query seleccionada -->
+    <plex-layout-sidebar>
+        <form #formEdicion="ngForm">
+            <fieldset>
+                <!-- Título con botones de acción -->
+                <plex-title titulo="Datos de la Query">
+                    <!-- Botón para habilitar edición -->
+                    <plex-button icon="pencil" type="primary" *ngIf="!edicionActivada" (click)="habilitarEdicion()">
+                    </plex-button>
+
+                    <!-- Botón para cancelar selección -->
+                    <plex-button icon="close" type="danger" *ngIf="!edicionActivada"
+                                 (click)="seleccionar(this.Query)">
+                    </plex-button>
+
+                    <!-- Botón para guardar edición -->
+                    <plex-button icon="check" type="success" *ngIf="edicionActivada" [validateForm]="formEdicion"
+                                 (click)="guardarEdicion()" [disabled]="!formEdicion.valid">
+                    </plex-button>
+
+                    <!-- Botón para cancelar edición -->
+                    <plex-button icon="close" type="danger" *ngIf="edicionActivada" (click)="cancelarEdicion()">
+                    </plex-button>
+                </plex-title>
+
+                <!-- Alerta si no hay paciente seleccionado (esto podrías renombrarlo si no usás "pacientes") -->
+                <div *ngIf="!QuerySeleccionada" class="alert alert-danger">
+                    <i class="mdi mdi-account-warning"></i> Aún no se ha seleccionado ningún paciente
+                </div>
+
+                <!-- Detalle de la query seleccionada -->
+                <div *ngIf="QuerySeleccionada">
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Nombre</label>
+                            <span>{{ Query.nombre }}</span>
+                        </div>
+                        <div class="col-md">
+                            <label>Descripcion</label>
+                            <span>{{ Query.descripcion }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Coleccion</label>
+                            <span>{{ Query.coleccion }}</span>
+                        </div>
+                        <div class="col-md">
+                            <label>Estado</label>
+                            <span>{{ Query.estado }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Campos editables cuando se habilita edición -->
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Nombre</label>
+                            <span *ngIf="!edicionActivada">{{ Query.nombre }}</span>
+                            <plex-text *ngIf="edicionActivada" name="nombre"
+                                       [(ngModel)]="QueryEditada.nombre" [required]="true">
+                            </plex-text>
+                        </div>
+                        <div class="col-md">
+                            <label>Descripción</label>
+                            <span *ngIf="!edicionActivada">{{ Query.descripcion }}</span>
+                            <plex-text *ngIf="edicionActivada" name="descripcion"
+                                       [(ngModel)]="QueryEditada.descripcion" [required]="true">
+                            </plex-text>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </plex-layout-sidebar>
+</plex-layout>
