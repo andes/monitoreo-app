@@ -2,10 +2,13 @@ import { Component } from '@angular/core';
 import { ElementosRupListadoService, FilterKey } from '../elementos-rup-listado.service';
 import { switchMap, distinct, map, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
+import { SnomedService } from 'src/app/shared/snomed.service';
 
 export interface PlexSelectItem {
     id: string;
     nombre: string;
+
 }
 
 // type KEYS = keyof (typeof RUPFiltrosElementosRupComponent.filtros);
@@ -15,6 +18,9 @@ export interface PlexSelectItem {
     templateUrl: 'filtros-elementos-rup.component.html'
 })
 export class RUPFiltrosElementosRupComponent {
+
+    conceptos: ISnomedConcept[] = [];
+    snomedSearchTerm = '';
 
     tipos$ = this.listadoService.elementosRup$.pipe(
         switchMap(elementos => {
@@ -38,16 +44,54 @@ export class RUPFiltrosElementosRupComponent {
         })
     );
 
+
+
+
     tipoSelected: PlexSelectItem = null;
 
     componenteSelected: PlexSelectItem = null;
+    busqueda = '';
 
-    constructor(private listadoService: ElementosRupListadoService) { }
+
+    constructor(private listadoService: ElementosRupListadoService, private snomedService: SnomedService) { }
 
     onChange(key: FilterKey, { value }: { value: PlexSelectItem }) {
 
         this.listadoService.setFilter(key, value && value.id);
 
     }
+
+    buscarConcepto() {
+        if (!this.snomedSearchTerm || this.snomedSearchTerm.match(/<<\s{1,}/)) {
+            this.snomedSearchTerm = '';
+            return;
+        }
+
+        const query = {
+            search: this.snomedSearchTerm
+        };
+
+        this.snomedService.get(query).subscribe((resultado: ISnomedConcept[]) => {
+            this.conceptos = resultado;
+            console.log('ENTRÓ');
+            console.log(resultado);
+        });
+    }
+
+    seleccionarConcepto(concepto: ISnomedConcept) {
+        console.log('Seleccionaste:', concepto);
+    }
+
+    onSearchChange() {
+        const termino = this.busqueda?.toLowerCase().trim();
+        if (!termino) {
+            this.listadoService.setFilter('concepto', null);
+            return;
+        }
+
+        // Le pasamos el término al filtro del servicio
+        this.listadoService.setFilter('concepto', termino);
+    }
+
 
 }
