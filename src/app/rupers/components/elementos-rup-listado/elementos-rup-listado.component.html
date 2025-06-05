@@ -3,7 +3,7 @@
         <header>
             <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 10px;">
                 <plex-title titulo="Elementos RUP">
-                    <plex-button type="danger" size="sm">VOLVER</plex-button>
+                    <plex-button type="danger" size="sm" [routerLink]="['/monitoreo/home']">VOLVER</plex-button>
                     <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
                     </plex-dropdown>
                 </plex-title>
@@ -40,19 +40,35 @@
     <!-- Sidebar lateral -->
     <plex-layout-sidebar type="invert" *ngIf="elementoSeleccionado" class="sidebar-fijo">
         <plex-title justify titulo="DETALLE DEL ELEMENTO " size="md">
+            <ng-container [ngSwitch]="elementoSeleccionado.tipo">
+                <plex-button *ngSwitchCase="'molecula'" type="warning" icon="pencil" size="sm"
+                    [routerLink]="['molecula', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchCase="'seccion'" type="warning" icon="pencil" size="sm"
+                    [routerLink]="['seccion', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchCase="'prestacion'" type="warning" icon="pencil" size="sm"
+                    [routerLink]="['prestacion', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchDefault type="warning" icon="pencil" size="sm"
+                    [routerLink]="['atomo', elementoSeleccionado.id]">
+                </plex-button>
+            </ng-container>
             <plex-button type="danger" size="sm" icon="close" ariaLabel="cerrar panel lateral"
                 (click)="elementoSeleccionado = null">
             </plex-button>
         </plex-title>
 
+
         <plex-detail size="md">
             <plex-icon type="info" name="information-variant"></plex-icon>
             <div title> Registrar los signos vitales del paciente </div>
-            <plex-label titulo="Fecha creación" subtitulo="09/03/1990"></plex-label>
-            <plex-label titulo="Usuario/a que creó" subtitulo="Hospital Provincial Neuquén Dr. Eduardo Castro Rendón">
+            <plex-label titulo="Fecha creación"
+                [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
+            <plex-label titulo="Usuario/a que creó" [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || '-'">
             </plex-label>
             <plex-label titulo="Ultima edición"
-                [subtitulo]="elementoSeleccionado.updatedBy?.nombre || '-'"></plex-label>
+                [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
             <plex-label titulo="Componente" [subtitulo]="elementoSeleccionado.componente"></plex-label>
             <plex-label titulo="Tipo" [subtitulo]="elementoSeleccionado.tipo"></plex-label>
         </plex-detail>

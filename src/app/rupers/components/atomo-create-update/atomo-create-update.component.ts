@@ -50,6 +50,8 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     public nombre: string;
     public elemento;
     public concepto;
+    public conceptos: ISnomedConcept[] = [];
+
 
     params: any = {};
 
@@ -83,20 +85,30 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
             this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
                 this.elementosRup = elementosRup;
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
-                this.titulo = this.elemento.conceptos[0].term;
-                this.concepto = this.elemento.conceptos[0];
-                this.params = this.elemento.params || {};
-                if (this.elemento.params.items) {
-                    this.items = this.elemento.params.items;
-                }
+
+
+                this.conceptos = [...(this.elemento.conceptos || [])];
+
+
+                this.params = this.elemento.params ? { ...this.elemento.params } : {};
+                this.items = this.params.items ? [...this.params.items] : [];
+
+
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
+
+
                 this.nombre = this.elemento.nombre;
+                this.titulo = this.elemento.conceptos[0]?.term || 'Editar átomo';
+
+
             });
         } else {
+            this.conceptos = [];
             this.createElemento();
         }
-
     }
+
+
 
     createElemento() {
         this.elemento = {
@@ -114,13 +126,29 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     }
 
     onSave() {
-        this.elemento.conceptos = [this.concepto];
-        this.elemento.componente = this.tipoAtomo.id;
-        this.elemento.params = this.params;
-        this.elemento.nombre = this.nombre;
-        if (this.items.length) {
-            this.elemento.params.items = this.items;
+        // Validación de conceptos
+        if (!this.conceptos || !this.conceptos.length) {
+            this.plex.toast('danger', 'Debe seleccionar al menos un concepto SNOMED');
+            return;
         }
+        // Validación de tipo de átomo
+        if (!this.tipoAtomo) {
+            this.plex.toast('danger', 'Debe seleccionar un tipo de átomo');
+            return;
+        }
+
+
+        this.elemento.conceptos = [...this.conceptos];
+        this.elemento.componente = this.tipoAtomo.id;
+        this.elemento.nombre = this.nombre || this.conceptos[0]?.term || 'Átomo sin nombre';
+        this.elemento.params = { ...this.params };
+
+        if (this.items && this.items.length) {
+            this.elemento.params.items = [...this.items];
+        }
+
+
+
         this.elementosRUPService.save(this.elemento).subscribe(
             () => {
                 this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });

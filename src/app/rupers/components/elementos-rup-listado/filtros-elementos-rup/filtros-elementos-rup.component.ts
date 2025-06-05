@@ -20,7 +20,7 @@ export interface PlexSelectItem {
 export class RUPFiltrosElementosRupComponent {
 
     conceptos: ISnomedConcept[] = [];
-    snomedSearchTerm: string = '';
+    snomedSearchTerm = '';
 
     tipos$ = this.listadoService.elementosRup$.pipe(
         switchMap(elementos => {
@@ -50,7 +50,7 @@ export class RUPFiltrosElementosRupComponent {
     tipoSelected: PlexSelectItem = null;
 
     componenteSelected: PlexSelectItem = null;
-    busqueda: string = '';
+    busqueda = '';
 
 
     constructor(private listadoService: ElementosRupListadoService, private snomedService: SnomedService) { }
@@ -73,13 +73,8 @@ export class RUPFiltrosElementosRupComponent {
 
         this.snomedService.get(query).subscribe((resultado: ISnomedConcept[]) => {
             this.conceptos = resultado;
-            console.log('ENTRÓ');
-            console.log(resultado);
-        });
-    }
 
-    seleccionarConcepto(concepto: ISnomedConcept) {
-        console.log('Seleccionaste:', concepto);
+        });
     }
 
     onSearchChange() {
