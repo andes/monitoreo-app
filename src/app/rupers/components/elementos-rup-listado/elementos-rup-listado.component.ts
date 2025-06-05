@@ -30,17 +30,17 @@ export class RUPElementosRupListadoComponent implements OnInit {
         { label: 'PRESTACION', handler: () => { this.goto('/rupers/elementos-rup/prestacion/nuevo'); } }
 
     ];
-    busqueda: string = '';
+    busqueda = '';
     todosLosElementos: IElementoRUP[] = [];
-    elementosFiltrados: IElementoRUP[] = []
+    elementosFiltrados: IElementoRUP[] = [];
     RuperSeleccionada: any = null;
-    RupEditado: IElementoRUP;             // Copia editable
+    RupEditado: IElementoRUP; // Copia editable
     QueryDevice: ISnomedConcept;
     edicionActivada = false;
     ElementoRup: IElementoRUP | null = null;
     elementoSeleccionado: IElementoRUP | null = null;
     resultadoMensajes;
-    cantidadElementos: number = 0;
+    cantidadElementos = 0;
 
     columns = [
         { key: 'col-1', label: 'Nombre' },
@@ -59,7 +59,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
         this.elementosRup$.subscribe((elementos) => {
             this.todosLosElementos = elementos;
             this.elementosFiltrados = elementos;
-            this.cantidadElementos = elementos.length;  // ✅ sumás acá
+            this.cantidadElementos = elementos.length;
 
         });
 
@@ -68,32 +68,30 @@ export class RUPElementosRupListadoComponent implements OnInit {
     }
 
 
+
+
     seleccionar(elemento: IElementoRUP) {
         if (this.elementoSeleccionado && this.ElementoRup === elemento) {
             this.ElementoRup = null;
             this.elementoSeleccionado = null;
             this.QueryDevice = null;
             this.edicionActivada = false;
-            console.log(elemento);
-            console.log('Des-seleccionando elemento');
-        } else {
-            console.log('Seleccionando elemento:', elemento);
 
+
+        } else {
             this.ElementoRup = elemento;
             this.elementoSeleccionado = elemento;
 
         }
 
     }
+
     public loadMensajes(conceptos: string) {
         this.sendMessageCacheService.get({ conceptos }).subscribe(
             datos => {
-                console.log('Mensajes cargados:', datos); // 👈🏼 Acá ves qué viene
                 this.resultadoMensajes = datos;
             },
-            error => {
-                console.error('Error al cargar mensajes:', error); // 👈🏼 Y también por si falla
-            }
+
         );
     }
 
