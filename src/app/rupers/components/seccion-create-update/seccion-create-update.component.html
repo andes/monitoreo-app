@@ -3,47 +3,109 @@
         <plex-title [titulo]="titulo">
             <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
             <plex-button type="success" (click)="onSave()" [validateForm]="formulario"
-                         [disabled]="!formulario.form.valid">GUARDAR</plex-button>
+                [disabled]="!formulario.form.valid">GUARDAR</plex-button>
         </plex-title>
 
         <form #formulario="ngForm">
-            <div class="grow">
-                <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="false">
-                </plex-text>
-            </div>
-            <div class="grow">
-                <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="concepto" idField="conceptId"
-                             labelField="term + '(' + semanticTag + ')'" name="concepto" [required]="true">
-                </plex-select>
-                <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAdd()"></plex-button>
-            </div>
-        </form>
+            <plex-grid type="auto" size="md" cols="2">
+                <plex-card aligned="center" direction="column" class="mb-1">
+                    <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true">
+                    </plex-text>
+                </plex-card>
+                <plex-card aligned="center" direction="column" class="mb-1">
+                    <plex-select label="Conceptos" [multiple]="true" (getData)="searchConcept($event)"
+                        [(ngModel)]="concepto" idField="conceptId" labelField="term + '(' + semanticTag + ')'"
+                        name="concepto" [required]="true">
+                    </plex-select>
+                </plex-card>
+                <plex-card class="mb-1">
+                    <plex-radio label="Visualización" [(ngModel)]="tipoVisualizacion"
+                        [data]="[ { id: 'tabs', label: 'Tabs' }, { id: 'dropdown', label: 'Dropdown' } ]"
+                        name="visualizacion" type="horizontal" [required]="true">
+                    </plex-radio>
+                    <!-- Mensaje en naranja solo si se selecciona "tabs" -->
+                    <div *ngIf="tipoVisualizacion === 'tabs'" style="color: orange; margin-top: 0.5rem;">
+                        Cantidad máxima de tab : 6
+                    </div>
+                </plex-card>
+            </plex-grid>
 
-        <ng-container *ngFor="let requerido of elemento?.requeridos">
-            <hr>
-            <div class="row">
-                <div class="col-4">
-                    <plex-select label="Concepto seccion" (getData)="searchConcept($event)"
-                                 [(ngModel)]="requerido.concepto" idField="conceptId"
-                                 labelField="term + '(' + semanticTag + ')'"></plex-select>
-                    <ng-container *ngIf="requerido.concepto">
-                        <strong> {{ requerido.concepto.conceptId }} </strong> | {{ requerido.concepto.term }}
-                    </ng-container>
-                </div>
-                <div class="col-8">
-                    <plex-wrapper>
-                        <plex-bool label="Texto libre" [(ngModel)]="requerido.params.showText"></plex-bool>
-                        <plex-bool label="Texto libre Requerido" [(ngModel)]="requerido.params.textRequired">
-                        </plex-bool>
-                        <plex-bool label="Al menos un registro" [(ngModel)]="requerido.params.conceptsRequired">
-                        </plex-bool>
-                        <!-- <plex-bool label="Al menos un registro" [(ngModel)]="requerido.params.conceptsRequired"></plex-bool> -->
-                        <plex-text label="icono" [(ngModel)]="requerido.params.icon"></plex-text>
-                        <plex-radio label="Layout" [(ngModel)]="requerido.params.direction" [data]="directionType"
-                                    type="horizontal" name="params-type"></plex-radio>
-                    </plex-wrapper>
-                </div>
-            </div>
-        </ng-container>
+            <plex-title [titulo]="'Secciones'">
+                <plex-button class="align-self-end" size="sm" type="info" (click)="onAdd()"
+                    [disabled]="elemento?.requeridos?.length >= 6">Agregar
+                    sección</plex-button>
+            </plex-title>
+
+
+            <ng-container *ngFor="let requerido of elemento?.requeridos; let i = index">
+                <hr>
+                <plex-card selectable="true" [selected]="requerido.selected"
+                    (click)="requerido.selected = !requerido.selected" size="sm" type="info">
+
+                    <plex-grid type="auto" size="md" cols="2">
+                        <plex-wrapper>
+                            <plex-select label="Concepto sección" [(ngModel)]="requerido.concepto"
+                                (getData)="searchConcept($event)" idField="conceptId" fullWidth="true"
+                                labelField="term + '(' + semanticTag + ')'" name="concepto{{i}}">
+                            </plex-select>
+
+                        </plex-wrapper>
+                        <plex-wrapper>
+                            <plex-text label="Icono" fullWidth="true" [(ngModel)]="requerido.params.icon"
+                                name="icon{{i}}"></plex-text>
+                        </plex-wrapper>
+                        <plex-wrapper>
+                            <plex-text label="Label" [(ngModel)]="requerido.params.label" name="label{{i}}"></plex-text>
+                        </plex-wrapper>
+
+                        <plex-wrapper style="visibility: hidden;">&nbsp;</plex-wrapper>
+
+
+
+
+                        <plex-wrapper>
+
+                            <label>Configuracion</label>
+                            <plex-bool label="Texto libre" [(ngModel)]="requerido.params.showText" name="showText{{i}}"
+                                [readonly]="requerido.params.elementoRUP" [disabled]="requerido.params.elementoRUP">
+                            </plex-bool>
+
+                            <plex-bool label="Texto libre Requerido" [(ngModel)]="requerido.params.textRequired"
+                                [readonly]="requerido.params.elementoRUP" name="textRequired{{i}}"
+                                [disabled]="requerido.params.elementoRUP">
+                            </plex-bool>
+
+                            <plex-bool label="Al menos un registro" [(ngModel)]="requerido.params.conceptsRequired"
+                                [readonly]="requerido.params.elementoRUP" name="conceptsRequired{{i}}"
+                                [disabled]="requerido.params.elementoRUP">
+                            </plex-bool>
+
+                            <plex-bool label="Elemento RUP" [(ngModel)]="requerido.params.elementoRUP"
+                                name="elementoRUP{{i}}" (ngModelChange)="onElementoRUPChange(requerido)"> </plex-bool>
+
+                        </plex-wrapper>
+                        <plex-wrapper>
+                            <fieldset>
+
+                                <label>Requerido</label>
+                                <plex-bool type="slide" [(ngModel)]="requerido.params.required" name="params-required"
+                                    class="mr-4 flex-grow-1">
+                                </plex-bool>
+
+                            </fieldset>
+
+                        </plex-wrapper>
+
+                    </plex-grid>
+
+
+
+                </plex-card>
+            </ng-container>
+
+            <!-- Columna derecha: vacía o para otro contenido -->
+            <div></div>
+
+        </form>
     </plex-layout-main>
 </plex-layout>

@@ -5,6 +5,7 @@ import { SnomedService } from 'src/app/shared/snomed.service';
 import { Unsubscribe } from '@andes/shared';
 import { ElementosRupService } from '../../services/elementos-rup.service';
 import { take } from 'rxjs/operators';
+import { Plex } from '@andes/plex';
 
 @Component({
     selector: 'rup-seccion-create-update',
@@ -26,12 +27,13 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
     public concepto: ISnomedConcept;
 
     titulo = 'Nueva sección';
-
+    tipoVisualizacion: string = null;
     constructor(
         private actr: ActivatedRoute,
         private snomedService: SnomedService,
         private elementosRUPService: ElementosRupService,
-        private router: Router
+        private router: Router,
+        private plex: Plex
     ) { }
 
     ngOnInit() {
@@ -60,7 +62,7 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
             esSolicitud: false,
             tipo: 'molecula',
             activo: true,
-            defaultFor: []
+            defaultFor: [],
         };
     }
 
@@ -102,12 +104,28 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
                 textRequired: true,
                 conceptsRequired: false,
                 icon: 'icon-andes-documento'
-            }
+            },
+            selected: false
         };
     }
 
     onAdd() {
+        if (this.elemento.requeridos.length > 5) {
+            this.plex.toast('warning', 'Recordar que no se pueden agregar más de 6 secciones');
+            return;
+        }
         const nuevoRequerido = this.nuevoRequerido();
         this.elemento.requeridos.push(nuevoRequerido);
     }
+
+    onElementoRUPChange(requerido: any) {
+
+        if (requerido.params.elementoRUP) {
+            requerido.params.showText = false;
+            requerido.params.textRequired = false;
+            requerido.params.conceptsRequired = false;
+        }
+    }
+
+
 }
