@@ -5,7 +5,7 @@ import { ElementosRupService } from '../../services/elementos-rup.service';
 import { map, switchMap, filter, toArray } from 'rxjs/operators';
 import { mergeObject } from '@andes/shared';
 
-export type FilterKey = 'tipo' | 'componente';
+export type FilterKey = 'tipo' | 'componente' | 'concepto';
 
 @Injectable()
 export class ElementosRupListadoService {

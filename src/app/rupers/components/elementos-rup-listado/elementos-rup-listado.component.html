@@ -1,10 +1,13 @@
 <plex-layout>
     <plex-layout-main>
         <header>
-            <plex-title titulo="Elementos RUP">
-                <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
-                </plex-dropdown>
-            </plex-title>
+            <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 10px;">
+                <plex-title titulo="Elementos RUP">
+                    <plex-button type="danger" size="sm" [routerLink]="['/monitoreo/home']">VOLVER</plex-button>
+                    <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
+                    </plex-dropdown>
+                </plex-title>
+            </div>
             <rup-filtros-elementos-rup></rup-filtros-elementos-rup>
         </header>
         <plex-list>
@@ -44,4 +47,81 @@
             </plex-item>
         </plex-list>
     </plex-layout-main>
+
+    <!-- Sidebar lateral -->
+    <plex-layout-sidebar type="invert" *ngIf="elementoSeleccionado" class="sidebar-fijo">
+        <plex-title justify titulo="DETALLE DEL ELEMENTO " size="md">
+            <ng-container [ngSwitch]="elementoSeleccionado.tipo">
+                <plex-button *ngSwitchCase="'molecula'" type="warning" icon="pencil" size="sm"
+                    [routerLink]="['molecula', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchCase="'seccion'" type="warning" icon="pencil" size="sm"
+                    [routerLink]="['seccion', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchCase="'prestacion'" type="warning" icon="pencil" size="sm"
+                    [routerLink]="['prestacion', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchDefault type="warning" icon="pencil" size="sm"
+                    [routerLink]="['atomo', elementoSeleccionado.id]">
+                </plex-button>
+            </ng-container>
+            <plex-button type="danger" size="sm" icon="close" ariaLabel="cerrar panel lateral"
+                (click)="elementoSeleccionado = null">
+            </plex-button>
+        </plex-title>
+
+
+        <plex-detail size="md">
+            <plex-icon type="info" name="information-variant"></plex-icon>
+            <div title> Registrar los signos vitales del paciente </div>
+            <plex-label titulo="Fecha creación"
+                [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
+            <plex-label titulo="Usuario/a que creó" [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || '-'">
+            </plex-label>
+            <plex-label titulo="Ultima edición"
+                [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
+            <plex-label titulo="Componente" [subtitulo]="elementoSeleccionado.componente"></plex-label>
+            <plex-label titulo="Tipo" [subtitulo]="elementoSeleccionado.tipo"></plex-label>
+        </plex-detail>
+
+        <plex-title justify titulo="CONCEPTOS APLICADOS " size="md"></plex-title>
+        <plex-accordion [multiple]="false" activeLast="true">
+
+
+            <plex-panel>
+                <div plex-accordion-title justify>
+                    <div class="text-center" style="font-style: italic; font-size: 1rem;">
+                        {{ elementoSeleccionado.conceptos?.length || 0 }} conceptos aplicados
+                    </div>
+                </div>
+                <div class="p-3">
+                    <plex-card *ngFor="let concepto of elementoSeleccionado.conceptos" class="sm">
+                        <plex-card-header>
+                            <plex-label size="sm" [titulo]="concepto.term || '-'"></plex-label>
+                        </plex-card-header>
+                    </plex-card>
+                </div>
+
+            </plex-panel>
+        </plex-accordion>
+
+        <plex-title justify titulo="ÁTOMOS Y MOLÉCULAS VINCULADOS " size="md"></plex-title>
+
+        <plex-accordion [multiple]="false" activeLast="true">
+            <plex-panel>
+                <div plex-accordion-title justify>
+                    <div class="text-center" style="font-style: italic; font-size: 1rem;">
+                        {{ elementoSeleccionado.requeridos?.length || 0 }} átomos aplicados
+                    </div>
+                </div>
+                <div class="p-3">
+                    <plex-card *ngFor="let requerido of elementoSeleccionado.requeridos" class="sm">
+                        <plex-card-header>
+                            <plex-label size="sm" [titulo]="requerido.concepto?.term || '-'"></plex-label>
+                        </plex-card-header>
+                    </plex-card>
+                </div>
+            </plex-panel>
+        </plex-accordion>
+    </plex-layout-sidebar>
 </plex-layout>
