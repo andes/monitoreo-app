@@ -114,10 +114,6 @@ export class QueryListComponent implements OnInit {
                     this.refreshQueries();
                 },
                 error: (err) => {
-                    console.log('ERROR DEL PATCH:', err);
-                    if (err.error) {
-                        console.error('Mensaje del backend:', err.error.message || err.error.mensaje);
-                    }
                     this.plex.toast('danger', 'Error al actualizar la query', '❌');
                 }
             });

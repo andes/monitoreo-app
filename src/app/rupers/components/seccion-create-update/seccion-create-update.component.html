@@ -8,28 +8,25 @@
 
         <form #formulario="ngForm">
             <plex-grid type="auto" size="md" cols="2">
-                <plex-card aligned="center" direction="column" class="mb-1">
-                    <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true">
-                    </plex-text>
-                </plex-card>
-                <plex-card aligned="center" direction="column" class="mb-1">
-                    <plex-select label="Conceptos" [multiple]="true" (getData)="searchConcept($event)"
-                        [(ngModel)]="concepto" idField="conceptId" labelField="term + '(' + semanticTag + ')'"
-                        name="concepto" [required]="true">
-                    </plex-select>
-                </plex-card>
-                <plex-card class="mb-1">
-                    <plex-radio label="Visualización" [(ngModel)]="tipoVisualizacion"
-                        [data]="[ { id: 'tabs', label: 'Tabs' }, { id: 'dropdown', label: 'Dropdown' } ]"
-                        name="visualizacion" type="horizontal" [required]="true">
-                    </plex-radio>
-                    <!-- Mensaje en naranja solo si se selecciona "tabs" -->
-                    <div *ngIf="tipoVisualizacion === 'tabs'" style="color: orange; margin-top: 0.5rem;">
-                        Cantidad máxima de tab : 6
-                    </div>
-                </plex-card>
-            </plex-grid>
 
+
+                <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true">
+                </plex-text>
+
+                <plex-select label="Conceptos" [multiple]="true" (getData)="searchConcept($event)"
+                    [(ngModel)]="concepto" idField="conceptId" labelField="term + '(' + semanticTag + ')'"
+                    name="concepto" [required]="true" class="mx-2">
+                </plex-select>
+
+                <plex-radio label="Visualización" [(ngModel)]="tipoVisualizacion"
+                    [data]="[ { id: 'tabs', label: 'Tabs' }, { id: 'dropdown', label: 'Dropdown' } ]"
+                    name="visualizacion" type="horizontal" [required]="true">
+                </plex-radio>
+
+            </plex-grid>
+            <div *ngIf="tipoVisualizacion === 'tabs'" style="color: orange; margin-top: 0.5rem;">
+                Cantidad máxima de tabs : 6
+            </div>
             <plex-title [titulo]="'Secciones'">
                 <plex-button class="align-self-end" size="sm" type="info" (click)="onAdd()"
                     [disabled]="elemento?.requeridos?.length >= 6">Agregar
