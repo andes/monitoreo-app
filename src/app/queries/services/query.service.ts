@@ -48,8 +48,8 @@ export class QueryService {
 
         // 🧾 Creamos los headers de la petición HTTP
         const headers = new HttpHeaders({
-            'Content-Type': 'application/json',  // ✅ Indicamos que el cuerpo será JSON
-            'Authorization': `JWT ${token}`      // ✅ Enviamos el token como cabecera 'Authorization'
+            'Content-Type': 'application/json', // ✅ Indicamos que el cuerpo será JSON
+            'Authorization': `JWT ${token}` // ✅ Enviamos el token como cabecera 'Authorization'
         });
 
         // 🚀 Finalmente hacemos el PATCH a la API y devolvemos el observable
