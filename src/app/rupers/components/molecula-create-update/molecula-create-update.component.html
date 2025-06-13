@@ -63,31 +63,31 @@
 
     <!-- Sidebar lateral -->
     <plex-layout-sidebar type="invert" *ngIf="moleculaSeleccionado" class="sidebar-fijo">
-
         <plex-title justify [titulo]="'EDITAR ' + (tituloSidebar || '-')" size="md">
-
-            <plex-button size="sm" type="success" (click)="onSave()" icon="check"></plex-button>
+            <plex-button size="sm" type="success" (click)="confirmarMolecula()" icon="check"></plex-button>
             <plex-button type="danger" size="sm" icon="close" ariaLabel="cerrar panel lateral"
                 (click)="moleculaSeleccionado = null; tituloSidebar = ''">
             </plex-button>
         </plex-title>
-
         <div class="grow">
-            <plex-text label="Nombre orientativo" name="name" [(ngModel)]="nombreOrientativo" required="true">
+            <plex-text label="Nombre orientativo" name="name" [ngModel]="moleculaSeleccionado?.concepto?.term"
+                [disabled]="true" required="true">
             </plex-text>
 
         </div>
         <div class="grow">
-            <plex-select label="Concepto" [data]="moleculaSeleccionado?.conceptos ? moleculaSeleccionado.conceptos : []"
-                [(ngModel)]="moleculaSeleccionado.conceptos[0]" [disabled]="true" idField="conceptId"
-                labelField="term + ' (' + semanticTag + ')'" required="true">
+            <plex-select label="Concepto"
+                [data]="moleculaSeleccionado?.conceptos || (moleculaSeleccionado?.concepto ? [moleculaSeleccionado.concepto] : [])"
+                [ngModel]="getConceptoSeleccionado()" (ngModelChange)="setConceptoSeleccionado($event)"
+                [disabled]="true" idField="conceptId" labelField="term + ' (' + semanticTag + ')'" required="true">
             </plex-select>
+
 
         </div>
         <div class="grow">
 
 
-            <plex-select label="Tipo de Atomo" [(ngModel)]="tipoAtomo" [disabled]="true" [data]="tipoAtomos"
+            <plex-select label="Tipo de Atomo" [data]="tipoAtomos" [ngModel]="tipoAtomo" [disabled]="true"
                 labelField="nombre" valueField="id" required="true">
             </plex-select>
         </div>
@@ -118,15 +118,23 @@
             <div *ngSwitchCase="'ValorNumericoComponent'">
 
                 <plex-grid type="full" size="sm" class="plex-dark">
-                    <plex-int [(ngModel)]="params.min" label="Mínimo" name="params-min"></plex-int>
-                    <plex-int [(ngModel)]="params.max" label="Máximo" name="params-max"></plex-int>
-                    <plex-text [(ngModel)]="params.unit" label="Unidad" name="params-unit"></plex-text>
+                    <plex-int [ngModel]="params.min" (ngModelChange)="params.min = $event" label="Mínimo"
+                        name="params-min"></plex-int>
+                    <plex-int [ngModel]="params.max" (ngModelChange)="params.max = $event" label="Máximo"
+                        name="params-max"></plex-int>
+                    <plex-text [ngModel]="params.unit || ''" (ngModelChange)="params.unit = $event" label="Unidad"
+                        name="params-unit"></plex-text>
                 </plex-grid>
+                <plex-text [ngModel]="params.title || ''" (ngModelChange)="params.title = $event" label="Title"
+                    name="params-title">
+                </plex-text>
                 <plex-radio [(ngModel)]="params.numericType" [data]="valorNumericoType" name="params-type"></plex-radio>
             </div>
 
             <div *ngSwitchCase="'ObservacionesComponent'">
-
+                <plex-text [ngModel]="params.title || ''" (ngModelChange)="params.title = $event" label="Title"
+                    name="params-title">
+                </plex-text>
                 <plex-bool class="ml-2 mt-3" type="slide" [(ngModel)]="params.required" label="Requerido"
                     name="params-required">
                 </plex-bool>
@@ -149,6 +157,9 @@
                         name="params-preload">
                     </plex-bool>
                 </div>
+                <plex-text [ngModel]="params.title || ''" (ngModelChange)="params.title = $event" label="Title"
+                    name="params-title">
+                </plex-text>
             </div>
 
             <div *ngSwitchCase="'ChecklistComponent'">
@@ -187,14 +198,19 @@
                         name="params-preload">
                     </plex-bool>
                 </div>
+                <plex-text [ngModel]="params.title || ''" (ngModelChange)="params.title = $event" label="Title"
+                    name="params-title">
+                </plex-text>
 
             </div>
 
 
             <div *ngSwitchCase="'SelectSnomedComponent'">
 
-                <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-                <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+                <plex-text [ngModel]="params.title || ''" (ngModelChange)="params.title = $event" label="Title"
+                    name="params-title">
+                </plex-text>
+                 <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
 
                 <div justify class="ml-4 mt-5">
                     <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
@@ -208,6 +224,7 @@
                         name="params-preload">
                     </plex-bool>
                 </div>
+
 
             </div>
             <div *ngSwitchDefault>

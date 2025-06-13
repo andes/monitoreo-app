@@ -9,28 +9,21 @@
         </plex-title>
         <form #formulario1="ngForm">
             <plex-grid type="auto" size="md" cols="2">
-                <!-- Card para el nombre -->
-                <plex-card aligned="center" direction="column">
-                    <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true">
-                    </plex-text>
-                </plex-card>
-                <!-- Card para el concepto -->
-                <plex-card aligned="center" direction="column">
-                    <plex-select label="Concepto" (getData)="searchConcept($event)" [(ngModel)]="conceptos"
-                        [multiple]="true" idField="conceptId" labelField="term + '(' + semanticTag + ')'"
-                        [required]="true" name="conceptos" placeholder="Seleccione uno o más conceptos">
-                    </plex-select>
-                </plex-card>
-                <!-- Card para el tipo de átomo -->
-                <plex-card aligned="center" direction="column">
-                    <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
-                        name="tipoAtomo">
-                    </plex-select>
-                </plex-card>
-                <plex-card aligned="center" direction="column">
-                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+                
+                <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true" class="mx-2">
+                </plex-text>
+             
+                <plex-select label="Concepto" (getData)="searchConcept($event)" [(ngModel)]="conceptos"
+                    [multiple]="true" idField="conceptId" labelField="term + '(' + semanticTag + ')'" [required]="true"
+                    name="conceptos" placeholder="Seleccione uno o más conceptos" class="mx-2"> >
+                </plex-select>
+              
+                <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
+                    name="tipoAtomo" class="mx-2">
+                </plex-select>
+              
+                <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title" class="mx-2"></plex-text>
 
-                </plex-card>
             </plex-grid>
 
             <plex-title titulo="Configurar Elemento" class="mb-2">

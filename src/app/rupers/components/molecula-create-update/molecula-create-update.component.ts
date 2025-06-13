@@ -145,23 +145,14 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     }
     abrirMolecula(requerido: any) {
         if (requerido && requerido.concepto) {
+            this.moleculaSeleccionado = requerido;
+            this.params = requerido.params || {};
+            requerido.params = this.params;
 
-            const elementoRUP = this.elementosRUPService.buscarElemento(requerido.concepto, false);
-
-            if (!elementoRUP) {
-                this.plex.toast('danger', 'No se encontró el elemento RUP completo para este requerido');
-                return;
-            }
-
-            this.moleculaSeleccionado = elementoRUP;
-            this.params = elementoRUP.params || {}; // <-- SIEMPRE desde el elemento completo
-
-            this.tipoAtomo = this.tipoAtomos.find(t => t.id === elementoRUP.componente) || null;
+            const componenteId = requerido.componente || requerido.concepto.componente || this.getComponente(requerido.concepto); this.tipoAtomo = this.tipoAtomos.find(t => t.id === componenteId) || null;
             this.tituloSidebar = requerido.concepto.term || '-';
-            this.nombreOrientativo = elementoRUP.nombre || '';
+            this.nombreOrientativo = requerido.nombre || '';
             this.items = this.params.items || [];
-
-
         } else {
             console.warn('❌ requerido sin concepto:', requerido);
         }
@@ -170,14 +161,11 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
 
     confirmarMolecula() {
         if (this.moleculaSeleccionado) {
-            this.requerido = this.moleculaSeleccionado;
-            this.nombre = this.moleculaSeleccionado.term || '';
+            this.plex.toast('success', 'Átomo guardado correctamente');
             this.moleculaSeleccionado = null;
+            this.tituloSidebar = '';
         }
-
     }
-
-
     getElementoRupCompleto(requerido: any) {
         return this.elementosRup.find(e =>
             e.conceptos && e.conceptos[0] && e.conceptos[0].conceptId === requerido.concepto.conceptId
@@ -214,32 +202,16 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         }
     }
     onSave() {
-
+        // Actualizá el nombre y conceptos de la molécula
         this.elemento.nombre = this.nombre;
         this.elemento.conceptos = [...this.conceptos];
 
-
-        if (this.moleculaSeleccionado && this.moleculaSeleccionado.id) {
-            this.moleculaSeleccionado.params = { ...this.params };
-            this.moleculaSeleccionado.nombre = this.nombreOrientativo;
-            this.elementosRUPService.save({
-                ...this.moleculaSeleccionado,
-                params: { ...this.moleculaSeleccionado.params }
-            }).subscribe(
-                (atomoActualizado) => {
-                    this.moleculaSeleccionado = atomoActualizado;
-                    this.plex.toast('success', 'Átomo guardado correctamente');
-                },
-                (err) => {
-                    this.plex.toast('danger', 'Error al guardar el átomo');
-                }
-            );
-        }
-
-        // ...lógica de guardado de la molécula...
+        // Guardá la molécula completa (incluye todos los requeridos y sus params actualizados)
         this.elementosRUPService.save(this.elemento).subscribe(
             (elementoActualizado) => {
-                // ...actualización en memoria...
+                this.plex.toast('success', 'Molécula guardada correctamente');
+                // Si querés, podés actualizar this.elemento con el resultado:
+                // this.elemento = elementoActualizado;
             },
             (err) => {
                 this.plex.toast('danger', 'Error al guardar la molécula');
@@ -250,16 +222,18 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     volver() {
         this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
     }
-
     onAddRequerido() {
         if (this.requerido) {
             const elementoRUP = this.elementosRUPService.buscarElemento(this.requerido, false);
             if (elementoRUP) {
+                const conceptoClonado = JSON.parse(JSON.stringify(this.requerido));
+                const paramsClonados = elementoRUP.params ? JSON.parse(JSON.stringify(elementoRUP.params)) : {};
+
                 this.elemento.requeridos.push({
-                    concepto: this.requerido,
-                    style: {
-                        columns: 12
-                    },
+                    concepto: conceptoClonado,
+                    params: paramsClonados,
+                    conceptos: [conceptoClonado], // <-- ESTA LÍNEA ES CLAVE
+                    style: { columns: 12 }
                 });
                 this.requerido = null;
             } else {
@@ -274,7 +248,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
 
         return elementoRUP.componente;
     }
-
+    getNombreTipoAtomo(id: string): string {
+        const tipo = this.tipoAtomos.find(t => t.id === id);
+        return tipo ? tipo.nombre : id;
+    }
 
     getComponenteRequeridoSeleccionado(): string {
         const concepto = this.moleculaSeleccionado?.requerido?.concepto;
@@ -304,7 +281,20 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         this.elemento.requeridos.splice(index, 1);
         this.elemento.requeridos = [...this.elemento.requeridos];
     }
+    getConceptoSeleccionado() {
+        if (this.moleculaSeleccionado?.conceptos && this.moleculaSeleccionado.conceptos.length) {
+            return this.moleculaSeleccionado.conceptos[0];
+        }
+        return this.moleculaSeleccionado?.concepto || null;
+    }
 
+    setConceptoSeleccionado(value) {
+        if (this.moleculaSeleccionado?.conceptos && this.moleculaSeleccionado.conceptos.length) {
+            this.moleculaSeleccionado.conceptos[0] = value;
+        } else if (this.moleculaSeleccionado) {
+            this.moleculaSeleccionado.concepto = value;
+        }
+    }
 }
 
 
