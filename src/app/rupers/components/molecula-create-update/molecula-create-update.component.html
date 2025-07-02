@@ -6,14 +6,14 @@
             </plex-button>
         </plex-title>
         <div class="grow">
-            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
+            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" required="true">
             </plex-text>
         </div>
         <div class="grow">
 
 
             <plex-select label="Concepto" [multiple]="true" (getData)=searchConcept($event) [(ngModel)]="conceptos"
-                idField="conceptId" labelField="term + '(' + semanticTag + ')'">
+                idField="conceptId" labelField="term + '(' + semanticTag + ')'" required="true">
             </plex-select>
 
         </div>
@@ -24,7 +24,8 @@
                     <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="requerido"
                         idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
 
-                    <plex-button class="align-self-end" type="success" icon="check" (click)="onAddRequerido()">
+                    <plex-button class="align-self-end" type="success" icon="check" (click)="onAddRequerido()"
+                        [disabled]="!requerido?.conceptId">
                     </plex-button>
 
 
@@ -38,9 +39,12 @@
                         <plex-label [titulo]="getComponente(requerido.concepto)" [tituloBold]="false"></plex-label>
 
 
-                        <plex-button size="sm" type="warning" icon="pencil" (click)="abrirMolecula(requerido)">
+                        <plex-button size="sm" tooltip="editar" type="warning" icon="pencil"
+                            (click)="abrirMolecula(requerido)">
+
                         </plex-button>
-                        <plex-button type="danger" icon="delete" size="sm" (click)="onRemoveRequerido(i)"></plex-button>
+                        <plex-button tooltip="eliminar" type="danger" icon="delete" size="sm"
+                            (click)="onRemoveRequerido(i)"></plex-button>
                         <ng-container ngProjectAs="plex-button">
                             <div class="d-flex flex-column">
                                 <plex-button type="info" icon="flecha-arriba" size="sm" (click)="onUpRequerido(i)"
@@ -63,16 +67,20 @@
 
     <!-- Sidebar lateral -->
     <plex-layout-sidebar type="invert" *ngIf="moleculaSeleccionado" class="sidebar-fijo">
-        <plex-title justify [titulo]="'EDITAR ' + (tituloSidebar || '-')" size="md">
-            <plex-button size="sm" type="success" (click)="confirmarMolecula()" icon="check"></plex-button>
-            <plex-button type="danger" size="sm" icon="close" ariaLabel="cerrar panel lateral"
+        <plex-title justify [titulo]="'EDITAR ' + (tituloSidebar || '-')" size="sm">
+            <plex-button size="sm" tooltip="agregar" type="success" (click)="confirmarMolecula()"
+                icon="check"></plex-button>
+            <plex-button type="danger" size="sm" icon="close" ariaLabel="cerrar panel lateral" tooltip="cerrar"
                 (click)="moleculaSeleccionado = null; tituloSidebar = ''">
             </plex-button>
         </plex-title>
         <div class="grow">
-            <plex-text label="Nombre orientativo" name="name" [ngModel]="moleculaSeleccionado?.concepto?.term"
-                [disabled]="true" required="true">
-            </plex-text>
+
+            <plex-select label="Nombre orientativo"
+                [data]="moleculaSeleccionado?.concepto ? [moleculaSeleccionado.concepto] : []"
+                [ngModel]="moleculaSeleccionado?.concepto" [disabled]="true" labelField="term" idField="conceptId"
+                required="true">
+            </plex-select>
 
         </div>
         <div class="grow">
@@ -162,26 +170,6 @@
                 </plex-text>
             </div>
 
-            <div *ngSwitchCase="'ChecklistComponent'">
-
-                <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-                <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
-
-                <div justify class="ml-4 mt-5">
-                    <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
-                    </plex-bool>
-                    <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
-                    </plex-bool>
-                    <plex-text [(ngModel)]="params.allowOtherQuery" label="Otros Snomed Query"
-                        name="params-query-otros"></plex-text>
-
-                    <plex-radio label="Horientacion" [(ngModel)]="params.type" [data]="checkOrientacionType"
-                        type="horizontal" name="params-type"></plex-radio>
-
-                </div>
-
-            </div>
-
             <div *ngSwitchCase="'SelectStaticoComponent'">
 
                 <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
@@ -210,7 +198,7 @@
                 <plex-text [ngModel]="params.title || ''" (ngModelChange)="params.title = $event" label="Title"
                     name="params-title">
                 </plex-text>
-                 <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+                <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
 
                 <div justify class="ml-4 mt-5">
                     <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
@@ -229,7 +217,7 @@
             </div>
             <div *ngSwitchDefault>
                 <!-- Opcional: mensaje si no se seleccionó ningún componente o no coincide -->
-                <p class="text-muted">Seleccioná un componente para ver los campos configurables.</p>
+                <p class="text-muted">No hay nada para configurar.</p>
             </div>
 
         </ng-container>

@@ -226,6 +226,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         if (this.requerido) {
             const elementoRUP = this.elementosRUPService.buscarElemento(this.requerido, false);
             if (elementoRUP) {
+                this.plex.toast('success', 'Concepto agregado correctamente');
                 const conceptoClonado = JSON.parse(JSON.stringify(this.requerido));
                 const paramsClonados = elementoRUP.params ? JSON.parse(JSON.stringify(elementoRUP.params)) : {};
 
@@ -280,6 +281,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     onRemoveRequerido(index: number) {
         this.elemento.requeridos.splice(index, 1);
         this.elemento.requeridos = [...this.elemento.requeridos];
+        this.plex.toast('success', 'Concepto eliminado correctamente');
     }
     getConceptoSeleccionado() {
         if (this.moleculaSeleccionado?.conceptos && this.moleculaSeleccionado.conceptos.length) {

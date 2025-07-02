@@ -9,19 +9,19 @@
         </plex-title>
         <form #formulario1="ngForm">
             <plex-grid type="auto" size="md" cols="2">
-                
+
                 <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" [required]="true" class="mx-2">
                 </plex-text>
-             
+
                 <plex-select label="Concepto" (getData)="searchConcept($event)" [(ngModel)]="conceptos"
                     [multiple]="true" idField="conceptId" labelField="term + '(' + semanticTag + ')'" [required]="true"
                     name="conceptos" placeholder="Seleccione uno o más conceptos" class="mx-2"> >
                 </plex-select>
-              
+
                 <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
                     name="tipoAtomo" class="mx-2">
                 </plex-select>
-              
+
                 <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title" class="mx-2"></plex-text>
 
             </plex-grid>
@@ -51,27 +51,34 @@
                 </div>
 
                 <div *ngSwitchCase="'SelectProfesionalComponent'">
+                    <plex-grid cols="2" type="auto" size="lg">
+                        <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
 
-                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-
-                    <div justify class="ml-4 mt-5">
-                        <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
-                        </plex-bool>
-                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
-                        </plex-bool>
-                        <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
-                            name="params-allowOther">
-                        </plex-bool>
-                        <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
-                            name="params-preload">
-                        </plex-bool>
-                    </div>
+                        <div justify class="ml-4 mt-5">
+                            <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple"
+                                name="params-multiple">
+                            </plex-bool>
+                            <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido"
+                                name="params-required">
+                            </plex-bool>
+                            <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
+                                name="params-allowOther">
+                            </plex-bool>
+                            <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
+                                name="params-preload">
+                            </plex-bool>
+                        </div>
+                    </plex-grid>
                 </div>
 
                 <div *ngSwitchCase="'SelectSnomedComponent'">
+                    <plex-grid type="auto" size="md" cols="2">
+                        <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
 
-                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-                    <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+
+                        <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+
+                    </plex-grid>
 
                     <div justify class="ml-4 mt-5">
                         <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
@@ -142,10 +149,10 @@
                     </plex-grid>
                 </div>
                 <div *ngSwitchCase="'ChecklistComponent'">
-
-                    <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-                    <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
-
+                    <plex-grid type="auto" size="md" cols="2">
+                        <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
+                        <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
+                    </plex-grid>
                     <div justify class="ml-4 mt-5">
                         <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple" name="params-multiple">
                         </plex-bool>
