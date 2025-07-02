@@ -12,9 +12,9 @@
         </header>
 
         <plex-title titulo="Listado de elementos RUP">
-            <button class="btn btn-outline-info" disabled>
-                CANTIDAD DE ELEMENTOS: {{ cantidadElementos }}
-            </button>
+            <plex-badge *ngIf="cantidadElementos > 0" size="lg" type="info" class="mr-1">
+                <span class="font-bold text-lg"> CANTIDAD DE ELEMENTOS: {{ cantidadElementos }} </span>
+            </plex-badge>
         </plex-title>
 
 
@@ -41,20 +41,20 @@
     <plex-layout-sidebar type="invert" *ngIf="elementoSeleccionado" class="sidebar-fijo">
         <plex-title justify titulo="DETALLE DEL ELEMENTO " size="md">
             <ng-container [ngSwitch]="elementoSeleccionado.tipo">
-                <plex-button *ngSwitchCase="'molecula'" type="warning" icon="pencil" size="sm"
+                <plex-button *ngSwitchCase="'molecula'" type="warning" tooltip="editar" icon="pencil" size="sm"
                     [routerLink]="['molecula', elementoSeleccionado.id]">
                 </plex-button>
-                <plex-button *ngSwitchCase="'seccion'" type="warning" icon="pencil" size="sm"
+                <plex-button *ngSwitchCase="'seccion'" type="warning" tooltip="editar" icon="pencil" size="sm"
                     [routerLink]="['seccion', elementoSeleccionado.id]">
                 </plex-button>
-                <plex-button *ngSwitchCase="'prestacion'" type="warning" icon="pencil" size="sm"
+                <plex-button *ngSwitchCase="'prestacion'" type="warning" tooltip="editar" icon="pencil" size="sm"
                     [routerLink]="['prestacion', elementoSeleccionado.id]">
                 </plex-button>
-                <plex-button *ngSwitchDefault type="warning" icon="pencil" size="sm"
+                <plex-button *ngSwitchDefault type="warning" tooltip="editar" icon="pencil" size="sm"
                     [routerLink]="['atomo', elementoSeleccionado.id]">
                 </plex-button>
             </ng-container>
-            <plex-button type="danger" size="sm" icon="close" ariaLabel="cerrar panel lateral"
+            <plex-button type="danger" tooltip="cerrar" size="sm" icon="close" ariaLabel="cerrar panel lateral"
                 (click)="elementoSeleccionado = null">
             </plex-button>
         </plex-title>
@@ -74,22 +74,26 @@
         </plex-detail>
 
         <plex-title justify titulo="CONCEPTOS APLICADOS " size="md"></plex-title>
-        <plex-accordion [multiple]="false" activeLast="true">
+        <plex-accordion [multiple]="false" activeLast="true" class="mt-2 hover listado list-unstyled">
 
 
             <plex-panel>
-                <div plex-accordion-title justify>
+                <div plex-accordion-title case="capitalize">
                     <div class="text-center" style="font-style: italic; font-size: 1rem;">
                         {{ elementoSeleccionado.conceptos?.length || 0 }} conceptos aplicados
                     </div>
                 </div>
-                <div class="p-3">
-                    <plex-card *ngFor="let concepto of elementoSeleccionado.conceptos" class="sm">
-                        <plex-card-header>
-                            <plex-label size="sm" [titulo]="concepto.term || '-'"></plex-label>
-                        </plex-card-header>
-                    </plex-card>
+                <div class="list-group">
+                    <div *ngFor="let concepto of elementoSeleccionado.conceptos" class="sm mb-2">
+
+
+                        <div>
+                            <p class="mb-0 small">{{ concepto.term }}</p>
+                        </div>
+
+                    </div>
                 </div>
+
 
             </plex-panel>
         </plex-accordion>
@@ -103,12 +107,14 @@
                         {{ elementoSeleccionado.requeridos?.length || 0 }} átomos aplicados
                     </div>
                 </div>
-                <div class="p-3">
-                    <plex-card *ngFor="let requerido of elementoSeleccionado.requeridos" class="sm">
-                        <plex-card-header>
-                            <plex-label size="sm" [titulo]="requerido.concepto?.term || '-'"></plex-label>
-                        </plex-card-header>
-                    </plex-card>
+                <div class="list-group">
+                    <div *ngFor="let requerido of elementoSeleccionado.requeridos" class="sm mb-2">
+
+                        <div>
+                            <p *ngIf="requerido.concepto?.term" class="mb-0 small">
+                                {{ requerido.concepto?.term }} </p>
+                        </div>
+                    </div>
                 </div>
             </plex-panel>
         </plex-accordion>

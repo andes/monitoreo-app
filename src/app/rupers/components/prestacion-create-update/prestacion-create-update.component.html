@@ -5,12 +5,12 @@
             <plex-button type="success" (click)="onSave()" [disabled]="!concepto">GUARDAR</plex-button>
         </plex-title>
         <div class="grow">
-            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name">
+            <plex-text label="Nombre orientativo" [(ngModel)]="nombre" name="name" required="true">
             </plex-text>
         </div>
         <div class="grow">
             <plex-select label="Concepto" (getData)="searchConcept($event)" [(ngModel)]="concepto" idField="conceptId"
-                         labelField="term + '(' + semanticTag + ')'">
+                labelField="term + '(' + semanticTag + ')'" required="true">
             </plex-select>
         </div>
         <div class="row">
@@ -18,23 +18,23 @@
                 <plex-title titulo="Requeridos"></plex-title>
                 <div class="grow">
                     <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="requerido"
-                                 idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
-                    <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAddRequerido()">
+                        idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
+                    <plex-button class="align-self-end" type="success" icon="check" (click)="onAddRequerido()">
                     </plex-button>
                 </div>
                 <plex-list>
                     <plex-item
-                               *ngFor="let requerido of elemento.requeridos; let i = index; let first$ = first; let last$ = last">
+                        *ngFor="let requerido of elemento.requeridos; let i = index; let first$ = first; let last$ = last">
                         <plex-label [titulo]="requerido.concepto.conceptId"></plex-label>
                         <plex-label [titulo]="requerido.concepto.term" [tituloBold]="false"></plex-label>
                         <plex-button type="danger" icon="delete" size="sm" (click)="onRemoveRequerido(i)"></plex-button>
                         <ng-container ngProjectAs="plex-button">
                             <div class="d-flex flex-column">
                                 <plex-button type="info" icon="arrow-up-bold" size="sm" (click)="onUpRequerido(i)"
-                                             *ngIf="!first$">
+                                    *ngIf="!first$">
                                 </plex-button>
                                 <plex-button type="info" icon="arrow-down-bold" size="sm" (click)="onDownRequerido(i)"
-                                             *ngIf="!last$">
+                                    *ngIf="!last$">
                                 </plex-button>
                             </div>
                         </ng-container>
@@ -45,23 +45,23 @@
                 <plex-title titulo="Sugeridos"></plex-title>
                 <div class="grow">
                     <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="sugerido"
-                                 idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
-                    <plex-button class="align-self-end" type="warning" icon="plus" (click)="onAddSugerido()">
+                        idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
+                    <plex-button class="align-self-end" type="success" icon="check" (click)="onAddSugerido()">
                     </plex-button>
                 </div>
                 <plex-list>
                     <plex-item
-                               *ngFor="let concepto of elemento.frecuentes; let i = index; let first$ = first; let last$ = last">
+                        *ngFor="let concepto of elemento.frecuentes; let i = index; let first$ = first; let last$ = last">
                         <plex-label [titulo]="concepto.conceptId"></plex-label>
                         <plex-label [titulo]="concepto.term" [tituloBold]="false"></plex-label>
                         <plex-button type="danger" icon="delete" size="sm" (click)="onRemoveSugerido(i)"></plex-button>
                         <ng-container ngProjectAs="plex-button">
                             <div class="d-flex flex-column">
                                 <plex-button type="info" icon="arrow-up-bold" size="sm" (click)="onUpSugerido(i)"
-                                             *ngIf="!first$">
+                                    *ngIf="!first$">
                                 </plex-button>
                                 <plex-button type="info" icon="arrow-down-bold" size="sm" (click)="onDownSugerido(i)"
-                                             *ngIf="!last$">
+                                    *ngIf="!last$">
                                 </plex-button>
                             </div>
                         </ng-container>

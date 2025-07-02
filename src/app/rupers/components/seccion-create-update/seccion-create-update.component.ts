@@ -103,7 +103,7 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
                 showText: true,
                 textRequired: true,
                 conceptsRequired: false,
-                icon: 'icon-andes-documento'
+
             },
             selected: false
         };
