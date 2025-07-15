@@ -29,7 +29,7 @@
             </div>
             <plex-title [titulo]="'Secciones'">
                 <plex-button class="align-self-end" size="sm" type="info" (click)="onAdd()"
-                    [disabled]="elemento?.requeridos?.length >= 6">Agregar
+                    [disabled]="tipoVisualizacion==='tabs' && elemento?.requeridos?.length >= 6">Agregar
                     sección</plex-button>
             </plex-title>
 

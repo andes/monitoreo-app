@@ -100,8 +100,8 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
             elementoRUP: this.elementoSeccion.id,
             concepto: null,
             params: {
-                showText: true,
-                textRequired: true,
+                showText: false,
+                textRequired: false,
                 conceptsRequired: false,
 
             },

@@ -41,20 +41,20 @@
     <plex-layout-sidebar type="invert" *ngIf="elementoSeleccionado" class="sidebar-fijo">
         <plex-title justify titulo="DETALLE DEL ELEMENTO " size="md">
             <ng-container [ngSwitch]="elementoSeleccionado.tipo">
-                <plex-button *ngSwitchCase="'molecula'" type="warning" tooltip="editar" icon="pencil" size="sm"
+                <plex-button *ngSwitchCase="'molecula'" type="warning" tooltip="Editar" icon="pencil" size="sm"
                     [routerLink]="['molecula', elementoSeleccionado.id]">
                 </plex-button>
-                <plex-button *ngSwitchCase="'seccion'" type="warning" tooltip="editar" icon="pencil" size="sm"
+                <plex-button *ngSwitchCase="'seccion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
                     [routerLink]="['seccion', elementoSeleccionado.id]">
                 </plex-button>
-                <plex-button *ngSwitchCase="'prestacion'" type="warning" tooltip="editar" icon="pencil" size="sm"
+                <plex-button *ngSwitchCase="'prestacion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
                     [routerLink]="['prestacion', elementoSeleccionado.id]">
                 </plex-button>
-                <plex-button *ngSwitchDefault type="warning" tooltip="editar" icon="pencil" size="sm"
+                <plex-button *ngSwitchDefault type="warning" tooltip="Editar" icon="pencil" size="sm"
                     [routerLink]="['atomo', elementoSeleccionado.id]">
                 </plex-button>
             </ng-container>
-            <plex-button type="danger" tooltip="cerrar" size="sm" icon="close" ariaLabel="cerrar panel lateral"
+            <plex-button type="danger" tooltip="Cerrar" size="sm" icon="close" ariaLabel="cerrar panel lateral"
                 (click)="elementoSeleccionado = null">
             </plex-button>
         </plex-title>
@@ -62,7 +62,11 @@
 
         <plex-detail size="md">
             <plex-icon type="info" name="information-variant"></plex-icon>
-            <div title> Registrar los signos vitales del paciente </div>
+            <div title>
+                <ng-container *ngIf="elementoSeleccionado">
+                    {{ elementoSeleccionado.conceptos[0]?.term || 'Concepto sin Nombre' }}
+                </ng-container>
+            </div>
             <plex-label titulo="Fecha creación"
                 [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
             <plex-label titulo="Usuario/a que creó" [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || '-'">
@@ -84,11 +88,13 @@
                     </div>
                 </div>
                 <div class="list-group">
-                    <div *ngFor="let concepto of elementoSeleccionado.conceptos" class="sm mb-2">
+                    <div *ngFor="let concepto of elementoSeleccionado.conceptos" class=" mb-2"
+                        style="text-transform: capitalize;">
 
 
                         <div>
-                            <p class="mb-0 small">{{ concepto.term }}</p>
+
+                            <p class="mb-0 ">{{ concepto.term }}</p>
                         </div>
 
                     </div>
@@ -108,10 +114,10 @@
                     </div>
                 </div>
                 <div class="list-group">
-                    <div *ngFor="let requerido of elementoSeleccionado.requeridos" class="sm mb-2">
+                    <div *ngFor="let requerido of elementoSeleccionado.requeridos" class=" mb-2">
 
                         <div>
-                            <p *ngIf="requerido.concepto?.term" class="mb-0 small">
+                            <p *ngIf="requerido.concepto?.term" class="mb-0 " style="text-transform: capitalize;">
                                 {{ requerido.concepto?.term }} </p>
                         </div>
                     </div>
