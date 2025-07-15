@@ -19,7 +19,8 @@
                 <div class="grow">
                     <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="requerido"
                         idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
-                    <plex-button class="align-self-end" type="success" icon="check" (click)="onAddRequerido()">
+                    <plex-button [disabled]="!requerido?.conceptId" class="align-self-end" type="success" icon="check"
+                        (click)="onAddRequerido()">
                     </plex-button>
                 </div>
                 <plex-list>
@@ -27,7 +28,8 @@
                         *ngFor="let requerido of elemento.requeridos; let i = index; let first$ = first; let last$ = last">
                         <plex-label [titulo]="requerido.concepto.conceptId"></plex-label>
                         <plex-label [titulo]="requerido.concepto.term" [tituloBold]="false"></plex-label>
-                        <plex-button type="danger" icon="delete" size="sm" (click)="onRemoveRequerido(i)"></plex-button>
+                        <plex-button tooltip="Eliminar" type="danger" icon="delete" size="sm"
+                            (click)="onRemoveRequerido(i)"></plex-button>
                         <ng-container ngProjectAs="plex-button">
                             <div class="d-flex flex-column">
                                 <plex-button type="info" icon="arrow-up-bold" size="sm" (click)="onUpRequerido(i)"
@@ -46,7 +48,8 @@
                 <div class="grow">
                     <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="sugerido"
                         idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
-                    <plex-button class="align-self-end" type="success" icon="check" (click)="onAddSugerido()">
+                    <plex-button class="align-self-end" [disabled]="!sugerido?.conceptId" type="success" icon="check"
+                        (click)="onAddSugerido()">
                     </plex-button>
                 </div>
                 <plex-list>
@@ -54,7 +57,8 @@
                         *ngFor="let concepto of elemento.frecuentes; let i = index; let first$ = first; let last$ = last">
                         <plex-label [titulo]="concepto.conceptId"></plex-label>
                         <plex-label [titulo]="concepto.term" [tituloBold]="false"></plex-label>
-                        <plex-button type="danger" icon="delete" size="sm" (click)="onRemoveSugerido(i)"></plex-button>
+                        <plex-button tooltip="Eliminar" type="danger" icon="delete" size="sm"
+                            (click)="onRemoveSugerido(i)"></plex-button>
                         <ng-container ngProjectAs="plex-button">
                             <div class="d-flex flex-column">
                                 <plex-button type="info" icon="arrow-up-bold" size="sm" (click)="onUpSugerido(i)"

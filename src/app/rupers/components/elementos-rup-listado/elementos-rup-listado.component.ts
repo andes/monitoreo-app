@@ -24,10 +24,10 @@ export class RUPElementosRupListadoComponent implements OnInit {
     ) { }
 
     public items = [
-        { label: 'ATOMO', handler: () => { this.goto('/rupers/elementos-rup/atomo/nuevo'); } },
-        { label: 'MOLECULA', handler: () => { this.goto('/rupers/elementos-rup/molecula/nuevo'); } },
-        { label: 'SECCION', handler: () => { this.goto('/rupers/elementos-rup/seccion/nuevo'); } },
-        { label: 'PRESTACION', handler: () => { this.goto('/rupers/elementos-rup/prestacion/nuevo'); } }
+        { label: 'ÁTOMO', handler: () => { this.goto('/rupers/elementos-rup/atomo/nuevo'); } },
+        { label: 'MOLÉCULA', handler: () => { this.goto('/rupers/elementos-rup/molecula/nuevo'); } },
+        { label: 'SECCIÓN', handler: () => { this.goto('/rupers/elementos-rup/seccion/nuevo'); } },
+        { label: 'PRESTACIÓN', handler: () => { this.goto('/rupers/elementos-rup/prestacion/nuevo'); } }
 
     ];
     busqueda = '';
