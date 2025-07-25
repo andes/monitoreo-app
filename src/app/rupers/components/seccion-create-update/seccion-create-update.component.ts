@@ -110,13 +110,28 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
     }
 
     onAdd() {
-        if (this.elemento.requeridos.length > 5) {
+        if (this.tipoVisualizacion === 'tabs' && this.elemento.requeridos.length >= 6) {
             this.plex.toast('warning', 'Recordar que no se pueden agregar más de 6 secciones');
             return;
         }
         const nuevoRequerido = this.nuevoRequerido();
         this.elemento.requeridos.push(nuevoRequerido);
     }
+    async onVisualizacionChange(nuevoTipo: 'tabs' | 'dropdown') {
+        if (nuevoTipo === 'tabs' && this.elemento.requeridos.length > 6) {
+            const confirmado = await this.plex.confirm('Cambio a Tabs', 'Hay más de 6 secciones. ¿Deseás recortar a las primeras 6?');
+            if (confirmado) {
+                this.elemento.requeridos = this.elemento.requeridos.slice(0, 6);
+                this.tipoVisualizacion = nuevoTipo;
+            } else {
+                // Cancelar el cambio
+                this.tipoVisualizacion = 'dropdown';
+            }
+        } else {
+            this.tipoVisualizacion = nuevoTipo;
+        }
+    }
+
 
     onElementoRUPChange(requerido: any) {
 
