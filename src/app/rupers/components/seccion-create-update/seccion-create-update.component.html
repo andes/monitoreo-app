@@ -17,8 +17,8 @@
                     [(ngModel)]="concepto" idField="conceptId" labelField="term + '(' + semanticTag + ')'"
                     name="concepto" [required]="true" class="mx-2">
                 </plex-select>
-
-                <plex-radio label="Visualización" [(ngModel)]="tipoVisualizacion"
+                <plex-radio label="Visualización" [ngModel]="tipoVisualizacion"
+                    (ngModelChange)="onVisualizacionChange($event)"
                     [data]="[ { id: 'tabs', label: 'Tabs' }, { id: 'dropdown', label: 'Dropdown' } ]"
                     name="visualizacion" type="horizontal" [required]="true">
                 </plex-radio>
@@ -29,7 +29,7 @@
             </div>
             <plex-title [titulo]="'Secciones'">
                 <plex-button class="align-self-end" size="sm" type="info" (click)="onAdd()"
-                    [disabled]="tipoVisualizacion==='tabs' && elemento?.requeridos?.length >= 6">Agregar
+                    [disabled]="tipoVisualizacion === 'tabs' && elemento?.requeridos?.length >= 6">Agregar
                     sección</plex-button>
             </plex-title>
 
