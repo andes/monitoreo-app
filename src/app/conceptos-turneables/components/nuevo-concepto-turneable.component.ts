@@ -106,18 +106,6 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         this.ambitoActual = (this.nuevoConceptoTurneable.ambito || []).map(id => this.ambitos.find(a => a.id === id)).filter(a => !!a);
 
     }
-
-    // convierte un array a un objeto seleccion
-    array2objectSelect(my_array) {
-        let result = [];
-        try {
-            if (!Array.isArray(my_array)) {
-                return result;
-            }
-        } catch { return result; }
-        result = my_array.map(e => ({ id: e, nombre: e.toUpperCase() }));
-        return result;
-    }
     buscarConcepto(concepto: IConceptoTurneable) {
         const existe = new Subject<boolean>();
 
