@@ -33,7 +33,6 @@ export class NuevoConceptoTurneableComponent implements OnInit {
     };
     agendaDinamica;
     public ambitoActual;
-    public ambito;
     public ambitos: any[];
 
     nominalizada = false;
@@ -55,23 +54,9 @@ export class NuevoConceptoTurneableComponent implements OnInit {
     }
 
     asignarAtributos() {
-        if (this.nuevoConceptoTurneable.noNominalizada) {
-            this.nominalizada = false;
-        } else {
-            this.nominalizada = true;
-        }
-
-        if (this.nuevoConceptoTurneable.auditable) {
-            this.auditable = true;
-        } else {
-            this.auditable = false;
-        }
-
-        if (this.nuevoConceptoTurneable.agendaDinamica) {
-            this.agendaDinamica = true;
-        } else {
-            this.agendaDinamica = false;
-        }
+        this.nominalizada = this.nuevoConceptoTurneable.noNominalizada ? false : true;
+        this.auditable = this.nuevoConceptoTurneable.auditable ? true : false;
+        this.agendaDinamica = this.nuevoConceptoTurneable.agendaDinamica ? true : false;
         // carga los posibles ambitos
         this.ambitos = [
             {
@@ -103,8 +88,9 @@ export class NuevoConceptoTurneableComponent implements OnInit {
                 nombre: 'DOMICILIARIO'
             }
         ];
-        this.ambitoActual = (this.nuevoConceptoTurneable.ambito || []).map(id => this.ambitos.find(a => a.id === id)).filter(a => !!a);
-
+        this.ambitoActual = (this.nuevoConceptoTurneable.ambito || [])
+            .map(id => this.ambitos.find(ambito => ambito.id === id))
+            .filter(ambito => !!ambito);
     }
     buscarConcepto(concepto: IConceptoTurneable) {
         const existe = new Subject<boolean>();
