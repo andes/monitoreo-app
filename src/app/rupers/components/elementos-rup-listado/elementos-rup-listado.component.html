@@ -59,7 +59,6 @@
             </plex-button>
         </plex-title>
 
-
         <plex-detail size="md">
             <plex-icon type="info" name="information-variant"></plex-icon>
             <div title>
@@ -68,39 +67,30 @@
                 </ng-container>
             </div>
             <plex-label titulo="Fecha creación"
-                [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
-            <plex-label titulo="Usuario/a que creó" [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || '-'">
+                [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
+            <plex-label titulo="Usuario/a que creó"
+                [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || 'Sin datos'">
             </plex-label>
             <plex-label titulo="Ultima edición"
-                [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : '-'"></plex-label>
+                [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
             <plex-label titulo="Componente" [subtitulo]="elementoSeleccionado.componente"></plex-label>
             <plex-label titulo="Tipo" [subtitulo]="elementoSeleccionado.tipo"></plex-label>
         </plex-detail>
 
         <plex-title justify titulo="CONCEPTOS APLICADOS " size="md"></plex-title>
-        <plex-accordion [multiple]="false" activeLast="true" class="mt-2 hover listado list-unstyled">
-
-
+        <plex-accordion [multiple]="false" activeLast="true">
+            
             <plex-panel>
-                <div plex-accordion-title case="capitalize">
-                    <div class="text-center" style="font-style: italic; font-size: 1rem;">
-                        {{ elementoSeleccionado.conceptos?.length || 0 }} conceptos aplicados
+                <div plex-accordion-title>
+                    <div class="titulo-accordion">
+                        {{ elementoSeleccionado.conceptos?.length || 0 }} Conceptos aplicados
                     </div>
                 </div>
-                <div class="list-group">
-                    <div *ngFor="let concepto of elementoSeleccionado.conceptos" class=" mb-2"
-                        style="text-transform: capitalize;">
-
-
-                        <div>
-
-                            <p class="mb-0 ">{{ concepto.term }}</p>
-                        </div>
-
+                <div class="lista-conceptos">
+                    <div *ngFor="let concepto of elementoSeleccionado.conceptos" class="item-concepto">
+                        {{ capitalizarPrimera(concepto.term) }}
                     </div>
                 </div>
-
-
             </plex-panel>
         </plex-accordion>
 
@@ -109,17 +99,15 @@
         <plex-accordion [multiple]="false" activeLast="true">
             <plex-panel>
                 <div plex-accordion-title justify>
-                    <div class="text-center" style="font-style: italic; font-size: 1rem;">
-                        {{ elementoSeleccionado.requeridos?.length || 0 }} átomos aplicados
+                    <div class="titulo-accordion">
+                        {{ elementoSeleccionado.requeridos?.length || 0 }} Átomos aplicados
                     </div>
                 </div>
-                <div class="list-group">
-                    <div *ngFor="let requerido of elementoSeleccionado.requeridos" class=" mb-2">
-
-                        <div>
-                            <p *ngIf="requerido.concepto?.term" class="mb-0 " style="text-transform: capitalize;">
-                                {{ requerido.concepto?.term }} </p>
-                        </div>
+                <div class="lista-conceptos">
+                    <div *ngFor="let requerido of elementoSeleccionado.requeridos">
+                        <p class="item-concepto" *ngIf="requerido.concepto?.term">
+                            {{ capitalizarPrimera(requerido.concepto?.term) }}
+                        </p>
                     </div>
                 </div>
             </plex-panel>

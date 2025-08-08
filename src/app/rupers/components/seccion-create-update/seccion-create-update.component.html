@@ -17,11 +17,11 @@
                     [(ngModel)]="concepto" idField="conceptId" labelField="term + '(' + semanticTag + ')'"
                     name="concepto" [required]="true" class="mx-2">
                 </plex-select>
-                <plex-radio label="Visualización" [ngModel]="tipoVisualizacion"
-                    (ngModelChange)="onVisualizacionChange($event)"
-                    [data]="[ { id: 'tabs', label: 'Tabs' }, { id: 'dropdown', label: 'Dropdown' } ]"
-                    name="visualizacion" type="horizontal" [required]="true">
-                </plex-radio>
+            <plex-radio label="Visualización" [(ngModel)]="tipoVisualizacion" (change)="onVisualizacionChange($event.value)" [data]="[
+                    { id: 'tabs', label: 'Tabs' },
+                    { id: 'dropdown', label: 'Dropdown' }
+                ]" name="visualizacion" type="horizontal" [required]="true">
+            </plex-radio>
 
             </plex-grid>
             <div *ngIf="tipoVisualizacion === 'tabs'" style="color: orange; margin-top: 0.5rem;">

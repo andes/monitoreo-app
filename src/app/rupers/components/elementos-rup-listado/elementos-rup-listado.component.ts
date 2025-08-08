@@ -7,9 +7,12 @@ import { ElementosRupService } from '../../services/elementos-rup.service';
 import { ElementosRupListadoService } from './elementos-rup-listado.service';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { SendMessageCacheService } from 'src/app/monitor-activaciones/services/sendMessageCache.service';
+
+
 @Component({
     selector: 'rup-elementos-rup-listado',
     templateUrl: 'elementos-rup-listado.component.html',
+    styleUrls: ['elementos-rup-listado.scss'],
     providers: [ElementosRupListadoService]
 })
 export class RUPElementosRupListadoComponent implements OnInit {
@@ -64,12 +67,7 @@ export class RUPElementosRupListadoComponent implements OnInit {
         });
 
         this.elementosRupService.refresh.next(null);
-
     }
-
-
-
-
     seleccionar(elemento: IElementoRUP) {
         if (this.elementoSeleccionado && this.ElementoRup === elemento) {
             this.ElementoRup = null;
@@ -84,6 +82,12 @@ export class RUPElementosRupListadoComponent implements OnInit {
 
         }
 
+    }
+    capitalizarPrimera(texto: string): string {
+        if (!texto) {
+            return texto;
+        }
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
     }
 
     public loadMensajes(conceptos: string) {
