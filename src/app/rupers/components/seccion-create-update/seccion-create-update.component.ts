@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
@@ -25,9 +26,9 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
 
     public elemento = null;
     public concepto: ISnomedConcept;
-
+    tipoVisualizacion: 'tabs' | 'dropdown' = null;
+    private tipoVisualizacionAnterior: 'tabs' | 'dropdown' = null;
     titulo = 'Nueva sección';
-    tipoVisualizacion: string = null;
     constructor(
         private actr: ActivatedRoute,
         private snomedService: SnomedService,
@@ -118,21 +119,36 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
         this.elemento.requeridos.push(nuevoRequerido);
     }
     async onVisualizacionChange(nuevoTipo: 'tabs' | 'dropdown') {
-        if (nuevoTipo === 'tabs' && this.elemento.requeridos.length > 6) {
-            const confirmado = await this.plex.confirm('Cambio a Tabs', 'Hay más de 6 secciones. ¿Deseás recortar a las primeras 6?');
+        const tieneRequeridos = this.elemento.requeridos.length > 0;
+
+        if (nuevoTipo === 'dropdown' && tieneRequeridos) {
+            const confirmado = await this.plex.confirm(
+                'Estas por cambiar de tabs a dropdown.'
+            );
             if (confirmado) {
-                this.elemento.requeridos = this.elemento.requeridos.slice(0, 6);
+                this.elemento.requeridos = [];
                 this.tipoVisualizacion = nuevoTipo;
             } else {
-                // Cancelar el cambio
+                this.tipoVisualizacion = 'tabs';
+            }
+            return;
+        }
+
+        if (nuevoTipo === 'tabs' && tieneRequeridos) {
+            const confirmado = await this.plex.confirm(
+                'Estás por cambiar de dropdown a tabs.',
+            );
+            if (confirmado) {
+                this.elemento.requeridos = [];
+                this.tipoVisualizacion = nuevoTipo;
+            } else {
                 this.tipoVisualizacion = 'dropdown';
             }
-        } else {
-            this.tipoVisualizacion = nuevoTipo;
+            return;
         }
+
+        this.tipoVisualizacion = nuevoTipo;
     }
-
-
     onElementoRUPChange(requerido: any) {
 
         if (requerido.params.elementoRUP) {

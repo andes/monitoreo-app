@@ -12,41 +12,19 @@ import { take } from 'rxjs/operators';
     templateUrl: './molecula-create-update.component.html'
 })
 export class RUPMoleculaCreateUpdateComponent implements OnInit {
-    titulo = 'Nueva molecula';
+    titulo = 'Nueva molécula';
     elementosRup = [];
-
     public id: string;
-
     public elemento;
-
-
     public conceptos: ISnomedConcept[] = [];
-
-
     public requerido: ISnomedConcept;
-
     moleculaSeleccionado: any = null;
-
-
-
     nombre = '';
-
     nombreOrientativo = '';
-
-
-
     items: any[] = [];
-
-
-
     componenteSeleccionadoId = '';
-
-
-
     tituloSidebar = '';
-
     params: any = {};
-
     valorNumericoType = [
         { id: 'integer', label: 'Entero' },
         { id: 'float', label: 'Decimales' }
@@ -69,7 +47,6 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         { id: 'ChecklistComponent', nombre: 'CheckList' }
     ];
 
-
     constructor(
         private actr: ActivatedRoute,
         private snomedService: SnomedService,
@@ -78,68 +55,30 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         private plex: Plex,
 
     ) { }
-
-
-
     ngOnInit() {
         this.id = this.actr.snapshot.params.id;
-
-
-
-
         if (this.id) {
             this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
-
-
-
-
                 this.elementosRup = elementosRup;
-
-
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
-
-
-
                 this.conceptos = [...(this.elemento.conceptos || [])];
-
                 this.params = { ...this.elemento.params };
                 this.items = this.params.items ? [...this.params.items] : [];
-
                 this.tipoAtomo = this.tipoAtomos.find(t => t.id === this.elemento.componente) || null;
                 this.titulo = this.elemento.conceptos[0].term;
                 this.conceptos = [...(this.elemento.conceptos || [])];
-
-
                 this.nombre = this.elemento.nombre;
-
                 const oid = this.elemento.conceptos[0]?._id?.$oid;
-
-
                 // Buscar el elemento por OID
                 const elementoPorOid = this.elementosRup.find(e =>
                     e.conceptos && e.conceptos[0] && e.conceptos[0]._id && e.conceptos[0]._id.$oid === oid
                 );
-
-
-                // Acceder a los params de ese elemento
-                if (elementoPorOid && elementoPorOid.params) {
-                    this.params = elementoPorOid.params;
-
-                } else {
-                    this.params = this.elemento.params || {};
-                }
-
-
+                this.params = elementoPorOid?.params ?? (this.elemento.params || {});
                 this.componenteSeleccionadoId = this.elemento.componente;
-
                 this.tipoAtomo = this.tipoAtomos.find(t => t.id === this.elemento.componente);
-
             });
         } else {
-
             this.createElemento();
-
-
         }
 
     }
@@ -148,16 +87,14 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             this.moleculaSeleccionado = requerido;
             this.params = requerido.params || {};
             requerido.params = this.params;
-
             const componenteId = requerido.componente || requerido.concepto.componente || this.getComponente(requerido.concepto); this.tipoAtomo = this.tipoAtomos.find(t => t.id === componenteId) || null;
             this.tituloSidebar = requerido.concepto.term || '-';
             this.nombreOrientativo = requerido.nombre || '';
             this.items = this.params.items || [];
         } else {
-            console.warn('❌ requerido sin concepto:', requerido);
+            this.plex.toast('❌ requerido sin concepto:', requerido);
         }
     }
-
 
     confirmarMolecula() {
         if (this.moleculaSeleccionado) {
@@ -205,13 +142,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         // Actualizá el nombre y conceptos de la molécula
         this.elemento.nombre = this.nombre;
         this.elemento.conceptos = [...this.conceptos];
-
         // Guardá la molécula completa (incluye todos los requeridos y sus params actualizados)
         this.elementosRUPService.save(this.elemento).subscribe(
             (elementoActualizado) => {
                 this.plex.toast('success', 'Molécula guardada correctamente');
-                // Si querés, podés actualizar this.elemento con el resultado:
-                // this.elemento = elementoActualizado;
             },
             (err) => {
                 this.plex.toast('danger', 'Error al guardar la molécula');

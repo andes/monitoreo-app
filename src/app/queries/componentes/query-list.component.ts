@@ -13,14 +13,14 @@ import { IDevice } from '../interfaces/IDevice';
     templateUrl: './query-list.component.html'
 })
 export class QueryListComponent implements OnInit {
-    queries: any[] = []; // Lista filtrada que se muestra
-    public listaFiltro = []; // Lista completa de queries del backend
-    public buscador: string; // Campo para la búsqueda
-    public loader = false; // Estado del loader de búsqueda
+    queries: any[] = [];
+    public listaFiltro = [];
+    public buscador: string;
+    public loader = false;
     public resultadoBusqueda;
-    public searchClear = true; // Control para limpiar búsqueda
-    Query: IQuery; // Query seleccionada
-    QueryEditada: IQuery; // Copia editable
+    public searchClear = true;
+    Query: IQuery;
+    QueryEditada: IQuery;
     QueryDevice: IDevice;
     resultadoMensajes;
     QuerySeleccionada: any = null;
