@@ -81,6 +81,26 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
             {
                 id: 'internacion',
                 nombre: 'INTERNACIÓN'
+            },
+            {
+                id: 'quirofano',
+                nombre: 'QUIRÓFANO'
+            },
+            {
+                id: 'guardia',
+                nombre: 'GUARDIA'
+            },
+            {
+                id: 'pre-hospitalario',
+                nombre: 'PRE-HOSPITALARIO'
+            },
+            {
+                id: 'hospital-de-dia',
+                nombre: 'HOSPITAL DE DÍA'
+            },
+            {
+                id: 'domiciliario',
+                nombre: 'DOMICILIARIO'
             }
         ];
         // guarda el estado previo del ambito

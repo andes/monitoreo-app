@@ -14,7 +14,7 @@
                             <td>
                                 <strong>Concept ID:</strong>
                                 <plex-text placeholder="Concept ID" name="usuario"
-                                           [(ngModel)]="nuevoConceptoTurneable.conceptId" [disabled]="true">
+                                    [(ngModel)]="nuevoConceptoTurneable.conceptId" [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -23,7 +23,7 @@
                             <td>
                                 <strong>Term:</strong>
                                 <plex-text placeholder="Term" name="usuario" [(ngModel)]="nuevoConceptoTurneable.term"
-                                           [disabled]="true">
+                                    [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -32,7 +32,7 @@
                             <td>
                                 <strong>FSN:</strong>
                                 <plex-text placeholder="fsn" name="usuario" [(ngModel)]="nuevoConceptoTurneable.fsn"
-                                           [disabled]="true">
+                                    [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -41,11 +41,18 @@
                             <td>
                                 <strong>Semantic Tag:</strong>
                                 <plex-text placeholder="Semantic Tag" name="usuario"
-                                           [(ngModel)]="nuevoConceptoTurneable.semanticTag" [disabled]="true">
+                                    [(ngModel)]="nuevoConceptoTurneable.semanticTag" [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td>
+                                <plex-select [multiple]="true" label="Ambito:" [(ngModel)]="ambitoActual"
+                                    [data]="ambitos" placeholder="Seleccione los ambitos">
+                                </plex-select>
+                                
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <strong>Nominalizada:</strong>
@@ -84,7 +91,7 @@
     <div class="row">
         <div class="col-lg-12">
             <plex-text label="Ingrese Nombre" placeholder="Nombre" [(ngModel)]="term" name="usuario" [required]="false"
-                       #filtroTerm="ngModel" (ngModelChange)="buscar();">
+                #filtroTerm="ngModel" (ngModelChange)="buscar();">
                 <plex-icon prefix="mdi" name="format-text" left></plex-icon>
             </plex-text>
         </div>
@@ -111,7 +118,7 @@
                             </td>
                             <td class="">
                                 <span *ngIf="concepto?.semanticTag !== ''"
-                                      class="d-block">{{concepto.semanticTag}}</span>
+                                    class="d-block">{{concepto.semanticTag}}</span>
                             </td>
                         </tr>
                     </tbody>

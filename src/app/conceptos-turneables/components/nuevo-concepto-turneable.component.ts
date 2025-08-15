@@ -1,6 +1,6 @@
 import { Plex } from '@andes/plex';
 import { PlexModalComponent } from '@andes/plex/src/lib/modal/modal.component';
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { SnomedService } from 'src/app/shared/snomed.service';
@@ -11,7 +11,7 @@ import { ConceptoTruneableService } from '../services/concepto-turneable.service
     selector: 'app-concepto-turneable-nuevo',
     templateUrl: './nuevo-concepto-turneable.component.html',
 })
-export class NuevoConceptoTurneableComponent {
+export class NuevoConceptoTurneableComponent implements OnInit {
     @ViewChild('modal', { static: true }) modal: PlexModalComponent;
     @Output() agregarConceptoTurneable = new EventEmitter<IConceptoTurneable>();
     @Output() cancelarAgregarConceptoTurneable = new EventEmitter<any>();
@@ -31,6 +31,10 @@ export class NuevoConceptoTurneableComponent {
         agendaDinamica: null,
         ambito: null,
     };
+    agendaDinamica;
+    public ambitoActual;
+    public ambitos: any[];
+
     nominalizada = false;
     auditable = false;
     loading = false;
@@ -41,11 +45,53 @@ export class NuevoConceptoTurneableComponent {
         private conceptoTurneableService: ConceptoTruneableService,
     ) {
     }
+    ngOnInit() {
+        this.asignarAtributos();
+    }
 
     mostrarMensaje() {
         this.plex.info('warning', 'Ya existe un concepto turneable para el conceptId seleccionado. Para mayor información comunicarse con <b>soporteandes@neuquen.gov.ar</b>.', 'Información');
     }
 
+    asignarAtributos() {
+        this.nominalizada = this.nuevoConceptoTurneable.noNominalizada ? false : true;
+        this.auditable = this.nuevoConceptoTurneable.auditable ? true : false;
+        this.agendaDinamica = this.nuevoConceptoTurneable.agendaDinamica ? true : false;
+        // carga los posibles ambitos
+        this.ambitos = [
+            {
+                id: 'ambulatorio',
+                nombre: 'AMBULATORIO'
+            },
+            {
+                id: 'internacion',
+                nombre: 'INTERNACIÓN'
+            },
+            {
+                id: 'quirofano',
+                nombre: 'QUIRÓFANO'
+            },
+            {
+                id: 'guardia',
+                nombre: 'GUARDIA'
+            },
+            {
+                id: 'pre-hospitalario',
+                nombre: 'PRE-HOSPITALARIO'
+            },
+            {
+                id: 'hospital-de-dia',
+                nombre: 'HOSPITAL DE DÍA'
+            },
+            {
+                id: 'domiciliario',
+                nombre: 'DOMICILIARIO'
+            }
+        ];
+        this.ambitoActual = (this.nuevoConceptoTurneable.ambito || [])
+            .map(id => this.ambitos.find(ambito => ambito.id === id))
+            .filter(ambito => !!ambito);
+    }
     buscarConcepto(concepto: IConceptoTurneable) {
         const existe = new Subject<boolean>();
 
@@ -58,6 +104,7 @@ export class NuevoConceptoTurneableComponent {
 
         return existe.asObservable();
     }
+
 
     buscar() {
         // Cancela la búsqueda anterior
@@ -105,6 +152,8 @@ export class NuevoConceptoTurneableComponent {
     }
 
     agregar() {
+        this.nuevoConceptoTurneable.ambito = (this.ambitoActual || []).map(a => a.id);
+
         this.nuevoConceptoTurneable.noNominalizada = !this.nominalizada;
         this.nuevoConceptoTurneable.auditable = this.auditable;
         this.agregarConceptoTurneable.emit(this.nuevoConceptoTurneable);
