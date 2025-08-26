@@ -135,7 +135,6 @@ export class QueryListComponent implements OnInit {
 
 
     // Eventos auxiliares
-    onSearchStart() { this.loader = true; }
     onSearchEnd(queries: any[]) { this.loader = false; this.resultadoBusqueda = queries; }
     onSearchClear() { this.searchClear = true; this.resultadoBusqueda = null; }
 

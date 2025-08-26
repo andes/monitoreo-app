@@ -33,11 +33,9 @@ export class RUPElementosRupListadoComponent implements OnInit {
         { label: 'PRESTACIÓN', handler: () => { this.goto('/rupers/elementos-rup/prestacion/nuevo'); } }
 
     ];
-    busqueda = '';
     todosLosElementos: IElementoRUP[] = [];
     elementosFiltrados: IElementoRUP[] = [];
     RuperSeleccionada: any = null;
-    RupEditado: IElementoRUP; // Copia editable
     QueryDevice: ISnomedConcept;
     edicionActivada = false;
     ElementoRup: IElementoRUP | null = null;
