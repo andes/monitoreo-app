@@ -1,7 +1,7 @@
 <plex-layout [main]="elementoSeleccionado ? 8 : 12">
     <plex-layout-main>
         <header>
-            <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 10px;">
+            <div>
                 <plex-title titulo="Elementos RUP">
                     <plex-button type="danger" size="sm" [routerLink]="['/monitoreo/home']">VOLVER</plex-button>
                     <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
@@ -79,7 +79,7 @@
 
         <plex-title justify titulo="CONCEPTOS APLICADOS " size="md"></plex-title>
         <plex-accordion [multiple]="false" activeLast="true">
-            
+
             <plex-panel>
                 <div plex-accordion-title>
                     <div class="titulo-accordion">
