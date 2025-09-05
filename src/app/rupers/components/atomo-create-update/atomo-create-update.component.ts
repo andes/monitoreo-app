@@ -50,6 +50,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     public nombre: string;
     public elemento;
     public concepto;
+    public habilitarPlantilla = null;
 
     params: any = {};
 
@@ -86,9 +87,10 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
                 this.titulo = this.elemento.conceptos[0].term;
                 this.concepto = this.elemento.conceptos[0];
                 this.params = this.elemento.params || {};
-                if (this.elemento.params.items) {
+                if (this.elemento.params?.items) {
                     this.items = this.elemento.params.items;
                 }
+                this.habilitarPlantilla = this.elemento.params?.habilitarPlantilla ?? this.habilitarPlantilla;
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
                 this.nombre = this.elemento.nombre;
             });
@@ -116,6 +118,10 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     onSave() {
         this.elemento.conceptos = [this.concepto];
         this.elemento.componente = this.tipoAtomo.id;
+
+        if (this.habilitarPlantilla !== null) {
+            this.params.habilitarPlantilla = this.habilitarPlantilla;
+        }
         this.elemento.params = this.params;
         this.elemento.nombre = this.nombre;
         if (this.items.length) {

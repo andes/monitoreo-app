@@ -16,6 +16,11 @@
                              labelField="term + '(' + semanticTag + ')'" [required]="true" name="concepto">
                 </plex-select>
             </div>
+            <div class="grow">
+                <plex-bool label="Carga de plantillas" type="slide" [(ngModel)]="habilitarPlantilla"
+                           name="habilitarPlantilla">
+                </plex-bool>
+            </div>
             <div>
                 <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
                              name="tipoAtomo"> </plex-select>
