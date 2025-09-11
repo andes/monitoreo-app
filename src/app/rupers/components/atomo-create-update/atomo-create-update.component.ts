@@ -50,6 +50,8 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     public nombre: string;
     public elemento;
     public concepto;
+    public conceptos: ISnomedConcept[] = [];
+
 
     params: any = {};
 
@@ -77,26 +79,23 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.id = this.actr.snapshot.params.id;
-
-        if (this.id) {
-            this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
-                this.elementosRup = elementosRup;
+        this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
+            this.elementosRup = elementosRup;
+            if (this.id) {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
-                this.titulo = this.elemento.conceptos[0].term;
-                this.concepto = this.elemento.conceptos[0];
-                this.params = this.elemento.params || {};
-                if (this.elemento.params.items) {
-                    this.items = this.elemento.params.items;
-                }
+                this.conceptos = [...(this.elemento.conceptos || [])];
+                this.params = this.elemento.params ? { ...this.elemento.params } : {};
+                this.items = this.params.items ? [...this.params.items] : [];
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
                 this.nombre = this.elemento.nombre;
-            });
-        } else {
-            this.createElemento();
-        }
-
+                this.titulo = this.elemento.conceptos[0]?.term || 'Editar átomo';
+            } else {
+                this.conceptos = [];
+                this.createElemento();
+            }
+        });
     }
+
 
     createElemento() {
         this.elemento = {
@@ -114,13 +113,48 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     }
 
     onSave() {
-        this.elemento.conceptos = [this.concepto];
-        this.elemento.componente = this.tipoAtomo.id;
-        this.elemento.params = this.params;
-        this.elemento.nombre = this.nombre;
-        if (this.items.length) {
-            this.elemento.params.items = this.items;
+        // Validación de conceptos
+        if (!this.conceptos || !this.conceptos.length) {
+            this.plex.toast('danger', 'Debe seleccionar al menos un concepto SNOMED');
+            return;
         }
+        // Validación de tipo de átomo
+        if (!this.tipoAtomo) {
+            this.plex.toast('danger', 'Debe seleccionar un tipo de átomo');
+            return;
+        }
+
+        if (this.tipoAtomo.id === 'SelectStaticoComponent') {
+            if (!this.items || !this.items.length) {
+                this.plex.toast('danger', 'Debe agregar al menos un item para el Select Estático');
+                return;
+            }
+        }
+        const conceptosIds = this.conceptos.map(c => String(c.conceptId));
+        const conceptoDuplicado = this.elementosRup
+            .filter(e => e.id !== this.id)
+            .map(e => e.conceptos || [])
+            .reduce((acc, val) => acc.concat(val), [])
+            .find(c => conceptosIds.includes(String(c.conceptId)));
+
+        if (conceptoDuplicado) {
+            this.plex.toast(
+                'danger',
+                `El concepto "${conceptoDuplicado.term}" ya existe en otro átomo`
+            );
+            return;
+        }
+        this.elemento.conceptos = [...this.conceptos];
+        this.elemento.componente = this.tipoAtomo.id;
+        this.elemento.nombre = this.nombre || this.conceptos[0]?.term || 'Átomo sin nombre';
+        this.elemento.params = { ...this.params };
+
+        if (this.items && this.items.length) {
+            this.elemento.params.items = [...this.items];
+        }
+
+
+
         this.elementosRUPService.save(this.elemento).subscribe(
             () => {
                 this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });

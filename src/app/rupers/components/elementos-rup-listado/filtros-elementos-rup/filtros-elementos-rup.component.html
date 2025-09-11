@@ -1,7 +1,13 @@
 <plex-wrapper>
-    <plex-select label="Componente" [data]="componente$ | async" name="componente" [(ngModel)]="componenteSelected"
-                 (change)="onChange('componente', $event)">
+    <plex-select label="Componente" grow="3" [data]="componente$ | async" name="componente"
+        [(ngModel)]="componenteSelected" (change)="onChange('componente', $event)">
     </plex-select>
-    <plex-select label="Tipo" [data]="tipos$ | async" name="tipo" [(ngModel)]="tipoSelected"
-                 (change)="onChange('tipo', $event)"></plex-select>
+
+    <plex-select label="Tipo" grow="3" [data]="tipos$ | async" name="tipo" [(ngModel)]="tipoSelected"
+        (change)="onChange('tipo', $event)">
+    </plex-select>
+
+    <plex-text label="Buscador" [(ngModel)]="busqueda" grow="3" (ngModelChange)="onSearchChange()"
+        placeholder="Buscador">
+    </plex-text>
 </plex-wrapper>
