@@ -79,35 +79,22 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.id = this.actr.snapshot.params.id;
-
-        if (this.id) {
-            this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
-                this.elementosRup = elementosRup;
+        this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
+            this.elementosRup = elementosRup;
+            if (this.id) {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
-
-
                 this.conceptos = [...(this.elemento.conceptos || [])];
-
-
                 this.params = this.elemento.params ? { ...this.elemento.params } : {};
                 this.items = this.params.items ? [...this.params.items] : [];
-
-
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
-
-
                 this.nombre = this.elemento.nombre;
                 this.titulo = this.elemento.conceptos[0]?.term || 'Editar átomo';
-
-
-            });
-        } else {
-            this.conceptos = [];
-            this.createElemento();
-        }
+            } else {
+                this.conceptos = [];
+                this.createElemento();
+            }
+        });
     }
-
 
 
     createElemento() {
@@ -137,7 +124,26 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
             return;
         }
 
+        if (this.tipoAtomo.id === 'SelectStaticoComponent') {
+            if (!this.items || !this.items.length) {
+                this.plex.toast('danger', 'Debe agregar al menos un item para el Select Estático');
+                return;
+            }
+        }
+        const conceptosIds = this.conceptos.map(c => String(c.conceptId));
+        const conceptoDuplicado = this.elementosRup
+            .filter(e => e.id !== this.id)
+            .map(e => e.conceptos || [])
+            .reduce((acc, val) => acc.concat(val), [])
+            .find(c => conceptosIds.includes(String(c.conceptId)));
 
+        if (conceptoDuplicado) {
+            this.plex.toast(
+                'danger',
+                `El concepto "${conceptoDuplicado.term}" ya existe en otro átomo`
+            );
+            return;
+        }
         this.elemento.conceptos = [...this.conceptos];
         this.elemento.componente = this.tipoAtomo.id;
         this.elemento.nombre = this.nombre || this.conceptos[0]?.term || 'Átomo sin nombre';
