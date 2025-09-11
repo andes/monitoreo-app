@@ -57,9 +57,9 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     ) { }
     ngOnInit() {
         this.id = this.actr.snapshot.params.id;
-        if (this.id) {
-            this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
-                this.elementosRup = elementosRup;
+        this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
+            this.elementosRup = elementosRup;
+            if (this.id) {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
                 this.conceptos = [...(this.elemento.conceptos || [])];
                 this.params = { ...this.elemento.params };
@@ -76,11 +76,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
                 this.params = elementoPorOid?.params ?? (this.elemento.params || {});
                 this.componenteSeleccionadoId = this.elemento.componente;
                 this.tipoAtomo = this.tipoAtomos.find(t => t.id === this.elemento.componente);
-            });
-        } else {
-            this.createElemento();
-        }
-
+            } else {
+                this.createElemento();
+            }
+        });
     }
     abrirMolecula(requerido: any) {
         if (requerido && requerido.concepto) {
@@ -139,13 +138,28 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         }
     }
     onSave() {
-        // Actualizá el nombre y conceptos de la molécula
         this.elemento.nombre = this.nombre;
         this.elemento.conceptos = [...this.conceptos];
+        const conceptosIds = this.conceptos.map(c => String(c.conceptId));
+        const conceptoDuplicado = this.elementosRup
+            .filter(e => e.id !== this.id)
+            .map(e => e.conceptos || [])
+            .reduce((acc, val) => acc.concat(val), [])
+            .find(c => conceptosIds.includes(String(c.conceptId)));
+
+        if (conceptoDuplicado) {
+            this.plex.toast(
+                'danger',
+                `El concepto "${conceptoDuplicado.term}" ya existe en otra molécula`
+            );
+            return;
+        }
         // Guardá la molécula completa (incluye todos los requeridos y sus params actualizados)
         this.elementosRUPService.save(this.elemento).subscribe(
-            (elementoActualizado) => {
+            () => {
                 this.plex.toast('success', 'Molécula guardada correctamente');
+                this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true }); // 👈 redirige como antes
+
             },
             (err) => {
                 this.plex.toast('danger', 'Error al guardar la molécula');
