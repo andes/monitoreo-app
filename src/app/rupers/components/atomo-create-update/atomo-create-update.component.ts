@@ -63,22 +63,8 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         private plex: Plex
     ) { }
 
-    @Unsubscribe()
-    searchConcept($event) {
-        if ($event.query.length > 3) {
-            const query = {
-                search: $event.query,
-                // semanticTag: ['procedimiento', 'elemento de registro']<
-            };
-            this.snomedService.get(query).subscribe((conceptos: ISnomedConcept[]) => {
-                $event.callback(conceptos);
-            });
-        } else {
-            $event.callback([]);
-        }
-    }
-
     ngOnInit() {
+        this.id = this.actr.snapshot.params.id;
         this.elementosRUPService.cache$.pipe(take(1)).subscribe((elementosRup: any) => {
             this.elementosRup = elementosRup;
             if (this.id) {
@@ -96,6 +82,17 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         });
     }
 
+    @Unsubscribe()
+    searchConcept($event) {
+        if ($event.query.length > 3) {
+            const query = { search: $event.query };
+            this.snomedService.get(query).subscribe((conceptos: ISnomedConcept[]) => {
+                $event.callback(conceptos);
+            });
+        } else {
+            $event.callback([]);
+        }
+    }
 
     createElemento() {
         this.elemento = {
