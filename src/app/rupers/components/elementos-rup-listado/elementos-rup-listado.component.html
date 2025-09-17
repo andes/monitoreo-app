@@ -1,47 +1,116 @@
-<plex-layout>
+<plex-layout [main]="elementoSeleccionado ? 8 : 12">
     <plex-layout-main>
         <header>
-            <plex-title titulo="Elementos RUP">
-                <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
-                </plex-dropdown>
-            </plex-title>
+            <div>
+                <plex-title titulo="Elementos RUP">
+                    <plex-button type="danger" size="sm" [routerLink]="['/monitoreo/home']">VOLVER</plex-button>
+                    <plex-dropdown size="sm" type="info" [right]="true" [items]="items" label="NUEVO">
+                    </plex-dropdown>
+                </plex-title>
+            </div>
             <rup-filtros-elementos-rup></rup-filtros-elementos-rup>
         </header>
-        <plex-list>
-            <plex-heading>
-                <b label>Nombre</b>
-                <b label>Concepto</b>
-                <b label>Componente</b>
-                <b></b>
-                <b label>Tipo</b>
-                <b label>Requeridos</b>
-                <b button></b>
-            </plex-heading>
-            <plex-item *ngFor="let elemento of elementosRup$ | async">
-                <plex-label titulo="{{ elemento.nombre? elemento.nombre: 'S/N' }}">
-                </plex-label>
-                <plex-label titulo="{{ elemento.conceptos[0]?.term }}"> </plex-label>
-                <plex-label titulo="{{ elemento.componente }}" [tituloBold]="false"> </plex-label>
-                <plex-label></plex-label>
-                <plex-label titulo="{{ elemento.tipo }}" [tituloBold]="false"> </plex-label>
-                <plex-label [tituloBold]="false"> {{ elemento.requeridos?.length || 0 }} </plex-label>
-                <div class="d-flex justify-content-end w-100">
-                    <ng-container [ngSwitch]="elemento.componente" ngProjectAs="plex-button">
-                        <plex-button *ngSwitchCase="'MoleculaBaseComponent'" type="warning" icon="pencil" size="sm"
-                                     [routerLink]="['molecula', elemento.id]">
-                        </plex-button>
-                        <plex-button *ngSwitchCase="'SeccionadoComponent'" type="warning" icon="pencil" size="sm"
-                                     [routerLink]="['seccion', elemento.id]">
-                        </plex-button>
-                        <plex-button *ngSwitchCase="'PRESTACION'" type="warning" icon="pencil" size="sm"
-                                     [routerLink]="['prestacion', elemento.id]">
-                        </plex-button>
-                        <plex-button *ngSwitchDefault type="warning" icon="pencil" size="sm"
-                                     [routerLink]="['atomo', elemento.id]">
-                        </plex-button>
-                    </ng-container>
-                </div>
-            </plex-item>
-        </plex-list>
+
+        <plex-title titulo="Listado de elementos RUP">
+            <plex-badge *ngIf="cantidadElementos > 0" size="lg" type="info" class="mr-1">
+                <span class="font-bold text-lg"> CANTIDAD DE ELEMENTOS: {{ cantidadElementos }} </span>
+            </plex-badge>
+        </plex-title>
+
+
+        <plex-table [columns]="columns">
+            <plex-table-columns>
+            </plex-table-columns>
+
+
+            <tr *ngFor="let elemento of (elementosRup$ | async)" [height]="600"
+                [class.selected]=" elemento===elementoSeleccionado" (click)="seleccionar(elemento)"
+                [class.selectable]="true">
+                <td *plTableCol="'col-1'">{{ elemento.nombre ? elemento.nombre : 'S/N' }}</td>
+                <td *plTableCol="'col-2'">{{ elemento.conceptos[0]?.term }}</td>
+                <td *plTableCol="'col-3'">{{ elemento.componente }}</td>
+                <td *plTableCol="'col-4'">{{ elemento.tipo }}</td>
+                <td *plTableCol="'col-5'">{{ elemento.requeridos?.length || 0 }}</td>
+
+            </tr>
+        </plex-table>
+
     </plex-layout-main>
+
+    <!-- Sidebar lateral -->
+    <plex-layout-sidebar type="invert" *ngIf="elementoSeleccionado" class="sidebar-fijo">
+        <plex-title justify titulo="DETALLE DEL ELEMENTO " size="md">
+            <ng-container [ngSwitch]="elementoSeleccionado.tipo">
+                <plex-button *ngSwitchCase="'molecula'" type="warning" tooltip="Editar" icon="pencil" size="sm"
+                    [routerLink]="['molecula', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchCase="'seccion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
+                    [routerLink]="['seccion', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchCase="'prestacion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
+                    [routerLink]="['prestacion', elementoSeleccionado.id]">
+                </plex-button>
+                <plex-button *ngSwitchDefault type="warning" tooltip="Editar" icon="pencil" size="sm"
+                    [routerLink]="['atomo', elementoSeleccionado.id]">
+                </plex-button>
+            </ng-container>
+            <plex-button type="danger" tooltip="Cerrar" size="sm" icon="close" ariaLabel="cerrar panel lateral"
+                (click)="elementoSeleccionado = null">
+            </plex-button>
+        </plex-title>
+
+        <plex-detail size="md">
+            <plex-icon type="info" name="information-variant"></plex-icon>
+            <div title>
+                <ng-container *ngIf="elementoSeleccionado">
+                    {{ elementoSeleccionado.conceptos[0]?.term || 'Concepto sin Nombre' }}
+                </ng-container>
+            </div>
+            <plex-label titulo="Fecha creación"
+                [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
+            <plex-label titulo="Usuario/a que creó"
+                [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || 'Sin datos'">
+            </plex-label>
+            <plex-label titulo="Ultima edición"
+                [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
+            <plex-label titulo="Componente" [subtitulo]="elementoSeleccionado.componente"></plex-label>
+            <plex-label titulo="Tipo" [subtitulo]="elementoSeleccionado.tipo"></plex-label>
+        </plex-detail>
+
+        <plex-title justify titulo="CONCEPTOS APLICADOS " size="md"></plex-title>
+        <plex-accordion [multiple]="false" activeLast="true">
+
+            <plex-panel>
+                <div plex-accordion-title>
+                    <div class="titulo-accordion">
+                        {{ elementoSeleccionado.conceptos?.length || 0 }} Conceptos aplicados
+                    </div>
+                </div>
+                <div class="lista-conceptos">
+                    <div *ngFor="let concepto of elementoSeleccionado.conceptos" class="item-concepto">
+                        {{ capitalizarPrimera(concepto.term) }}
+                    </div>
+                </div>
+            </plex-panel>
+        </plex-accordion>
+
+        <plex-title justify titulo="ÁTOMOS Y MOLÉCULAS VINCULADOS " size="md"></plex-title>
+
+        <plex-accordion [multiple]="false" activeLast="true">
+            <plex-panel>
+                <div plex-accordion-title justify>
+                    <div class="titulo-accordion">
+                        {{ elementoSeleccionado.requeridos?.length || 0 }} Átomos aplicados
+                    </div>
+                </div>
+                <div class="lista-conceptos">
+                    <div *ngFor="let requerido of elementoSeleccionado.requeridos">
+                        <p class="item-concepto" *ngIf="requerido.concepto?.term">
+                            {{ capitalizarPrimera(requerido.concepto?.term) }}
+                        </p>
+                    </div>
+                </div>
+            </plex-panel>
+        </plex-accordion>
+    </plex-layout-sidebar>
 </plex-layout>

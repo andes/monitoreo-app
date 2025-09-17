@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
@@ -5,6 +6,7 @@ import { SnomedService } from 'src/app/shared/snomed.service';
 import { Unsubscribe } from '@andes/shared';
 import { ElementosRupService } from '../../services/elementos-rup.service';
 import { take } from 'rxjs/operators';
+import { Plex } from '@andes/plex';
 
 @Component({
     selector: 'rup-seccion-create-update',
@@ -24,14 +26,15 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
 
     public elemento = null;
     public concepto: ISnomedConcept;
-
+    tipoVisualizacion: 'tabs' | 'dropdown' = null;
+    private tipoVisualizacionAnterior: 'tabs' | 'dropdown' = null;
     titulo = 'Nueva sección';
-
     constructor(
         private actr: ActivatedRoute,
         private snomedService: SnomedService,
         private elementosRUPService: ElementosRupService,
-        private router: Router
+        private router: Router,
+        private plex: Plex
     ) { }
 
     ngOnInit() {
@@ -60,7 +63,7 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
             esSolicitud: false,
             tipo: 'molecula',
             activo: true,
-            defaultFor: []
+            defaultFor: [],
         };
     }
 
@@ -98,16 +101,62 @@ export class RUPSeccionCreateUpdateComponent implements OnInit {
             elementoRUP: this.elementoSeccion.id,
             concepto: null,
             params: {
-                showText: true,
-                textRequired: true,
+                showText: false,
+                textRequired: false,
                 conceptsRequired: false,
-                icon: 'icon-andes-documento'
-            }
+
+            },
+            selected: false
         };
     }
 
     onAdd() {
+        if (this.tipoVisualizacion === 'tabs' && this.elemento.requeridos.length >= 6) {
+            this.plex.toast('warning', 'Recordar que no se pueden agregar más de 6 secciones');
+            return;
+        }
         const nuevoRequerido = this.nuevoRequerido();
         this.elemento.requeridos.push(nuevoRequerido);
     }
+    async onVisualizacionChange(nuevoTipo: 'tabs' | 'dropdown') {
+        const tieneRequeridos = this.elemento.requeridos.length > 0;
+
+        if (nuevoTipo === 'dropdown' && tieneRequeridos) {
+            const confirmado = await this.plex.confirm(
+                'Estas por cambiar de tabs a dropdown.'
+            );
+            if (confirmado) {
+                this.elemento.requeridos = [];
+                this.tipoVisualizacion = nuevoTipo;
+            } else {
+                this.tipoVisualizacion = 'tabs';
+            }
+            return;
+        }
+
+        if (nuevoTipo === 'tabs' && tieneRequeridos) {
+            const confirmado = await this.plex.confirm(
+                'Estás por cambiar de dropdown a tabs.',
+            );
+            if (confirmado) {
+                this.elemento.requeridos = [];
+                this.tipoVisualizacion = nuevoTipo;
+            } else {
+                this.tipoVisualizacion = 'dropdown';
+            }
+            return;
+        }
+
+        this.tipoVisualizacion = nuevoTipo;
+    }
+    onElementoRUPChange(requerido: any) {
+
+        if (requerido.params.elementoRUP) {
+            requerido.params.showText = false;
+            requerido.params.textRequired = false;
+            requerido.params.conceptsRequired = false;
+        }
+    }
+
+
 }

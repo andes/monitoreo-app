@@ -10,10 +10,12 @@ import { QueriesGeneratorService } from './services/query-generator.service';
 import { QueriesRoutingModule } from 'src/app/queries/queries-routing.module';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
 import { ConceptoTruneableService } from 'src/app/conceptos-turneables/services/concepto-turneable.service';
+import { QueryListComponent } from './componentes/query-list.component';
 
 @NgModule({
     declarations: [
-        QueryExecuteComponent
+        QueryExecuteComponent,
+        QueryListComponent
     ],
     imports: [
         CommonModule,

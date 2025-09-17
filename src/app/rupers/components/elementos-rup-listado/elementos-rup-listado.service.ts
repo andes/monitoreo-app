@@ -5,7 +5,8 @@ import { ElementosRupService } from '../../services/elementos-rup.service';
 import { map, switchMap, filter, toArray } from 'rxjs/operators';
 import { mergeObject } from '@andes/shared';
 
-export type FilterKey = 'tipo' | 'componente';
+export type FilterKey = 'tipo' | 'componente' | 'concepto';
+
 
 @Injectable()
 export class ElementosRupListadoService {
@@ -58,8 +59,20 @@ export class ElementosRupListadoService {
         if (filtros.tipo) {
             pass = pass && elemento.tipo === filtros.tipo;
         }
+        if (filtros.concepto) {
+            const termino = filtros.concepto.toLowerCase();
+
+            const coincide = elemento.conceptos?.some(c =>
+                c.conceptId?.toLowerCase().includes(termino) ||
+                c.term?.toLowerCase().includes(termino)
+            );
+
+            pass = pass && coincide;
+        }
 
         return pass;
     }
+
+
 
 }
