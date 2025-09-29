@@ -18,6 +18,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     public elemento;
     public conceptos: ISnomedConcept[] = [];
     public requerido: ISnomedConcept;
+    public conceptosPrevios: any[] = [];
     moleculaSeleccionado: any = null;
     nombre = '';
     nombreOrientativo = '';
@@ -79,6 +80,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             } else {
                 this.createElemento();
             }
+            this.conceptosPrevios = [...this.conceptos];
         });
     }
     abrirMolecula(requerido: any) {
@@ -143,9 +145,37 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             $event.callback(this.conceptos || []);
         }
     }
-    onConceptosChange(event) {
-        this.conceptos = (event || []).filter(c => !!c);
+    async onConceptosChange(nuevos: ISnomedConcept[]) {
+        const eliminados = this.conceptosPrevios.filter(
+            c => !nuevos.some(n => n.conceptId === c.conceptId)
+        );
+        if (eliminados.length > 0) {
+            const conceptoEliminado = eliminados[0];
+            const confirmacion = await this.plex.confirm(
+                `¿Estás seguro que deseas eliminar el concepto: ${conceptoEliminado.term} (${conceptoEliminado.semanticTag})?`,
+                'Confirmar eliminación'
+            );
+
+            if (!confirmacion) {
+                this.plex.toast('warning', 'Eliminación cancelada.', 'Cancelado');
+                this.conceptos = [...this.conceptosPrevios];
+                return;
+            }
+        }
+        const agregados = nuevos.filter(
+            n => !this.conceptosPrevios.some(c => c.conceptId === n.conceptId)
+        );
+
+        if (agregados.length > 0) {
+            agregados.forEach(a => {
+            });
+        }
+        this.conceptosPrevios = [...nuevos];
+        this.conceptos = [...nuevos];
     }
+
+
+
     onSave() {
         this.elemento.nombre = this.nombre;
 
