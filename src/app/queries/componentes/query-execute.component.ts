@@ -52,13 +52,15 @@ export class QueryExecuteComponent implements OnInit {
             this.listaArgumentos.forEach(arg => {
                 const key = arg.key;
                 const valor = this.listaValores[key];
-                const idField = arg.idField || 'id';
-                params[key] = valor;
-                if (valor instanceof Date) {
-                    params[key] = moment(valor).format();
-                }
-                if (valor && valor[idField]) { // select
-                    params[key] = valor[idField];
+
+                if (valor !== undefined && valor !== null) {
+                    if (valor instanceof Date) {
+                        params[key] = moment(valor).format();
+                    } else if (typeof valor === 'object') {
+                        params[key] = valor.conceptId || valor.id || valor._id || valor;
+                    } else {
+                        params[key] = valor;
+                    }
                 }
 
             });
@@ -104,10 +106,10 @@ export class QueryExecuteComponent implements OnInit {
     }
 
     loadUnidadesOrganizativas(event) {
-        if (this.listaValores?.organizacion && event.query) {
-            const organizacion = this.listaValores.organizacion.id;
-            this.servicioOrganizacion.unidadesOrganizativas(organizacion).subscribe(resultado => {
-                event.callback(resultado);
+        if (this.listaValores?.organizacionOrigen) {
+            const idOrg = this.listaValores.organizacionOrigen.id || this.listaValores.organizacionOrigen;
+            this.servicioOrganizacion.unidadesOrganizativas(idOrg).subscribe(unidades => {
+                event.callback(unidades);
             });
         } else {
             event.callback([]);
