@@ -9,4 +9,5 @@ export interface IConceptoTurneable {
     auditable: boolean;
     agendaDinamica: boolean;
     ambito: string[];
+    tiempoVigencia?: number;
 }

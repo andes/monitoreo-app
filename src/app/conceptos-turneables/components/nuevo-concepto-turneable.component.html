@@ -77,6 +77,20 @@
                                 </plex-bool>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <hr>
+                                <plex-title titulo="Solicitudes" size="sm"></plex-title>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <plex-int label="Tiempo de vigencia (días):"
+                                          [(ngModel)]="nuevoConceptoTurneable.tiempoVigencia" name="tiempoVigencia"
+                                          min="1" [required]="true">
+                                </plex-int>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
