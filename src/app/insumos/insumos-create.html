@@ -1,0 +1,36 @@
+<plex-layout>
+    <plex-layout-main>
+        <header>
+            <plex-title [titulo]="title" class="ml-1">
+                <plex-button label="VOLVER" type="danger" size=sm (click)="volver()" class="mr-1"></plex-button>
+                <plex-button label="GUARDAR" type="success" size=sm (click)="save()"></plex-button>
+            </plex-title>
+        </header>
+
+        <plex-grid type="auto" size="md" cols="2">
+
+            <plex-text label="Nombre" [(ngModel)]="nombre" placeholder="Ingrese el nombre del insumo" name="nombre"
+                [required]="true" class="mx-2"></plex-text>
+            <plex-select [(ngModel)]="tipo" [data]="opciones" name="tipo" label="Tipo:" [required]="true"
+                labelField="nombre" class="mx-2"></plex-select>
+            <plex-bool [(ngModel)]="check" class="mx-2" type=slide label="Requiere especificación"
+                name="requiereEspecificacion"></plex-bool>
+            <plex-text label="Observaciones" [(ngModel)]="observaciones" name="observaciones" class="mx-2"></plex-text>
+
+        </plex-grid>
+
+        <plex-title titulo="Códigos" size="sm">
+            <plex-button label="AGREGAR CÓDIGO" type="success" size="sm" (click)="addCodigo()"
+                [disabled]="codigos.length >= fuentes.length"></plex-button>
+        </plex-title>
+
+        <plex-grid *ngFor="let cod of codigos; let i = index" type="auto" size="md" cols="3">
+            <plex-select [(ngModel)]="cod.fuente" [data]="fuentes" name="fuente-{{i}}" label="Fuente:" [required]="true"
+                labelField="nombre" class="mx-2"></plex-select>
+            <plex-text label="Valor" [(ngModel)]="cod.valor" name="valor-{{i}}" [required]="true"
+                class="mx-2"></plex-text>
+            <plex-button *ngIf="codigos.length > 1" type="danger" icon="delete" (click)="removeCodigo(i)"
+                class="mt-4"></plex-button>
+        </plex-grid>
+    </plex-layout-main>
+</plex-layout>

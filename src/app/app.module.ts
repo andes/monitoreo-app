@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
-import { Server } from '@andes/shared';
+import { Server, SharedModule } from '@andes/shared';
 import { routing } from './app-routing.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
@@ -31,7 +31,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
 import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-autenticas.service';
 import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
-
+import { InsumosComponent } from './insumos/insumos.component';
+import { InsumosCreateComponent } from './insumos/insumos-create';
 @NgModule({
     declarations: [
         AppComponent,
@@ -43,7 +44,9 @@ import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
         NuevoConceptoTurneableComponent,
         MonitoreoActivacionesComponent,
         BuscadorSnomedComponent,
-        EstadoFuentesAutenticasComponent
+        EstadoFuentesAutenticasComponent,
+        InsumosComponent,
+        InsumosCreateComponent
     ],
     imports: [
         BrowserModule,
@@ -54,7 +57,8 @@ import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
         AuthModule,
         InfiniteScrollModule,
         ModulosModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        SharedModule
     ],
     providers: [
         Server,
