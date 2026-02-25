@@ -1,0 +1,89 @@
+<plex-layout main="8">
+    <plex-layout-main>
+        <header>
+
+            <div>
+                <plex-title main titulo="INSUMOS">
+                    <plex-button label="VOLVER" type="danger" size="sm" (click)="volver()"></plex-button>
+                    <plex-button label="CREAR INSUMO" type="success" size="sm" (click)="nuevo()"></plex-button>
+                </plex-title>
+            </div>
+        </header>
+
+        <plex-grid type="auto" size="md" cols="2">
+            <plex-text label="Nombre" [(ngModel)]="busqueda" (change)="buscar()"
+                placeholder="Ingrese el nombre del insumo" name="nombre" class="mx-2"></plex-text>
+            <plex-select [(ngModel)]="tipo" [data]="opciones" (change)="buscar()" label="Tipo:"></plex-select>
+            <plex-text label="Código insumo" [(ngModel)]="codigo" (change)="buscar()" name="codigo"
+                class="mx-2"></plex-text>
+            <plex-select [(ngModel)]="estado" [data]="estados" (change)="buscar()" label="Estado:"></plex-select>
+        </plex-grid>
+
+        <plex-title titulo="Listado de Insumos"></plex-title>
+
+        <plex-table [columns]="columns">
+            <plex-table-columns>
+            </plex-table-columns>
+            <tr *ngFor="let insumo of insumos$ | async" (click)="seleccionar(insumo)"
+                [class.active]="selectedInsumo?.id === insumo.id">
+                <td *plTableCol="'nombre'">{{ insumo.nombre }}</td>
+                <td *plTableCol="'tipo'">{{ insumo.tipo }}</td>
+                <td *plTableCol="'codigo'">
+                    <plex-badge *ngFor="let c of insumo.codigo" type="info" class="mr-1">
+                        {{ c.fuente }}: {{ c.valor }}
+                    </plex-badge>
+                </td>
+                <td *plTableCol="'estado'">{{ insumo.estado }}</td>
+            </tr>
+        </plex-table>
+
+    </plex-layout-main>
+
+
+    <!-- Sidebar lateral -->
+
+    <plex-layout-sidebar type="invert" class="sidebar-fijo" *ngIf="selectedInsumo">
+        <plex-title justify titulo="DETALLE INSUMOS" size="md">
+
+            <plex-button *ngIf="selectedInsumo.estado === 'activo'" type="warning" tooltip="Inactivar insumo"
+                icon="prohibido" size="sm" (click)="inactivar(selectedInsumo)"></plex-button>
+            <plex-button *ngIf="selectedInsumo.estado === 'inactivo'" type="info" tooltip="Activar insumo" icon="check"
+                size="sm" (click)="activar(selectedInsumo)"></plex-button>
+            <plex-button type="warning" tooltip="Editar" icon="pencil" size="sm"
+                (click)="editar(selectedInsumo)"></plex-button>
+            <plex-button type="danger" tooltip="Cerrar" icon="close" size="sm" (click)="cerrar()"></plex-button>
+        </plex-title>
+        <plex-detail size="md">
+            <plex-icon class=ColorFrasco name="frasco" size="sm"></plex-icon>
+            <plex-badge size="md">{{ selectedInsumo.estado }}</plex-badge>
+            <div title>{{ selectedInsumo.nombre }}</div>
+
+            <plex-label titulo="Usuario/a que creó"
+                subtitulo="{{ (selectedInsumo.createdBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
+            <plex-label titulo="Fecha creación"
+                subtitulo="{{ (selectedInsumo.createdAt | fecha:'utc') || 'N/D' }}"></plex-label>
+            <plex-label titulo="Tipo" [subtitulo]="selectedInsumo.tipo || '—'"></plex-label>
+            <plex-label titulo="Última edición"
+                subtitulo="{{ (selectedInsumo.updatedAt | fecha:'utc') || 'N/D' }}"></plex-label>
+            <plex-label titulo="Usuario que editó"
+                subtitulo="{{ (selectedInsumo.updatedBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
+
+            <plex-label titulo="Códigos"></plex-label>
+            <div class="mb-2">
+                <plex-badge *ngFor="let c of selectedInsumo.codigo" type="info" class="mr-1">
+                    {{ c.fuente }}: {{ c.valor }}
+                </plex-badge>
+                <span *ngIf="!selectedInsumo.codigo?.length">—</span>
+            </div>
+
+            <plex-label titulo="Especificación"
+                [subtitulo]="selectedInsumo.requiereEspecificacion ? 'Requiere especificación' : 'No requiere especificación'">
+            </plex-label>
+
+            <plex-label *ngIf="selectedInsumo.observaciones" titulo="Observaciones"
+                [subtitulo]="selectedInsumo.observaciones"></plex-label>
+
+        </plex-detail>
+
+    </plex-layout-sidebar>
+</plex-layout>
