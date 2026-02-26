@@ -53,7 +53,7 @@ export class QueryExecuteComponent implements OnInit {
                 const key = arg.key;
                 const valor = this.listaValores[key];
 
-                if (valor !== undefined && valor !== null) {
+                if (valor) {
                     if (valor instanceof Date) {
                         params[key] = moment(valor).format();
                     } else if (typeof valor === 'object') {
