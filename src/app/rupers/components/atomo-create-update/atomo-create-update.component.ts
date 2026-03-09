@@ -51,7 +51,7 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
     public elemento;
     public concepto;
     public conceptos: ISnomedConcept[] = [];
-    public habilitarPlantilla = null;
+    public habilitarPlantilla;
 
     params: any = {};
 
