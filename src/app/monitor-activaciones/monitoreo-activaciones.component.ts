@@ -8,6 +8,8 @@ import { Plex } from '@andes/plex';
 import { IDevice } from './interfaces/IDevice';
 import { Auth } from '@andes/auth';
 import { Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
+import { EMPTY, from } from 'rxjs';
 
 @Component({
     selector: 'app-monitoreo-activaciones',
@@ -24,6 +26,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
     pacienteSeleccionado = false;
     edicionActivada = false;
     searchClear = true; // True si el campo de búsqueda se encuentra vacío
+    public patronEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
 
     constructor(
@@ -101,48 +104,43 @@ export class MonitoreoActivacionesComponent implements OnInit {
         }
     }
 
-    verificarCorreoValido() {
-        const formato = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+(\.[a-z]{2,4})+$/;
-        const mail = String(this.pacienteEditado.email);
-        return formato.test(mail);
-    }
-
     cancelarEdicion() {
         this.edicionActivada = false;
     }
 
     guardarEdicion() {
-        if (this.verificarCorreoValido()) {
-            this.pacienteAppService.get({ email: this.pacienteEditado.email }).subscribe(
-                resultadoCuentas => {
-                    // verifica que no exista otra cuenta, es decir que tenga otro dni con el mail que estamos agregando
-                    if (resultadoCuentas.some((p) => p.documento !== this.pacienteApp.documento)) {
+        this.pacienteAppService.get({ email: this.pacienteEditado.email })
+            .pipe(
+                switchMap(resultadoCuentas => {
+                    const existeOtro = resultadoCuentas.some(pac => pac.documento !== this.pacienteApp.documento);
+                    if (existeOtro) {
                         this.plex.info('danger', 'El correo que ingresó ya se encuentra asociado a otra cuenta.');
-                    } else {
-                        this.pacienteEditado.telefono = (this.pacienteEditado.telefono) ? this.pacienteEditado.telefono : '';
-                        const mensajeTelefono = `<b>Teléfono: </b>${this.pacienteEditado.telefono}`;
-                        const mensajeEmail = `<br><b>Email: </b>${this.pacienteEditado.email}`;
-                        this.plex.confirm(`${mensajeTelefono} ${mensajeEmail}`, '¿Desea continuar?').then(confirmacion => {
-                            if (confirmacion) {
-                                this.pacienteAppService.patch(this.pacienteEditado).subscribe(
-                                    resultadoPaciente => {
-                                        this.pacienteApp = resultadoPaciente;
-                                        this.plex.toast('success', 'Los datos han sido actualizados con éxito.');
-                                    },
-                                    err => {
-                                        if (err) {
-                                            this.plex.toast('danger', 'No fue posible la actualización de los datos.');
-                                        }
-                                    });
-                                this.edicionActivada = false;
-                            }
-                        });
+                        return EMPTY;
                     }
-                }
-            );
-        } else {
-            this.plex.info('danger', 'El formato del correo no es válido');
-        }
-    }
+                    this.pacienteEditado.telefono = this.pacienteEditado.telefono || '';
+                    const mensajeTelefono = `<b>Teléfono: </b>${this.pacienteEditado.telefono}`;
+                    const mensajeEmail = `<br><b>Email: </b>${this.pacienteEditado.email}`;
+                    return from(
+                        this.plex.confirm(`${mensajeTelefono} ${mensajeEmail}`, '¿Desea continuar?')
+                    );
+                }),
 
+                switchMap(confirmacion => {
+                    if (!confirmacion) {
+                        return EMPTY;
+                    }
+                    return this.pacienteAppService.patch(this.pacienteEditado);
+                }),
+
+                tap(resultadoPaciente => {
+                    this.pacienteApp = resultadoPaciente;
+                    this.edicionActivada = false;
+                    this.plex.toast('success', 'Los datos han sido actualizados con éxito.');
+                })
+            ).subscribe({
+                error: () => {
+                    this.plex.toast('danger', 'No fue posible la actualización de los datos.');
+                }
+            });
+    }
 }
