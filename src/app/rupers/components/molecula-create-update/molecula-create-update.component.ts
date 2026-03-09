@@ -24,6 +24,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     items: any[] = [];
     componenteSeleccionadoId = '';
     tituloSidebar = '';
+    isMoleculaSeleccionada = false;
     params: any = {};
     valorNumericoType = [
         { id: 'integer', label: 'Entero' },
@@ -90,6 +91,9 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             this.tituloSidebar = requerido.concepto.term || '-';
             this.nombreOrientativo = requerido.nombre || '';
             this.items = this.params.items || [];
+
+            const elementoCompleto = this.getElementoRupCompleto(requerido);
+            this.isMoleculaSeleccionada = elementoCompleto?.tipo === 'molecula' || componenteId === 'MoleculaBaseComponent';
         } else {
             this.plex.toast('❌ requerido sin concepto:', requerido);
         }
@@ -139,13 +143,28 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     }
     onSave() {
         this.elemento.nombre = this.nombre;
+
+        const originalConceptosIds = (this.elemento.conceptos || []).map(c => String(c.conceptId));
+
         this.elemento.conceptos = [...this.conceptos];
         const conceptosIds = this.conceptos.map(c => String(c.conceptId));
-        const conceptoDuplicado = this.elementosRup
-            .filter(e => e.id !== this.id)
-            .map(e => e.conceptos || [])
-            .reduce((acc, val) => acc.concat(val), [])
-            .find(c => conceptosIds.includes(String(c.conceptId)));
+        const isNew = !this.id && !this.elemento.id && !this.elemento._id;
+        const conceptosAValidar = isNew ? conceptosIds : conceptosIds.filter(id => !originalConceptosIds.includes(id));
+
+        const idActual = String(this.id || (this.elemento && typeof this.elemento.id === 'string' ? this.elemento.id : undefined) || (this.elemento && this.elemento._id ? (this.elemento._id.$oid || this.elemento._id) : undefined));
+
+        let conceptoDuplicado = null;
+
+        if (conceptosAValidar.length > 0) {
+            conceptoDuplicado = this.elementosRup
+                .filter(e => {
+                    const eId = String(e.id || (e._id ? (e._id.$oid || e._id) : undefined) || (e.concepto && e.concepto.conceptId)); // fallback
+                    return eId !== idActual && eId !== 'undefined';
+                })
+                .map(e => e.conceptos || [])
+                .reduce((acc, val) => acc.concat(val), [])
+                .find(c => conceptosAValidar.includes(String(c.conceptId)));
+        }
 
         if (conceptoDuplicado) {
             this.plex.toast(

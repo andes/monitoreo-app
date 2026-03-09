@@ -92,11 +92,13 @@
 
         </div>
         <div class="grow">
-
-
-            <plex-select label="Tipo de Atomo" [data]="tipoAtomos" [ngModel]="tipoAtomo" [disabled]="true"
-                labelField="nombre" valueField="id" required="true">
+            <plex-select *ngIf="!isMoleculaSeleccionada" label="Tipo de Atomo" [data]="tipoAtomos" [ngModel]="tipoAtomo"
+                         [disabled]="true" labelField="nombre" valueField="id" required="true">
             </plex-select>
+
+            <plex-bool *ngIf="isMoleculaSeleccionada" label="Mostrar título cuando es submolécula"
+                       [(ngModel)]="moleculaSeleccionado.params.mostrarTituloSubmolecula">
+            </plex-bool>
         </div>
 
 
