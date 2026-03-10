@@ -44,6 +44,8 @@ export class AppComponent {
 
         this.menuList.push({ label: 'Fuentes auténticas', icon: 'adi-credencial-usuario', route: '/fuentes-autenticas' });
 
+        this.menuList.push({ label: 'Insumos', icon: 'frasco', route: '/insumos' });
+
         if (this.auth.check('monitoreo:webhook')) {
             this.menuList.push({ label: 'Webhooks', icon: 'hook', route: '/webhook' });
         }

@@ -8,6 +8,8 @@ import { ConceptosTurneablesComponent } from './conceptos-turneables/components/
 import { MonitoreoActivacionesComponent } from './monitor-activaciones/monitoreo-activaciones.component';
 import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
+import { InsumosComponent } from './insumos/insumos.component';
+import { InsumosCreateComponent } from './insumos/insumos-create';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -24,6 +26,8 @@ const appRoutes: Routes = [
     { path: 'novedades', loadChildren: () => import('./registro-novedades/novedades.module').then(m => m.NovedadesModule) },
     { path: 'rupers', loadChildren: () => import('./rupers/rupers.module').then(m => m.RupersModule) },
     { path: 'fuentes-autenticas', component: EstadoFuentesAutenticasComponent, canActivate: [RoutingGuard] },
+    { path: 'insumos', component: InsumosComponent, canActivate: [RoutingGuard] },
+    { path: 'insumos-create', component: InsumosCreateComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
