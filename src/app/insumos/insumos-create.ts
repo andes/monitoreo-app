@@ -57,6 +57,10 @@ export class InsumosCreateComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    get puedeAgregarCodigo(): boolean {
+        return this.codigos.length < 2 && this.codigos.every(cod => cod.fuente && cod.valor);
+    }
+
     volver() {
         this.location.back();
     }

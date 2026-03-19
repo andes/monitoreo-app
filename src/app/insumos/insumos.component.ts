@@ -110,4 +110,9 @@ export class InsumosComponent implements OnInit {
     volver() {
         this.router.navigate(['/home']);
     }
+
+    codigoInsumo(codigos) {
+        const codigosStr = codigos.map(c => `${c.fuente}: ${c.valor}`).join(', ');
+        return codigosStr;
+    }
 }

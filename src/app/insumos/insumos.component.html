@@ -69,19 +69,10 @@
                 subtitulo="{{ (selectedInsumo.updatedAt | fecha:'utc') || 'N/D' }}"></plex-label>
             <plex-label titulo="Usuario que editó"
                 subtitulo="{{ (selectedInsumo.updatedBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
-
-            <plex-label titulo="Códigos" subtitulo=""></plex-label>
-            <div class="mb-2">
-                <plex-badge *ngFor="let c of selectedInsumo.codigo" type="info" class="mr-1">
-                    {{ c.fuente }}: {{ c.valor }}
-                </plex-badge>
-                <span *ngIf="!selectedInsumo.codigo?.length">—</span>
-            </div>
-
+            <plex-label titulo="Códigos" [subtitulo]="codigoInsumo(selectedInsumo.codigo)"></plex-label>
             <plex-label titulo="Especificación"
                 [subtitulo]="selectedInsumo.requiereEspecificacion ? 'Requiere especificación' : 'No requiere especificación'">
             </plex-label>
-
             <plex-label *ngIf="selectedInsumo.observaciones" titulo="Observaciones"
                 [subtitulo]="selectedInsumo.observaciones"></plex-label>
 

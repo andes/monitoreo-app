@@ -1,7 +1,7 @@
 <plex-layout>
     <plex-layout-main>
         <header>
-            <plex-title [titulo]="title" class="ml-1">
+            <plex-title [titulo]="title">
                 <plex-button label="VOLVER" type="danger" size=sm (click)="volver()" class="mr-1"></plex-button>
                 <plex-button label="GUARDAR" type="success" size=sm (click)="save()"></plex-button>
             </plex-title>
@@ -21,7 +21,7 @@
 
         <plex-title titulo="Códigos" size="sm">
             <plex-button label="AGREGAR CÓDIGO" type="success" size="sm" (click)="addCodigo()"
-                [disabled]="codigos.length >= fuentes.length"></plex-button>
+                [disabled]="!puedeAgregarCodigo"></plex-button>
         </plex-title>
 
         <plex-grid *ngFor="let cod of codigos; let i = index" type="auto" size="md" cols="3">
@@ -30,7 +30,7 @@
             <plex-text label="Valor" [(ngModel)]="cod.valor" name="valor-{{i}}" [required]="true"
                 class="mx-2"></plex-text>
             <plex-button *ngIf="codigos.length > 1" type="danger" icon="delete" (click)="removeCodigo(i)"
-                class="mt-4"></plex-button>
+                class="botonRemover"></plex-button>
         </plex-grid>
     </plex-layout-main>
 </plex-layout>
