@@ -159,9 +159,11 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     hayCambios() {
         return (
             (this.conceptoTurneable.noNominalizada !== !this.nominalizada) ||
+            (this.conceptoTurneable.auditable !== this.auditable) ||
             (this.conceptoTurneable.agendaDinamica !== this.agendaDinamica) ||
             (!this.arrayEquals(this.conceptoTurneable.ambito, this.objectSelect2array(this.ambitoActual))) ||
             (this.conceptoTurneable.tiempoVigencia !== this.tiempoVigencia)
         );
+
     }
 }
