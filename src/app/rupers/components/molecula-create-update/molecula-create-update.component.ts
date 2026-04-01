@@ -211,7 +211,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             .map(c => String(c.conceptId))
             .filter(id => !!id);
 
-        const conceptoDuplicado = this.elementosRup
+        conceptoDuplicado = this.elementosRup
             .filter(e => e.id !== this.id)
             .reduce((acc, e) => acc.concat(e.conceptos || []), [])
             .find(c => conceptosIdsSeleccionados.includes(String(c.conceptId)));
@@ -222,10 +222,10 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
                     (e.conceptos || []).some(c => String(c.conceptId) === String(conceptoDuplicado.conceptId))
                 );
 
-            const nombresRuper = rupersDuplicados.map(e => `<b>${e.nombre}</b>`).join('; ') || 'desconocido';
+            const nombresRuper = rupersDuplicados.map(e => `<b>${e.nombre || 'SIN NOMBRE'}</b>`).join('; ') || 'desconocido';
 
             this.plex.confirm(
-                `⚠️ El concepto "${conceptoDuplicado.fsn}" ya existe en los Ruper: ${nombresRuper}.<br>¿Deseas igualmente agregarlo aquí?`,
+                `El concepto "${conceptoDuplicado.fsn}" ya existe en los Ruper: ${nombresRuper}.<br>¿Deseas igualmente agregarlo aquí?`,
                 'Concepto duplicado'
             ).then(confirmado => {
                 if (confirmado) {
