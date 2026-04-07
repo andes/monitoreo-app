@@ -105,22 +105,23 @@ export class RUPElementosRupListadoComponent implements OnInit {
     }
 
     removeElemento(elementoRup: IElementoRUP) {
-        if (elementoRup.activo) {
-            const mensaje = elementoRup.tipo === 'atomo'
-                ? `¿Esta seguro que desea dar de baja al ${elementoRup.tipo} "${elementoRup.nombre}"?`
-                : `¿Esta seguro que desea dar de baja a la ${elementoRup.tipo} "${elementoRup.nombre}"?`;
+        if (!elementoRup.inactiveAt) {
+            const nombre = elementoRup.nombre ? elementoRup.nombre : elementoRup.conceptos[0].term;
+            const mensaje =
+                `¿Esta seguro que desea dar de baja 
+                ${elementoRup.tipo === 'atomo' ? 'el átomo' : 'la ' + elementoRup.tipo} "${nombre}"?`;
 
             this.plex.confirm(mensaje).then((resultado) => {
                 const rta = resultado;
                 if (rta) {
                     elementoRup.activo = false;
+                    elementoRup.inactiveAt = new Date();
                     this.elementosRupService.save(elementoRup).subscribe(() => {
                         this.elementosRupService.refresh.next(null);
-                        this.plex.toast('success', 'El elemento se borró correctamente', 'Información', 2000);
-                    },
-                    err => {
+                        this.plex.toast('success', 'El elemento se inactivó correctamente', 'Información', 2000);
+                    }, err => {
                         if (err) {
-                            this.plex.toast('danger', 'No fue posible eliminar el elemento');
+                            this.plex.toast('danger', 'No fue posible inactivar el elemento');
                         }
                     });
                 }

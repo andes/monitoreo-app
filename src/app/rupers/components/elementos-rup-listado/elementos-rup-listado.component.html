@@ -32,10 +32,11 @@
                 <td *plTableCol="'col-4'">{{ elemento.tipo }}</td>
                 <td *plTableCol="'col-5'">{{ elemento.requeridos?.length || 0 }}</td>
                 <td>
-                    <plex-button type="danger" size="sm" icon="prohibido" tooltip="Dar de baja" tooltipPosition="left"
-                        (click)="removeElemento(elemento)"></plex-button>
+                    <plex-button *ngIf="!elemento.inactiveAt" type="danger" size="sm" icon="prohibido"
+                                 tooltip="Dar de baja" tooltipPosition="left"
+                                 (click)="removeElemento(elemento)"></plex-button>
+                    <plex-badge *ngIf="elemento.inactiveAt" type="danger"> Inactivo </plex-badge>
                 </td>
-
             </tr>
         </plex-table>
 
@@ -44,22 +45,24 @@
     <!-- Sidebar lateral -->
     <plex-layout-sidebar type="invert" *ngIf="elementoSeleccionado" class="sidebar-fijo">
         <plex-title justify titulo="DETALLE DEL ELEMENTO " size="md">
-            <ng-container [ngSwitch]="elementoSeleccionado.tipo">
-                <plex-button *ngSwitchCase="'molecula'" type="warning" tooltip="Editar" icon="pencil" size="sm"
-                    [routerLink]="['molecula', elementoSeleccionado.id]">
-                </plex-button>
-                <plex-button *ngSwitchCase="'seccion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
-                    [routerLink]="['seccion', elementoSeleccionado.id]">
-                </plex-button>
-                <plex-button *ngSwitchCase="'prestacion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
-                    [routerLink]="['prestacion', elementoSeleccionado.id]">
-                </plex-button>
-                <plex-button *ngSwitchDefault type="warning" tooltip="Editar" icon="pencil" size="sm"
-                    [routerLink]="['atomo', elementoSeleccionado.id]">
-                </plex-button>
+            <ng-container *ngIf="!elementoSeleccionado.inactiveAt">
+                <ng-container [ngSwitch]="elementoSeleccionado.tipo">
+                    <plex-button *ngSwitchCase="'molecula'" type="warning" tooltip="Editar" icon="pencil" size="sm"
+                                 [routerLink]="['molecula', elementoSeleccionado.id]">
+                    </plex-button>
+                    <plex-button *ngSwitchCase="'seccion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
+                                 [routerLink]="['seccion', elementoSeleccionado.id]">
+                    </plex-button>
+                    <plex-button *ngSwitchCase="'prestacion'" type="warning" tooltip="Editar" icon="pencil" size="sm"
+                                 [routerLink]="['prestacion', elementoSeleccionado.id]">
+                    </plex-button>
+                    <plex-button *ngSwitchDefault type="warning" tooltip="Editar" icon="pencil" size="sm"
+                                 [routerLink]="['atomo', elementoSeleccionado.id]">
+                    </plex-button>
+                </ng-container>
             </ng-container>
             <plex-button type="danger" tooltip="Cerrar" size="sm" icon="close" ariaLabel="cerrar panel lateral"
-                (click)="elementoSeleccionado = null">
+                         (click)="elementoSeleccionado = null">
             </plex-button>
         </plex-title>
 
@@ -67,18 +70,20 @@
             <plex-icon type="info" name="information-variant"></plex-icon>
             <div title>
                 <ng-container *ngIf="elementoSeleccionado">
-                    {{ elementoSeleccionado.conceptos[0]?.term || 'Concepto sin Nombre' }}
+                    {{ capitalizarPrimera(elementoSeleccionado.conceptos[0]?.term) || 'Concepto sin Nombre' }}
                 </ng-container>
             </div>
+            <plex-badge *ngIf="elementoSeleccionado.inactiveAt" type="danger"> Inactivo </plex-badge>
             <plex-label titulo="Fecha creación"
-                [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
-            <plex-label titulo="Usuario/a que creó"
-                [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || 'Sin datos'">
+                        [subtitulo]="elementoSeleccionado?.createdAt ? (elementoSeleccionado.createdAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
+            <plex-label titulo="Creado por" [subtitulo]="elementoSeleccionado.createdBy?.nombreCompleto || 'Sin datos'">
             </plex-label>
             <plex-label titulo="Ultima edición"
-                [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
+                        [subtitulo]="elementoSeleccionado?.updatedAt ? (elementoSeleccionado.updatedAt | date: 'dd-MM-yyyy HH:mm') : 'Sin datos'"></plex-label>
             <plex-label titulo="Componente" [subtitulo]="elementoSeleccionado.componente"></plex-label>
             <plex-label titulo="Tipo" [subtitulo]="elementoSeleccionado.tipo"></plex-label>
+            <plex-label *ngIf="elementoSeleccionado.inactiveAt" titulo="Inactivo desde "
+                        [subtitulo]="elementoSeleccionado.inactiveAt | date: 'dd-MM-yyyy HH:mm'"></plex-label>
         </plex-detail>
 
         <plex-title justify titulo="CONCEPTOS APLICADOS " size="md"></plex-title>
