@@ -3,7 +3,9 @@ import { ISendMessageCache } from './interfaces/ISendMessageCache';
 import { IPacienteApp } from './interfaces/IPacienteApp';
 import { PacienteAppService } from './services/pacienteApp.service';
 import { SendMessageCacheService } from './services/sendMessageCache.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil, switchMap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Plex } from '@andes/plex';
 import { IDevice } from './interfaces/IDevice';
 import { Auth } from '@andes/auth';
@@ -13,7 +15,8 @@ import { Router } from '@angular/router';
     selector: 'app-monitoreo-activaciones',
     templateUrl: './monitoreo-activaciones.component.html',
 })
-export class MonitoreoActivacionesComponent implements OnInit {
+export class MonitoreoActivacionesComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
     loader = false;
     documentoEmail: string;
     resultadoBusqueda;
@@ -38,6 +41,25 @@ export class MonitoreoActivacionesComponent implements OnInit {
         if (!this.auth.check('monitoreo:monitoreoActivaciones')) {
             this.router.navigate(['./inicio']);
         }
+
+        this.pacienteAppService.searchTrigger$
+            .pipe(
+                takeUntil(this.destroy$),
+                debounceTime(300),
+                distinctUntilChanged(),
+                switchMap(search => {
+                    this.onSearchStart();
+                    return this.pacienteAppService.get({ search: '^' + search });
+                })
+            )
+            .subscribe(datos => {
+                this.onSearchEnd(datos);
+            });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 
@@ -56,18 +78,7 @@ export class MonitoreoActivacionesComponent implements OnInit {
     }
 
     public loadPacientes() {
-        this.onSearchStart();
-        if (this.documentoEmail != null) {
-            this.searchClear = false;
-            this.pacienteAppService.get({ search: '^' + this.documentoEmail }).subscribe(
-                datos => {
-                    this.onSearchEnd(datos);
-                }
-            );
-        } else {
-            this.onSearchEnd([]);
-            this.onSearchClear();
-        }
+        this.pacienteAppService.searchTrigger$.next(this.documentoEmail);
     }
 
     public loadMensajes(email: string) {

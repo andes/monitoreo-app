@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { IPacienteApp } from '../interfaces/IPacienteApp';
 import { Server } from '@andes/shared';
 
@@ -7,6 +7,7 @@ import { Server } from '@andes/shared';
 export class PacienteAppService {
 
     private pacienteAppUrl = '/modules/mobileApp/pacienteApp'; // URL to web api
+    public searchTrigger$ = new Subject<string>();
 
     constructor(private server: Server) { }
 
