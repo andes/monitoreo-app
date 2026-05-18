@@ -18,6 +18,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
     public elemento;
     public conceptos: ISnomedConcept[] = [];
     public requerido: ISnomedConcept;
+    public conceptosPrevios: any[] = [];
     moleculaSeleccionado: any = null;
     nombre = '';
     nombreOrientativo = '';
@@ -62,7 +63,6 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             this.elementosRup = elementosRup;
             if (this.id) {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
-                this.conceptos = [...(this.elemento.conceptos || [])];
                 this.params = { ...this.elemento.params };
                 this.items = this.params.items ? [...this.params.items] : [];
                 this.tipoAtomo = this.tipoAtomos.find(t => t.id === this.elemento.componente) || null;
@@ -80,6 +80,7 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
             } else {
                 this.createElemento();
             }
+            this.conceptosPrevios = [...this.conceptos];
         });
     }
     abrirMolecula(requerido: any) {
@@ -129,18 +130,52 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
 
     @Unsubscribe()
     searchConcept($event) {
-        if ($event.query.length > 3) {
-            const query = {
-                search: $event.query
-            };
-
+        if ($event.query && $event.query.length > 3) {
+            const query = { search: $event.query };
             this.snomedService.get(query).subscribe((conceptos: ISnomedConcept[]) => {
-                $event.callback(conceptos);
+                const conceptosValidos = (conceptos || []).filter(c => !!c && !!c.conceptId);
+                const fusion = [
+                    ...this.conceptos,
+                    ...conceptosValidos.filter(c => !this.conceptos.some(sel => sel.conceptId === c.conceptId))
+                ];
+
+                $event.callback(fusion);
             });
         } else {
-            $event.callback([]);
+            $event.callback(this.conceptos || []);
         }
     }
+    async onConceptosChange(nuevos: ISnomedConcept[]) {
+        const eliminados = this.conceptosPrevios.filter(
+            c => !nuevos.some(n => n.conceptId === c.conceptId)
+        );
+        if (eliminados.length > 0) {
+            const conceptoEliminado = eliminados[0];
+            const confirmacion = await this.plex.confirm(
+                `¿Estás seguro que deseas eliminar el concepto: ${conceptoEliminado.term} (${conceptoEliminado.semanticTag})?`,
+                'Confirmar eliminación'
+            );
+
+            if (!confirmacion) {
+                this.plex.toast('warning', 'Eliminación cancelada.', 'Cancelado');
+                this.conceptos = [...this.conceptosPrevios];
+                return;
+            }
+        }
+        const agregados = nuevos.filter(
+            n => !this.conceptosPrevios.some(c => c.conceptId === n.conceptId)
+        );
+
+        if (agregados.length > 0) {
+            agregados.forEach(a => {
+            });
+        }
+        this.conceptosPrevios = [...nuevos];
+        this.conceptos = [...nuevos];
+    }
+
+
+
     onSave() {
         this.elemento.nombre = this.nombre;
 
@@ -166,26 +201,56 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
                 .find(c => conceptosAValidar.includes(String(c.conceptId)));
         }
 
-        if (conceptoDuplicado) {
-            this.plex.toast(
-                'danger',
-                `El concepto "${conceptoDuplicado.term}" ya existe en otra molécula`
-            );
+        if (!this.conceptos || this.conceptos.length === 0) {
+            this.plex.toast('danger', 'La molécula debe tener al menos un concepto.');
             return;
         }
-        // Guardá la molécula completa (incluye todos los requeridos y sus params actualizados)
+
+        this.elemento.conceptos = [...this.conceptos];
+        const conceptosIdsSeleccionados = this.conceptos
+            .map(c => String(c.conceptId))
+            .filter(id => !!id);
+
+        conceptoDuplicado = this.elementosRup
+            .filter(e => e.id !== this.id)
+            .reduce((acc, e) => acc.concat(e.conceptos || []), [])
+            .find(c => conceptosIdsSeleccionados.includes(String(c.conceptId)));
+        if (conceptoDuplicado) {
+            const rupersDuplicados = this.elementosRup
+                .filter(e =>
+                    e.id !== this.id &&
+                    (e.conceptos || []).some(c => String(c.conceptId) === String(conceptoDuplicado.conceptId))
+                );
+
+            const nombresRuper = rupersDuplicados.map(e => `<b>${e.nombre || 'SIN NOMBRE'}</b>`).join('; ') || 'desconocido';
+
+            this.plex.confirm(
+                `El concepto "${conceptoDuplicado.fsn}" ya existe en los Ruper: ${nombresRuper}.<br>¿Deseas igualmente agregarlo aquí?`,
+                'Concepto duplicado'
+            ).then(confirmado => {
+                if (confirmado) {
+                    this.guardarMolecula();
+                } else {
+                    this.plex.toast('info', 'Operación cancelada por el usuario');
+                }
+            });
+            return;
+        } else {
+            this.guardarMolecula();
+        }
+    }
+
+    guardarMolecula() {
         this.elementosRUPService.save(this.elemento).subscribe(
             () => {
                 this.plex.toast('success', 'Molécula guardada correctamente');
-                this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true }); // 👈 redirige como antes
-
+                this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
             },
             (err) => {
                 this.plex.toast('danger', 'Error al guardar la molécula');
             }
         );
     }
-
     volver() {
         this.router.navigate(['/rupers/elementos-rup'], { replaceUrl: true });
     }
