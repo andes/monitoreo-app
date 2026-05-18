@@ -44,10 +44,14 @@ export class ElementosRupListadoService {
     /**
      * Son los elementos visibles para el usuario
      */
-    elementosVisibles(elementos: IElementoRUP[]) {
-        return elementos.filter(e => {
-            return e.activo;
-        });
+    elementosVisibles(elementos: IElementoRUP[], activo = null): IElementoRUP[] {
+        if (activo !== null) {
+            return elementos.filter(e => {
+                return e.activo === activo;
+            });
+        }
+        return elementos;
+
     }
 
     checkFilter(elemento: IElementoRUP, filtros) {

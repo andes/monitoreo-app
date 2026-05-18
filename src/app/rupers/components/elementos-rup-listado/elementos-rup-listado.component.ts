@@ -9,6 +9,7 @@ import { ISnomedConcept } from 'src/app/shared/ISnomedConcept';
 import { SendMessageCacheService } from 'src/app/monitor-activaciones/services/sendMessageCache.service';
 
 
+import { Plex } from '@andes/plex';
 @Component({
     selector: 'rup-elementos-rup-listado',
     templateUrl: 'elementos-rup-listado.component.html',
@@ -22,8 +23,8 @@ export class RUPElementosRupListadoComponent implements OnInit {
         private listadoService: ElementosRupListadoService,
         private elementosRupService: ElementosRupService,
         private auth: Auth,
-        private sendMessageCacheService: SendMessageCacheService
-
+        private sendMessageCacheService: SendMessageCacheService,
+        private plex: Plex
     ) { }
 
     public items = [
@@ -48,7 +49,8 @@ export class RUPElementosRupListadoComponent implements OnInit {
         { key: 'col-2', label: 'Concepto' },
         { key: 'col-3', label: 'Componente' },
         { key: 'col-4', label: 'Tipo' },
-        { key: 'col-5', label: 'Requeridos' }
+        { key: 'col-5', label: 'Requeridos' },
+        {}
     ] as const;
 
     ngOnInit() {
@@ -100,5 +102,30 @@ export class RUPElementosRupListadoComponent implements OnInit {
 
     goto(url) {
         this.router.navigate([url]);
+    }
+
+    removeElemento(elementoRup: IElementoRUP) {
+        if (!elementoRup.inactiveAt) {
+            const nombre = elementoRup.nombre ? elementoRup.nombre : elementoRup.conceptos[0].term;
+            const mensaje =
+                `¿Esta seguro que desea dar de baja 
+                ${elementoRup.tipo === 'atomo' ? 'el átomo' : 'la ' + elementoRup.tipo} "${nombre}"?`;
+
+            this.plex.confirm(mensaje).then((resultado) => {
+                const rta = resultado;
+                if (rta) {
+                    elementoRup.activo = false;
+                    elementoRup.inactiveAt = new Date();
+                    this.elementosRupService.save(elementoRup).subscribe(() => {
+                        this.elementosRupService.refresh.next(null);
+                        this.plex.toast('success', 'El elemento se inactivó correctamente', 'Información', 2000);
+                    }, err => {
+                        if (err) {
+                            this.plex.toast('danger', 'No fue posible inactivar el elemento');
+                        }
+                    });
+                }
+            });
+        }
     }
 }
