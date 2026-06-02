@@ -133,16 +133,26 @@ export class RUPMoleculaCreateUpdateComponent implements OnInit {
         if ($event.query && $event.query.length > 3) {
             const query = { search: $event.query };
             this.snomedService.get(query).subscribe((conceptos: ISnomedConcept[]) => {
+                // Solo devolvemos los resultados de SNOMED sin mezclar los ya seleccionados.
+                // Mezclarlos causaba que plex-select emitiera ngModelChange con 400+ conceptos.
                 const conceptosValidos = (conceptos || []).filter(c => !!c && !!c.conceptId);
-                const fusion = [
-                    ...this.conceptos,
-                    ...conceptosValidos.filter(c => !this.conceptos.some(sel => sel.conceptId === c.conceptId))
-                ];
-
-                $event.callback(fusion);
+                $event.callback(conceptosValidos);
             });
         } else {
-            $event.callback(this.conceptos || []);
+            $event.callback([]);
+        }
+    }
+
+    @Unsubscribe()
+    searchRequerido($event) {
+        if ($event.query && $event.query.length > 3) {
+            const query = { search: $event.query };
+
+            this.snomedService.get(query).subscribe((conceptos: ISnomedConcept[]) => {
+                $event.callback(conceptos || []);
+            });
+        } else {
+            $event.callback([]);
         }
     }
     async onConceptosChange(nuevos: ISnomedConcept[]) {

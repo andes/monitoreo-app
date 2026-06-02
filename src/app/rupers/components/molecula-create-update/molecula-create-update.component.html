@@ -20,7 +20,7 @@
             <div class="col-12">
                 <plex-title titulo="Moléculas y átomos vinculados"></plex-title>
                 <div class="grow">
-                    <plex-select label="Concepto" (getData)=searchConcept($event) [(ngModel)]="requerido"
+                    <plex-select label="Concepto" (getData)="searchRequerido($event)" [(ngModel)]="requerido"
                                  idField="conceptId" labelField="term + '(' + semanticTag + ')'"></plex-select>
 
                     <plex-button class="align-self-end" type="success" icon="check" (click)="onAddRequerido()"
