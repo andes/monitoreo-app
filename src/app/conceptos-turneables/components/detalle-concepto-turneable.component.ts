@@ -19,6 +19,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     public ambitoActual;
     public ambito;
     public ambitos: any[];
+    public tiempoVigencia: number;
 
     constructor(
         public plex: Plex,
@@ -43,6 +44,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
                         auditable: this.auditable,
                         agendaDinamica: this.agendaDinamica,
                         ambito: this.objectSelect2array(this.ambitoActual),
+                        tiempoVigencia: this.tiempoVigencia
                     };
                     this.toggleEdicion();
                     this.editarConceptoTurneable.emit(cambios);
@@ -105,6 +107,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
         ];
         // guarda el estado previo del ambito
         this.ambitoActual = this.array2objectSelect(this.conceptoTurneable.ambito);
+        this.tiempoVigencia = this.conceptoTurneable.tiempoVigencia || 365;
     }
 
     cancelar() {
@@ -158,7 +161,9 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
             (this.conceptoTurneable.noNominalizada !== !this.nominalizada) ||
             (this.conceptoTurneable.auditable !== this.auditable) ||
             (this.conceptoTurneable.agendaDinamica !== this.agendaDinamica) ||
-            (!this.arrayEquals(this.conceptoTurneable.ambito, this.objectSelect2array(this.ambitoActual)))
+            (!this.arrayEquals(this.conceptoTurneable.ambito, this.objectSelect2array(this.ambitoActual))) ||
+            (this.conceptoTurneable.tiempoVigencia !== this.tiempoVigencia)
         );
+
     }
 }

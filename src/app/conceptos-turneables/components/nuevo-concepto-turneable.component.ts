@@ -30,6 +30,7 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         auditable: null,
         agendaDinamica: null,
         ambito: null,
+        tiempoVigencia: 365
     };
     agendaDinamica;
     public ambitoActual;

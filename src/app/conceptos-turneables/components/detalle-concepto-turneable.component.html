@@ -99,6 +99,27 @@
                                 </plex-bool>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <plex-title titulo="Solicitudes" size="sm"></plex-title>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td *ngIf="!editable">
+                                <strong>Tiempo de vigencia (días):</strong>
+                                <plex-text [ngModel]="conceptoTurneable.tiempoVigencia || 365" name="tiempoVigenciaView"
+                                           [disabled]="true">
+                                </plex-text>
+                            </td>
+                            <td *ngIf="editable">
+                                <plex-int label="Tiempo de vigencia (días):" [(ngModel)]="tiempoVigencia"
+                                          name="tiempoVigencia" min="1">
+                                </plex-int>
+                                <plex-icon name="information" size="lg" type="info"
+                                           tooltip="por defecto el vencimiento de la solicitud es 365 días"
+                                           tooltipPosition="right">
+                                </plex-icon>
+                            </td>
                     </tbody>
                 </table>
             </div>
