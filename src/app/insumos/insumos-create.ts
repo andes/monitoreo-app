@@ -22,6 +22,14 @@ export class InsumosCreateComponent implements OnInit {
         { id: 'magistral', nombre: 'Magistral' }
     ];
 
+    public unidadMedida = null;
+
+    public opcionesUnidadMedida = [
+        { id: 'ml', nombre: 'ml (mililitros)' },
+        { id: 'grs', nombre: 'gr (gramos)' },
+        { id: 'caps', nombre: 'caps (cápsulas)' }
+    ];
+
     public fuentes = [
         { id: 'SIFAHO', nombre: 'SIFAHO' },
         { id: 'SNOMED', nombre: 'SNOMED' }
@@ -29,6 +37,7 @@ export class InsumosCreateComponent implements OnInit {
 
     public nombre = null;
     public check = false;
+    public checkUnidadMedida = false;
     public observaciones = null;
     public codigos: any[] = [{ fuente: null, valor: '' }];
 
@@ -49,6 +58,7 @@ export class InsumosCreateComponent implements OnInit {
                 valor: c.valor
             }));
             this.tipo = this.opciones.find(o => o.id === this.insumoEdit.tipo);
+            this.unidadMedida = this.opcionesUnidadMedida.find(o => o.id === this.insumoEdit.unidadMedida);
             this.check = this.insumoEdit.requiereEspecificacion;
             this.observaciones = this.insumoEdit.observaciones;
         }
@@ -78,14 +88,8 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     save() {
-        const fuentesSeleccionadas = this.codigos.map(c => c.fuente?.id).filter(id => !!id);
-        const fuentesUnicas = new Set(fuentesSeleccionadas);
 
         if (this.nombre && this.tipo && this.codigos.every(c => c.fuente && c.valor)) {
-            if (fuentesSeleccionadas.length !== fuentesUnicas.size) {
-                this.plex.info('warning', 'No se permiten múltiples códigos para la misma fuente');
-                return;
-            }
 
             let insumo: IInsumo;
 
@@ -101,6 +105,7 @@ export class InsumosCreateComponent implements OnInit {
                     codigo: codigosMapped,
                     tipo: this.tipo.id,
                     requiereEspecificacion: this.check,
+                    unidadMedida: this.unidadMedida.id,
                     observaciones: this.observaciones
                 };
             } else {
@@ -109,6 +114,7 @@ export class InsumosCreateComponent implements OnInit {
                     codigo: codigosMapped,
                     tipo: this.tipo.id,
                     estado: 'activo',
+                    unidadMedida: this.unidadMedida.id,
                     requiereEspecificacion: this.check,
                     observaciones: this.observaciones
                 };
