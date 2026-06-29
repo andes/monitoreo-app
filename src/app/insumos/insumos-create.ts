@@ -27,7 +27,7 @@ export class InsumosCreateComponent implements OnInit {
     public opcionesUnidadMedida = [
         { id: 'ml', nombre: 'ml (mililitros)' },
         { id: 'grs', nombre: 'gr (gramos)' },
-        { id: 'caps', nombre: 'caps (cápsulas)' }
+        { id: 'cápsulas', nombre: 'cápsulas' }
     ];
 
     public fuentes = [
@@ -68,7 +68,10 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     get puedeAgregarCodigo(): boolean {
-        return this.codigos.length < 2 && this.codigos.every(cod => cod.fuente && cod.valor);
+        const noDuplicados = this.codigos.every((cod, i) =>
+            this.codigos.findIndex(c => c.fuente?.id === cod.fuente?.id && c.valor === cod.valor) === i
+        );
+        return this.codigos.every(cod => cod.fuente && cod.valor) && noDuplicados;
     }
 
     volver() {
@@ -76,9 +79,7 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     addCodigo() {
-        if (this.codigos.length < this.fuentes.length) {
-            this.codigos.push({ fuente: null, valor: '' });
-        }
+        this.codigos.push({ fuente: null, valor: '' });
     }
 
     removeCodigo(index) {
