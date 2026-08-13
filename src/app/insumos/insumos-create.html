@@ -7,14 +7,19 @@
             </plex-title>
         </header>
 
-        <plex-grid type="auto" size="md" cols="2">
+        <plex-grid type="auto" size="md" cols="3">
 
             <plex-text label="Nombre" [(ngModel)]="nombre" placeholder="Ingrese el nombre del insumo" name="nombre"
                 [required]="true" class="mx-2"></plex-text>
             <plex-select [(ngModel)]="tipo" [data]="opciones" name="tipo" label="Tipo:" [required]="true"
                 labelField="nombre" class="mx-2"></plex-select>
-            <plex-bool [(ngModel)]="check" class="mx-2" type=slide label="Requiere especificación"
+            <plex-bool [(ngModel)]="check" class="mx-2 pt-4" type=slide label="Requiere especificacion"
                 name="requiereEspecificacion"></plex-bool>
+            <plex-bool *ngIf="tipo?.id === 'magistral'" [(ngModel)]="checkUnidadMedida" class="mx-2 pt-4" type=slide
+                label="Requiere unidad de medida" name="requiereUnidadMedida"></plex-bool>
+            <plex-select *ngIf="tipo?.id === 'magistral' && checkUnidadMedida" [(ngModel)]="unidadMedida"
+                [data]="opcionesUnidadMedida" name="unidadMedida" label="Unidad de medida:" [required]="true"
+                labelField="nombre" class="mx-2"></plex-select>
             <plex-text label="Observaciones" [(ngModel)]="observaciones" name="observaciones" class="mx-2"></plex-text>
 
         </plex-grid>
