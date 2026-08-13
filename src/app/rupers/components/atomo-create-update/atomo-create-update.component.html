@@ -167,7 +167,42 @@
                     </div>
 
                 </div>
+                <div *ngSwitchCase="'TextoSimpleComponent'">
 
+                    <plex-grid cols="2" type="auto" size="md">
+
+                        <plex-text [(ngModel)]="params.placeholder" label="Placeholder" name="params-placeholder">
+                        </plex-text>
+
+                        <plex-select label="Tipo de caracteres" [data]="textoSimpleTypes" labelField="label"
+                                     idField="id" [(ngModel)]="params.acceptType" name="params-acceptType">
+                        </plex-select>
+
+                        <plex-int [(ngModel)]="params.minLength" label="Cantidad mínima" name="params-minLength">
+                        </plex-int>
+
+                        <plex-int [(ngModel)]="params.maxLength" label="Cantidad máxima" name="params-maxLength">
+                        </plex-int>
+
+                    </plex-grid>
+
+                    <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                    </plex-bool>
+
+                </div>
+
+                <div *ngSwitchCase="'ValorFechaComponent'">
+
+                    <plex-grid cols="2" type="auto" size="md">
+
+                        <plex-text [(ngModel)]="params.placeholder" label="Placeholder" name="params-placeholder">
+                        </plex-text>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+
+                    </plex-grid>
+
+                </div>
             </ng-container>
         </form>
 

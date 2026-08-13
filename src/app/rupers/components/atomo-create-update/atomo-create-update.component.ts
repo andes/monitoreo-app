@@ -39,9 +39,16 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         { id: 'SelectStaticoComponent', nombre: 'Select Estatico' },
         { id: 'ObservacionesComponent', nombre: 'Observaciones' },
         { id: 'ValorNumericoComponent', nombre: 'Valor Numerico' },
-        { id: 'ChecklistComponent', nombre: 'CheckList' }
+        { id: 'ValorFechaComponent', nombre: 'Valor Fecha' },
+        { id: 'ChecklistComponent', nombre: 'CheckList' },
+        { id: 'TextoSimpleComponent', nombre: 'Texto Simple' }
     ];
 
+    textoSimpleTypes = [
+        { id: 'letters', label: 'Solo letras' },
+        { id: 'numbers', label: 'Solo números' },
+        { id: 'alphanumeric', label: 'Alfanumérico' }
+    ];
     tipoAtomo: { id: string; nombre: string } = null;
 
     titulo = 'Nuevo átomo';
