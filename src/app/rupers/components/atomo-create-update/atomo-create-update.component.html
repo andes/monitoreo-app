@@ -4,7 +4,7 @@
         <plex-title titulo="Nuevo Átomo">
             <plex-button type="danger" (click)="volver()">VOLVER</plex-button>
             <plex-button type="success" (click)="onSave()" [validateForm]="formulario1 && formulario2"
-                [disabled]="!formulario1.form.valid || (tipoAtomo?.id=='SelectStaticoComponent' && (!formulario2.form.valid || !items.length))">GUARDAR
+                         [disabled]="!formulario1.form.valid || (tipoAtomo?.id=='SelectStaticoComponent' && (!formulario2.form.valid || !items.length))">GUARDAR
             </plex-button>
         </plex-title>
         <form #formulario1="ngForm">
@@ -14,11 +14,12 @@
                 </plex-text>
 
                 <plex-select label="Concepto" [multiple]="true" (getData)="searchConcept($event)"
-                    [(ngModel)]="conceptos" idField="conceptId" labelField="fsn" required="true" name="conceptos">
+                             [(ngModel)]="conceptos" idField="conceptId" labelField="fsn" required="true"
+                             name="conceptos">
                 </plex-select>
 
                 <plex-select label="Tipo Atomo" [data]="tipoAtomos" [(ngModel)]="tipoAtomo" [required]="true"
-                    name="tipoAtomo" class="mx-2">
+                             name="tipoAtomo" class="mx-2">
                 </plex-select>
 
                 <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title" class="mx-2"></plex-text>
@@ -36,13 +37,13 @@
                         <plex-grid-item>
                             <div class="d-flex flex-wrap">
                                 <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple"
-                                    name="params-multiple" class="mr-5 flex-grow-1"></plex-bool>
+                                           name="params-multiple" class="mr-5 flex-grow-1"></plex-bool>
                                 <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido"
-                                    name="params-required" class="mr-5 flex-grow-1"></plex-bool>
+                                           name="params-required" class="mr-5 flex-grow-1"></plex-bool>
                                 <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
-                                    name="params-allowOther" class="mr-5 flex-grow-1"></plex-bool>
+                                           name="params-allowOther" class="mr-5 flex-grow-1"></plex-bool>
                                 <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
-                                    name="params-preload" class="mr-5 flex-grow-1"></plex-bool>
+                                           name="params-preload" class="mr-5 flex-grow-1"></plex-bool>
                             </div>
                         </plex-grid-item>
                         <plex-grid-item>
@@ -55,16 +56,16 @@
 
                         <div justify class="ml-4 mt-5">
                             <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple"
-                                name="params-multiple">
+                                       name="params-multiple">
                             </plex-bool>
                             <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido"
-                                name="params-required">
+                                       name="params-required">
                             </plex-bool>
                             <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
-                                name="params-allowOther">
+                                       name="params-allowOther">
                             </plex-bool>
                             <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
-                                name="params-preload">
+                                       name="params-preload">
                             </plex-bool>
                         </div>
                     </plex-grid>
@@ -85,10 +86,10 @@
                         <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
                         </plex-bool>
                         <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
-                            name="params-allowOther">
+                                   name="params-allowOther">
                         </plex-bool>
                         <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
-                            name="params-preload">
+                                   name="params-preload">
                         </plex-bool>
                     </div>
 
@@ -99,16 +100,16 @@
                         <plex-grid-item>
                             <div class="d-flex flex-wrap">
                                 <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple"
-                                    name="params-multiple" class="mr-4 flex-grow-1">
+                                           name="params-multiple" class="mr-4 flex-grow-1">
                                 </plex-bool>
                                 <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido"
-                                    name="params-required" class="mr-4 flex-grow-1">
+                                           name="params-required" class="mr-4 flex-grow-1">
                                 </plex-bool>
                                 <plex-bool type="slide" [(ngModel)]="params.allowOther" label="Texto libre"
-                                    name="params-allowOther" class="mr-4 flex-grow-1">
+                                           name="params-allowOther" class="mr-4 flex-grow-1">
                                 </plex-bool>
                                 <plex-bool type="slide" [(ngModel)]="params.preload" label="Precarga los datos"
-                                    name="params-preload" class="mr-4 flex-grow-1">
+                                           name="params-preload" class="mr-4 flex-grow-1">
                                 </plex-bool>
 
                             </div>
@@ -122,7 +123,7 @@
                 <div *ngSwitchCase="'ObservacionesComponent'">
 
                     <plex-bool class="ml-2 mt-3" type="slide" [(ngModel)]="params.required" label="Requerido"
-                        name="params-required">
+                               name="params-required">
                     </plex-bool>
 
                 </div>
@@ -144,7 +145,7 @@
                         </plex-grid-item>
                         <plex-grid-item class="d-flex justify-content-center">
                             <plex-radio label="Tipo" [(ngModel)]="params.numericType" [data]="valorNumericoType"
-                                type="horizontal" name="params-type"></plex-radio> </plex-grid-item>
+                                        type="horizontal" name="params-type"></plex-radio> </plex-grid-item>
                     </plex-grid>
                 </div>
                 <div *ngSwitchCase="'ChecklistComponent'">
@@ -158,10 +159,10 @@
                         <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
                         </plex-bool>
                         <plex-text [(ngModel)]="params.allowOtherQuery" label="Otros Snomed Query"
-                            name="params-query-otros"></plex-text>
+                                   name="params-query-otros"></plex-text>
 
                         <plex-radio label="Horientacion" [(ngModel)]="params.type" [data]="checkOrientacionType"
-                            type="horizontal" name="params-type"></plex-radio>
+                                    type="horizontal" name="params-type"></plex-radio>
 
                     </div>
 
@@ -173,8 +174,8 @@
                         <plex-text [(ngModel)]="params.placeholder" label="Placeholder" name="params-placeholder">
                         </plex-text>
 
-                        <plex-select label="Aceptar" [data]="textoSimpleTypes" labelField="label" idField="id"
-                            [(ngModel)]="params.acceptType" name="params-acceptType">
+                        <plex-select label="Tipo de caracteres" [data]="textoSimpleTypes" labelField="label"
+                                     idField="id" [(ngModel)]="params.acceptType" name="params-acceptType">
                         </plex-select>
 
                         <plex-int [(ngModel)]="params.minLength" label="Cantidad mínima" name="params-minLength">
@@ -190,6 +191,18 @@
 
                 </div>
 
+                <div *ngSwitchCase="'ValorFechaComponent'">
+
+                    <plex-grid cols="2" type="auto" size="md">
+
+                        <plex-text [(ngModel)]="params.placeholder" label="Placeholder" name="params-placeholder">
+                        </plex-text>
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+                        </plex-bool>
+
+                    </plex-grid>
+
+                </div>
             </ng-container>
         </form>
 
@@ -197,23 +210,23 @@
             <section class="mt-2" *ngIf="tipoAtomo?.id=='SelectStaticoComponent'">
                 <plex-title titulo="Items de {{nombre}}" size="sm">
                     <plex-button name="nuevoItem" label="Agregar item" type="info" size="sm"
-                        (click)="showAgregarItem = true">
+                                 (click)="showAgregarItem = true">
                     </plex-button>
                 </plex-title>
                 <plex-wrapper justify *ngIf="showAgregarItem">
 
                     <plex-text columns="4" label="Id" placeholder="Ingrese el id." [(ngModel)]="nuevoItem.id" name="id"
-                        [required]="true">
+                               [required]="true">
                     </plex-text>
                     <plex-text columns="6" label="Label" placeholder="Ingrese el label." [(ngModel)]="nuevoItem.label"
-                        name="label" [required]="true">
+                               name="label" [required]="true">
                     </plex-text>
 
 
                     <plex-button class="pt-4 " name="confirmarItem" type="success" icon="check" size="md"
-                        tooltip=" Agregar" tooltipPosition="left" justify="end"
-                        [disabled]="!nuevoItem?.id?.trim().length || !nuevoItem?.label?.trim().length"
-                        (click)="addItem()">
+                                 tooltip=" Agregar" tooltipPosition="left" justify="end"
+                                 [disabled]="!nuevoItem?.id?.trim().length || !nuevoItem?.label?.trim().length"
+                                 (click)="addItem()">
                     </plex-button>
                 </plex-wrapper>
                 <plex-list *ngIf="items?.length">
