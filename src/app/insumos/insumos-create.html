@@ -7,7 +7,7 @@
             </plex-title>
         </header>
 
-        <plex-grid type="auto" size="md" [cols]="3">
+        <plex-grid type="auto" size="md" cols="3">
 
             <plex-text label="Nombre" [(ngModel)]="nombre" placeholder="Ingrese el nombre del insumo" name="nombre"
                 [required]="true" class="mx-2"></plex-text>
@@ -17,9 +17,9 @@
                 name="requiereEspecificacion"></plex-bool>
             <plex-bool *ngIf="tipo?.id === 'magistral'" [(ngModel)]="checkUnidadMedida" class="mx-2 pt-4" type=slide
                 label="Requiere unidad de medida" name="requiereUnidadMedida"></plex-bool>
-            <plex-select *ngIf="tipo?.id === 'magistral' && checkUnidadMedida" [(ngModel)]="unidadMedida" [data]="opcionesUnidadMedida"
-                name="unidadMedida" label="Unidad de medida:" [required]="true" labelField="nombre"
-                class="mx-2"></plex-select>
+            <plex-select *ngIf="tipo?.id === 'magistral' && checkUnidadMedida" [(ngModel)]="unidadMedida"
+                [data]="opcionesUnidadMedida" name="unidadMedida" label="Unidad de medida:" [required]="true"
+                labelField="nombre" class="mx-2"></plex-select>
             <plex-text label="Observaciones" [(ngModel)]="observaciones" name="observaciones" class="mx-2"></plex-text>
 
         </plex-grid>
@@ -29,7 +29,7 @@
                 [disabled]="!puedeAgregarCodigo"></plex-button>
         </plex-title>
 
-        <plex-grid *ngFor="let cod of codigos; let i = index" type="auto" size="md" [cols]="3">
+        <plex-grid *ngFor="let cod of codigos; let i = index" type="auto" size="md" cols="3">
             <plex-select [(ngModel)]="cod.fuente" [data]="fuentes" name="fuente-{{i}}" label="Fuente:" [required]="true"
                 labelField="nombre" class="mx-2"></plex-select>
             <plex-text label="Valor" [(ngModel)]="cod.valor" name="valor-{{i}}" [required]="true"

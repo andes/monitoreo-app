@@ -58,7 +58,13 @@ export class InsumosCreateComponent implements OnInit {
                 valor: c.valor
             }));
             this.tipo = this.opciones.find(o => o.id === this.insumoEdit.tipo);
-            this.unidadMedida = this.opcionesUnidadMedida.find(o => o.id === this.insumoEdit.unidadMedida);
+
+            this.unidadMedida = this.opcionesUnidadMedida.find(
+                o => o.id === this.insumoEdit.unidadMedida
+            );
+
+            this.checkUnidadMedida = !!this.insumoEdit.unidadMedida;
+
             this.check = this.insumoEdit.requiereEspecificacion;
             this.observaciones = this.insumoEdit.observaciones;
         }
@@ -106,7 +112,7 @@ export class InsumosCreateComponent implements OnInit {
                     codigo: codigosMapped,
                     tipo: this.tipo.id,
                     requiereEspecificacion: this.check,
-                    unidadMedida: this.unidadMedida.id,
+                    unidadMedida: this.unidadMedida?.id ?? null,
                     observaciones: this.observaciones
                 };
             } else {
@@ -115,7 +121,7 @@ export class InsumosCreateComponent implements OnInit {
                     codigo: codigosMapped,
                     tipo: this.tipo.id,
                     estado: 'activo',
-                    unidadMedida: this.unidadMedida.id,
+                    unidadMedida: this.unidadMedida?.id ?? null,
                     requiereEspecificacion: this.check,
                     observaciones: this.observaciones
                 };
