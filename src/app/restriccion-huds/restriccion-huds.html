@@ -1,0 +1,215 @@
+<plex-layout [main]="userSelected ? 8 : 12" [steps]="2">
+    <plex-layout-main>
+        <plex-title titulo="Restricciones a la HUDS" size="lg"></plex-title>
+
+        <plex-text [(ngModel)]="search" placeholder="Buscar por DNI, nombre o apellido">
+            <plex-icon name="account-search"></plex-icon>
+        </plex-text>
+
+        <ng-container>
+            <plex-table [columns]="columns" #table="plTable" *ngIf="usuarios.length">
+                <plex-table-columns>
+                </plex-table-columns>
+                <tr class="hover" [class.selected]="selected(user)" *ngFor="let user of usuarios"
+                    (click)="select(user)">
+                    <td>{{user.usuario}}</td>
+                    <td *ngIf="user.apellido; else sinDatos">
+                        {{user.apellido}}
+                    </td>
+                    <td *ngIf="user.nombre; else sinDatos">
+                        {{user.nombre}}
+                    </td>
+                    <ng-template #sinDatos>
+                        <td> SIN DATOS </td>
+                    </ng-template>
+                </tr>
+            </plex-table>
+            <plex-scroll (change)="loadUsuarios(true)"></plex-scroll>
+            <br>
+
+            <div *ngIf="usuarios.length === 0 && search && !loading" justify="center" type="full">
+                <plex-badge type="warning" size="block">
+                    El usuario que busca no se encuentra cargado en el sistema.
+                </plex-badge>
+            </div>
+
+        </ng-container>
+        <div *ngIf="!search && !loading" justify="center" class="mt-5">
+            <plex-label type="info" class="flex-column" icon="account-search" size="lg" direction="column"
+                        titulo="Comience filtrando por documento, nombre y/o apellido de usuario">
+            </plex-label>
+        </div>
+        <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
+    </plex-layout-main>
+
+    <plex-layout-sidebar type="invert">
+        <ng-container *ngIf="userSelected">
+
+            <plex-title titulo="Usuario" size="md">
+                <plex-button size="sm" type="danger" class="mr-1" icon="close" tooltip="Cerrar" tooltipPosition="left"
+                             (click)="cerrarSideBar()">
+                </plex-button>
+            </plex-title>
+            <plex-detail>
+                <plex-icon name="account" left type="info" size="xl"></plex-icon>
+                <plex-badge [type]="profesional.profesionalMatriculado ? 'info' : 'warning'" *ngIf="profesional">
+                    Profesional
+                    <span dato>{{profesional.formacionGrado.length > 0 ?
+                        profesional.formacionGrado[0].profesion.nombre +'
+                        '+(profesional.formacionGrado[0].matriculacion?.length?
+                        'MATRÍCULA N° '
+                        +profesional.formacionGrado[0].matriculacion[profesional.formacionGrado[0].matriculacion?.length
+                        -1].matriculaNumero:''):'NO MATRICULADO'}}</span>
+                </plex-badge>
+                <plex-badge *ngIf="profesional && !profesional.habilitado" type="danger">DESHABILITADO</plex-badge>
+                <div title>
+                    {{ userSelected.nombre }} {{ userSelected.apellido }}
+                </div>
+                <div subtitle>
+                    <plex-label *ngIf="userSelected.documento">{{ userSelected.documento }}
+                    </plex-label>
+                    <div *ngIf="profesional">
+                        <plex-label titulo="Profesión"
+                                    *ngIf="!profesional.profesionalMatriculado && profesional.matriculaExterna"
+                                    subtitulo="{{ profesional.profesionExterna?
+                                        profesional.profesionExterna.nombre + ' MAT. N° '+ profesional.matriculaExterna : profesional.matriculaExterna
+                                         }}">
+                        </plex-label>
+                    </div>
+                </div>
+            </plex-detail>
+
+            <plex-list [selectable]="false">
+                <plex-title titulo="{{ !showBuscarPaciente ? 'Pacientes restringidos' : 'Buscar paciente' }}" size="sm">
+                    <ng-container *ngIf="!showEditarPaciente && !agregarPaciente">
+                        <plex-button *ngIf="!showBuscarPaciente" size="sm" type="primary" class="mr-1"
+                                     icon="account-plus" tooltip="Agregar" tooltipPosition="left"
+                                     (click)="buscarPaciente()">
+                        </plex-button>
+                        <plex-button *ngIf="showBuscarPaciente" size="sm" type="danger" class="mr-1" icon="arrow-left"
+                                     tooltip="Volver" tooltipPosition="left" (click)="buscarPaciente()">
+                        </plex-button>
+                    </ng-container>
+                    <ng-container *ngIf="showEditarPaciente || agregarPaciente">
+                        <plex-button class="mr-1" [disabled]="!observaciones" icon="check" tooltip="Guardar"
+                                     type="success" size="sm" (click)="guardar(pacienteSelected)">
+                        </plex-button>
+                        <plex-button icon="arrow-left" tooltip="Volver" type="danger" size="sm" (click)="onCancelar()">
+                        </plex-button>
+                    </ng-container>
+                </plex-title>
+                <ng-container
+                              *ngIf="restringidos.length && !showBuscarPaciente && !showEditarPaciente && !pacienteSelected">
+                    <plex-item *ngFor="let paciente of restringidos; let i = index">
+                        <plex-label titulo="{{ paciente | nombre }}" subtitulo="{{ paciente.documento}}"></plex-label>
+                        <plex-label titulo="{{ paciente | edad }}" subtitulo="{{ paciente.fechaNacimiento | fecha }}">
+                        </plex-label>
+                        <plex-badge type="info">{{ paciente.genero }}
+                        </plex-badge>
+                        <plex-badge type="" class=""
+                                    [ngClass]="{'text-success' : paciente.estado === 'validado' , 'text-warning' : paciente.estado === 'temporal'} ">
+                            {{ paciente.estado || 'S/D' }}
+                        </plex-badge>
+                        <plex-badge *ngIf="paciente.fechaFallecimiento" type="danger">Fallecido:
+                            {{ paciente.fechaFallecimiento | fecha}}
+                        </plex-badge>
+                        <plex-label>
+
+                        </plex-label>
+                        <plex-button size="sm" type="warning" class="ml-1" icon="pencil" tooltip="Editar"
+                                     tooltipPosition="top" (click)="editar(i)">
+                        </plex-button>
+                        <plex-button size="sm" type="danger" class="ml-1" icon="delete" tooltip="Quitar"
+                                     tooltipPosition="top" (click)="eliminar(i)">
+                        </plex-button>
+                    </plex-item>
+                </ng-container>
+                <ng-container *ngIf="!pacienteSelected && restringidos.length === 0 && !showBuscarPaciente">
+                    <plex-label titulo="El usuario no presenta pacientes restringidos." icon="informacion"
+                                type="warning"
+                                subtitulo="Para agregar un paciente seleccione el botón azul de 'Agregar'"></plex-label>
+                </ng-container>
+            </plex-list>
+        </ng-container>
+        <ng-container *ngIf="showBuscarPaciente">
+            <app-paciente-buscar (searchStart)="searchStart()" (searchEnd)="searchEnd($event.pacientes)"
+                                 (searchClear)="onSearchClear()">
+            </app-paciente-buscar>
+            <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
+            <ng-container *ngIf="resultadoBusqueda && resultadoBusqueda.length">
+                <app-paciente-listado #listado [pacientes]="resultadoBusqueda" (selected)="onSelect($event)">
+                </app-paciente-listado>
+                <plex-scroll (change)="listado.onScroll()"></plex-scroll>
+            </ng-container>
+            <div *ngIf="resultadoBusqueda && !resultadoBusqueda.length && !loading" justify="center" type="full">
+                <plex-badge type="warning" size="block">
+                    El paciente que busca no se encuentra cargado en el sistema.
+                </plex-badge>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="pacienteSelected && (showEditarPaciente || agregarPaciente)">
+            <plex-list [selectable]="false">
+                <plex-item>
+                    <plex-label titulo="{{ pacienteSelected | nombre }}"
+                                subtitulo="{{ pacienteSelected.documento}}"></plex-label>
+                    <plex-label titulo="{{ pacienteSelected | edad }}"
+                                subtitulo="{{ pacienteSelected.fechaNacimiento | fecha }}">
+                    </plex-label>
+                    <plex-badge type="info">{{ pacienteSelected.genero }}
+                    </plex-badge>
+                    <plex-badge type="" class=""
+                                [ngClass]="{'text-success' : pacienteSelected.estado === 'validado' , 'text-warning' : pacienteSelected.estado === 'temporal'} ">
+                        {{ pacienteSelected.estado || 'S/D' }}
+                    </plex-badge>
+                    <plex-badge *ngIf="pacienteSelected.fechaFallecimiento" type="danger">Fallecido:
+                        {{ pacienteSelected.fechaFallecimiento | fecha}}
+                    </plex-badge>
+                </plex-item>
+
+                <plex-text [(ngModel)]="observaciones" name='observaciones' label="Observaciones"
+                           placeholder="Ingrese una observación" [required]="true">
+                </plex-text>
+                <br>
+
+            </plex-list>
+            <plex-list [selectable]="false">
+                <plex-title titulo="Documentos" size="sm">
+                    <input type="file" (change)="changeListener($event)" #upload style="display:none;">
+                    <plex-button type="primary" icon="upload" size="sm" tooltip="Adjuntar archivo"
+                                 tooltipPosition="left" class="mr-1" (click)="upload.click()">
+                    </plex-button>
+                </plex-title>
+
+                <plex-label *ngIf="archivos.length === 0" titulo="El paciente no presenta documentos." type="warning"
+                            subtitulo="Para insertar un documento, seleccione el botón azul 'Adjuntar archivo'."
+                            icon="informacion" size="md">
+                </plex-label>
+
+                <plex-grid size="md" type="auto" *ngIf="files?.length">
+                    <plex-card *ngFor="let archivo of files; let i = index">
+                        <img [src]="archivo.url" alt="" *ngIf="archivo.isImage" (click)="open(i)" width="100px">
+                        <plex-label *ngIf="archivo.isImage && archivo.nombre" [titulo]="archivo.nombre"
+                                    direction="column" size="sm">
+                        </plex-label>
+                        <ng-container *ngIf="!archivo.isImage">
+                            <plex-label size="lg" type="info" [titulo]="archivo.ext.toLocaleUpperCase()"
+                                        [subtitulo]="archivo.nombre || null" direction="column" (click)="open(i)">
+                                <plex-icon size="xl" name="file" type="info"></plex-icon>
+                            </plex-label>
+                        </ng-container>
+                        <plex-button *ngIf="!archivo.isImage" type="success" size="sm" icon="download"
+                                     (click)="openUrl(archivo)" tooltip="Bajar archivo" tooltipPosition="top">
+                        </plex-button>
+                        <plex-button *ngIf="archivo.isImage" type="info" size="sm" icon="eye" (click)="open(i)"
+                                     tooltip="Abrir archivo">
+                        </plex-button>
+                        <plex-button *ngIf="!readOnly" type="danger" size="sm" icon="close"
+                                     (click)="removeArchivo(archivo)" tooltip="Eliminar"></plex-button>
+                    </plex-card>
+                </plex-grid>
+
+
+            </plex-list>
+        </ng-container>
+    </plex-layout-sidebar>
+</plex-layout>
