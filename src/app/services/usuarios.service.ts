@@ -44,6 +44,10 @@ export class UsuariosHttp {
         return this.server.patch(`${this.url}/${id}`, body);
     }
 
+    updatePacienteRestringido(usuario, pacienteRestringido): Observable<any> {
+        return this.server.patch(`${this.url}/${usuario}/pacienteRestringido`, { pacienteRestringido });
+    }
+
     delete(id): Observable<any> {
         return this.server.delete(`${this.url}/${id}`);
     }

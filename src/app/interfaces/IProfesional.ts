@@ -1,6 +1,6 @@
 import { IUbicacion } from './IUbicacion';
 // import { IMatricula } from './IMatricula';
-import { Sexo, Genero, EstadoCivil, tipoComunicacion } from '../shared/enumerados';
+import { Sexo, Genero, EstadoCivil, tipoComunicacion } from '../../utils/enumerados';
 
 export interface IProfesional {
     id: String;

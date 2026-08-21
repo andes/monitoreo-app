@@ -86,7 +86,7 @@ export class AppComponent {
         }
 
         if (this.auth.check('monitoreo:restriccionHuds')) {
-            this.menuList.push({ label: 'Restricciones a la HUDS', icon: 'magnify', route: '/restriccion-huds' });
+            this.menuList.push({ label: 'Restricciones a la HUDS', icon: 'account-off', route: '/restriccion-huds' });
         }
 
         this.menuList.push({ label: 'Cerrar Sesión', icon: 'logout', route: '/login/logout' });

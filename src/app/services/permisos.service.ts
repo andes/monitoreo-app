@@ -14,12 +14,6 @@ export class PermisosService {
         return this.server.get(this.permisosUrl, { params });
     }
 
-    // organizaciones(): Observable<any> {
-    //     return this.server.get('/modules/gestor-usuarios/organizaciones', {}).pipe(
-    //         cacheStorage({ key: 'organizaciones-permisos' })
-    //     );
-    // }
-
     organizaciones(): Observable<any> {
         return this.server.get('/modules/gestor-usuarios/organizaciones', {}).pipe(
             cache()

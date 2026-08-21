@@ -1,7 +1,7 @@
 import { IPacienteRelacion } from './IPacienteRelacion.inteface';
 import { IContacto } from './IContacto';
 import { IDireccion } from './IDireccion';
-import { EstadoCivil } from '../shared/enumerados';
+import { EstadoCivil } from '../../utils/enumerados';
 import { IUbicacion } from './IUbicacion';
 import { IObraSocial } from './IObraSocial';
 import { ICreatedBy } from './ICreatedBy';
@@ -100,7 +100,12 @@ export interface IPacienteBasico {
 export interface IPacienteRestringido {
     idPaciente: string;
     observaciones: string;
-    createdBy: any;
-    createdAt: Date;
-    archivos?: any[];
+    archivos: Array<{
+        id: string;
+        ext: string;
+    }>;
+    createdBy?: any;
+    createdAt?: Date;
+    updatedBy?: any;
+    updatedAt?: Date;
 }

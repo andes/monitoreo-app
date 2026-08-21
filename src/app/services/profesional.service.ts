@@ -2,7 +2,6 @@ import { BehaviorSubject, combineLatest, EMPTY, Observable } from 'rxjs';
 import { IProfesional } from './../interfaces/IProfesional';
 import { Injectable } from '@angular/core';
 import { Server } from '@andes/shared';
-// import { Options } from 'projects/shared/src/lib/server/options';
 import { auditTime, map, switchMap } from 'rxjs/operators';
 
 @Injectable()
@@ -92,28 +91,4 @@ export class ProfesionalService {
     getFoto(params: any): Observable<any> {
         return this.server.get(this.profesionalUrl + '/foto/', { params: params });
     }
-
-    /**
-     * Metodo post. Inserta un nuevo profesional
-     * @param {IProfesional} profesional
-     */
-    // post(profesional: IProfesional): Observable<IProfesional> {
-    //     return this.server.post(this.profesionalUrl, profesional); // ...using post request
-    // }
-
-    // saveFirma(firma) {
-    //     return this.post(firma);
-    // }
-
-    // saveProfesional(profesionalModel: any) {
-    //     return profesionalModel.id ? this.server.patch(`${this.profesionalUrl}/${profesionalModel.id}`, profesionalModel) : this.server.post(this.profesionalUrl, { profesional: profesionalModel });
-    // }
-
-    // validarProfesional(body): Observable<any> {
-    //     return this.server.post(this.profesionalUrl + '/validar', body);
-    // }
-
-    // actualizarProfesional(body, options?: Options): Observable<any> {
-    //     return this.server.put(this.profesionalUrl + '/actualizar', body, options);
-    // }
 }

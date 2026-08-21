@@ -35,14 +35,10 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
 import { restriccionHudsComponent } from './restriccion-huds/restriccion-huds';
 import { UsuariosHttp } from './services/usuarios.service';
 import { PermisosService } from './services/permisos.service';
-import { PacienteBuscarComponent } from './restriccion-huds/paciente-buscar.component';
-import { PacienteListadoComponent } from './restriccion-huds/paciente-listado.component';
-import { PacienteBuscarService } from './services/paciente-buscar.service';
-import { PacienteCacheService } from './services/pacienteCache.service';
 import { PacienteService } from './services/paciente.service';
 import { AdjuntosService } from './services/adjuntos.service';
-import { GaleriaArchivosComponent } from './shared/galeria-archivos.component';
 import { ProfesionalService } from './services/profesional.service';
+import { PacienteModule } from './shared/paciente/paciente.module';
 
 @NgModule({
     declarations: [
@@ -58,10 +54,7 @@ import { ProfesionalService } from './services/profesional.service';
         EstadoFuentesAutenticasComponent,
         InsumosComponent,
         InsumosCreateComponent,
-        restriccionHudsComponent,
-        PacienteBuscarComponent,
-        PacienteListadoComponent,
-        GaleriaArchivosComponent
+        restriccionHudsComponent
     ],
     imports: [
         BrowserModule,
@@ -73,7 +66,8 @@ import { ProfesionalService } from './services/profesional.service';
         InfiniteScrollModule,
         ModulosModule,
         NoopAnimationsModule,
-        SharedModule
+        SharedModule,
+        PacienteModule
     ],
     providers: [
         Server,
@@ -91,9 +85,7 @@ import { ProfesionalService } from './services/profesional.service';
         FuentesAutenticasService,
         UsuariosHttp,
         PermisosService,
-        PacienteCacheService,
         PacienteService,
-        PacienteBuscarService,
         AdjuntosService,
         ProfesionalService
     ],
