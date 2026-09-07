@@ -32,6 +32,12 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         { id: 'horizontal', label: 'Horizontal' }
     ];
 
+    valorFechaType = [
+        { id: 'date', label: 'Solo Fecha' },
+        { id: 'time', label: 'Solo Hora' },
+        { id: 'datetime', label: 'Fecha y Hora' }
+    ];
+
     tipoAtomos = [
         { id: 'SelectOrganizacionComponent', nombre: 'Select Organizaciones' },
         { id: 'SelectProfesionalComponent', nombre: 'Select Profesionales' },
@@ -78,6 +84,11 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
                 this.elemento = this.elementosRup.find(e => e.id === this.id);
                 this.conceptos = [...(this.elemento.conceptos || [])];
                 this.params = this.elemento.params ? { ...this.elemento.params } : {};
+                this.params.title = this.params.title || this.params.label || '';
+                delete this.params.label;
+                if (this.params.type && typeof this.params.type === 'object') {
+                    this.params.type = this.params.type.id;
+                }
                 this.items = this.params.items ? [...this.params.items] : [];
                 this.tipoAtomo = this.tipoAtomos.find(item => item.id === this.elemento.componente);
                 this.nombre = this.elemento.nombre;
@@ -151,6 +162,17 @@ export class RUPAtomoCreateUpdateComponent implements OnInit {
         this.elemento.conceptos = [...this.conceptos];
         this.elemento.componente = this.tipoAtomo.id;
         this.elemento.nombre = this.nombre || this.conceptos[0]?.term || 'Átomo sin nombre';
+        if (this.tipoAtomo?.id === 'ValorFechaComponent') {
+            if (typeof this.params.type === 'object' && this.params.type?.id) {
+                this.params.type = this.params.type.id;
+            }
+            if (!this.params.type) {
+                this.params.type = 'date';
+            }
+        } else if (this.tipoAtomo?.id !== 'ChecklistComponent') {
+            delete this.params.type;
+        }
+
         this.elemento.params = { ...this.params };
 
         if (this.items && this.items.length) {
