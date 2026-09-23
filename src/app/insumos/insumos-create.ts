@@ -22,6 +22,14 @@ export class InsumosCreateComponent implements OnInit {
         { id: 'magistral', nombre: 'Magistral' }
     ];
 
+    public unidadMedida = null;
+
+    public opcionesUnidadMedida = [
+        { id: 'ml', nombre: 'ml (mililitros)' },
+        { id: 'grs', nombre: 'gr (gramos)' },
+        { id: 'cápsulas', nombre: 'cápsulas' }
+    ];
+
     public fuentes = [
         { id: 'SIFAHO', nombre: 'SIFAHO' },
         { id: 'SNOMED', nombre: 'SNOMED' }
@@ -29,6 +37,7 @@ export class InsumosCreateComponent implements OnInit {
 
     public nombre = null;
     public check = false;
+    public checkUnidadMedida = false;
     public observaciones = null;
     public codigos: any[] = [{ fuente: null, valor: '' }];
 
@@ -49,6 +58,13 @@ export class InsumosCreateComponent implements OnInit {
                 valor: c.valor
             }));
             this.tipo = this.opciones.find(o => o.id === this.insumoEdit.tipo);
+
+            this.unidadMedida = this.opcionesUnidadMedida.find(
+                o => o.id === this.insumoEdit.unidadMedida
+            );
+
+            this.checkUnidadMedida = !!this.insumoEdit.unidadMedida;
+
             this.check = this.insumoEdit.requiereEspecificacion;
             this.observaciones = this.insumoEdit.observaciones;
         }
@@ -57,8 +73,19 @@ export class InsumosCreateComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    get faltaUnidadMedida(): boolean {
+        return this.tipo?.id === 'magistral' && this.checkUnidadMedida && !this.unidadMedida;
+    }
+
+    get puedeGuardar(): boolean {
+        return !!(this.nombre && this.tipo && this.codigos.every(c => c.fuente && c.valor) && !this.faltaUnidadMedida);
+    }
+
     get puedeAgregarCodigo(): boolean {
-        return this.codigos.length < 2 && this.codigos.every(cod => cod.fuente && cod.valor);
+        const noDuplicados = this.codigos.every((cod, i) =>
+            this.codigos.findIndex(c => c.fuente?.id === cod.fuente?.id && c.valor === cod.valor) === i
+        );
+        return this.codigos.every(cod => cod.fuente && cod.valor) && noDuplicados;
     }
 
     volver() {
@@ -66,9 +93,7 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     addCodigo() {
-        if (this.codigos.length < this.fuentes.length) {
-            this.codigos.push({ fuente: null, valor: '' });
-        }
+        this.codigos.push({ fuente: null, valor: '' });
     }
 
     removeCodigo(index) {
@@ -78,14 +103,13 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     save() {
-        const fuentesSeleccionadas = this.codigos.map(c => c.fuente?.id).filter(id => !!id);
-        const fuentesUnicas = new Set(fuentesSeleccionadas);
+
+        if (this.faltaUnidadMedida) {
+            this.plex.info('warning', 'Si requiere unidad de medida, debe seleccionar una unidad de medida');
+            return;
+        }
 
         if (this.nombre && this.tipo && this.codigos.every(c => c.fuente && c.valor)) {
-            if (fuentesSeleccionadas.length !== fuentesUnicas.size) {
-                this.plex.info('warning', 'No se permiten múltiples códigos para la misma fuente');
-                return;
-            }
 
             let insumo: IInsumo;
 
@@ -101,6 +125,7 @@ export class InsumosCreateComponent implements OnInit {
                     codigo: codigosMapped,
                     tipo: this.tipo.id,
                     requiereEspecificacion: this.check,
+                    unidadMedida: this.unidadMedida?.id ?? null,
                     observaciones: this.observaciones
                 };
             } else {
@@ -109,6 +134,7 @@ export class InsumosCreateComponent implements OnInit {
                     codigo: codigosMapped,
                     tipo: this.tipo.id,
                     estado: 'activo',
+                    unidadMedida: this.unidadMedida?.id ?? null,
                     requiereEspecificacion: this.check,
                     observaciones: this.observaciones
                 };

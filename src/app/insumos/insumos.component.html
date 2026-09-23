@@ -73,6 +73,8 @@
             <plex-label titulo="Especificación"
                 [subtitulo]="selectedInsumo.requiereEspecificacion ? 'Requiere especificación' : 'No requiere especificación'">
             </plex-label>
+            <plex-label *ngIf="selectedInsumo.unidadMedida" titulo="Unidad de medida"
+                [subtitulo]="selectedInsumo?.unidadMedida"></plex-label>
             <plex-label *ngIf="selectedInsumo.observaciones" titulo="Observaciones"
                 [subtitulo]="selectedInsumo.observaciones"></plex-label>
 
