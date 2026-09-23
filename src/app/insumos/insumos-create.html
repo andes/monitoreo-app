@@ -3,7 +3,8 @@
         <header>
             <plex-title [titulo]="title">
                 <plex-button label="VOLVER" type="danger" size=sm (click)="volver()" class="mr-1"></plex-button>
-                <plex-button label="GUARDAR" type="success" size=sm (click)="save()"></plex-button>
+                <plex-button label="GUARDAR" type="success" size=sm [disabled]="!puedeGuardar"
+                    (click)="save()"></plex-button>
             </plex-title>
         </header>
 

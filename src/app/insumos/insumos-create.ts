@@ -73,6 +73,14 @@ export class InsumosCreateComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    get faltaUnidadMedida(): boolean {
+        return this.tipo?.id === 'magistral' && this.checkUnidadMedida && !this.unidadMedida;
+    }
+
+    get puedeGuardar(): boolean {
+        return !!(this.nombre && this.tipo && this.codigos.every(c => c.fuente && c.valor) && !this.faltaUnidadMedida);
+    }
+
     get puedeAgregarCodigo(): boolean {
         const noDuplicados = this.codigos.every((cod, i) =>
             this.codigos.findIndex(c => c.fuente?.id === cod.fuente?.id && c.valor === cod.valor) === i
@@ -95,6 +103,11 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     save() {
+
+        if (this.faltaUnidadMedida) {
+            this.plex.info('warning', 'Si requiere unidad de medida, debe seleccionar una unidad de medida');
+            return;
+        }
 
         if (this.nombre && this.tipo && this.codigos.every(c => c.fuente && c.valor)) {
 
