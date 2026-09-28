@@ -1,0 +1,125 @@
+<plex-layout [main]="8">
+    <plex-layout-main>
+        <header>
+            <plex-title titulo="Listado de Prescripciones"></plex-title>
+        </header>
+
+        <div class="buscar-paciente">
+            <plex-text label="Buscar paciente" name="buscarPaciente" [(ngModel)]="busquedaPaciente"></plex-text>
+            <plex-button label="CAMBIAR PACIENTE" type="info" size="md"></plex-button>
+        </div> 
+
+        <plex-list>
+        <plex-item>   
+            <plex-label titulo="Lopez, Margarita" subtitulo="37951753"></plex-label>
+            <plex-label titulo="Sexo" subtitulo="Femenino"></plex-label>
+            <plex-label titulo="Fecha de nacimiento" subtitulo="05/09/1975"></plex-label>
+            <plex-label titulo="Edad" subtitulo="50 años"></plex-label>
+            <plex-label titulo="localidad" subtitulo="Neuquén"></plex-label>
+            <plex-label titulo="Financiador" subtitulo="SUMAR"></plex-label>
+        </plex-item>
+        </plex-list>
+
+        <plex-wrapper>
+            <plex-datetime label="Fecha desde" type="date" name="fechaDesde"[(ngModel)]="filtros.fechaDesde"></plex-datetime>
+            <plex-datetime label="Fecha hasta" type="date" name="fechaHasta"[(ngModel)]="filtros.fechaHasta"></plex-datetime>
+            <plex-text label="Organización" name="organizacion" class="grow-2" [(ngModel)]="organizacion"></plex-text>
+        
+            <small class="hint-rango grow-full text-info">
+                El rango de fechas admite consultas de hasta 6 meses.
+            </small>
+
+    <div collapse>
+            <plex-text label="Prescripción" name="prescripcion" class="grow-2"[(ngModel)]="prescripcion"></plex-text>
+
+            <div class="campo-tipo grow-2">
+            <label class="form-control-label">Tipo de prescripción</label>
+            <plex-badge size="sm" class="badge-chip-des">Medicamentos</plex-badge>
+            <plex-badge size="sm" class="badge-chip-des">Magistrales</plex-badge>
+            <plex-badge size="sm" class="badge-chip-des">Nutriterápicos</plex-badge>
+            <plex-badge size="sm" class="badge-chip-des">Dispositivos médicos</plex-badge>
+            </div>
+
+            <plex-select label="Estado de la prescripción" name="estado"[data]="estados" [(ngModel)]="filtros.estado"></plex-select>
+
+        <div class="campo-tipo grow-2">
+            <label class="form-control-label">Sistema de origen</label>
+            <plex-badge size="sm" class="badge-chip-des">ANDES</plex-badge>
+            <plex-badge size="sm" class="badge-chip-des">RECETAR</plex-badge>
+            </div>
+
+    </div>
+        </plex-wrapper>
+
+
+        <plex-title titulo="RESULTADOS"></plex-title>
+        <p>Prescripciones del paciente DNI 36789456, agrupadas por medicamento.</p>
+
+<section class="receta-card">
+    <!-- <div class="d-flex justify-content-between align-items-center p-2">
+        <div class="d-flex align-items-center">
+            <plex-icon name="pildoras" size="md" class="mr-2"></plex-icon>
+            <span class="font-weight-bold mr-2">
+                Losartán potásico 100 mg comprimido oral de liberación prolongada</span>
+            <plex-badge size="sm" class="badge-chip">Medicamentos</plex-badge>
+        </div>
+        <plex-badge size="sm" type="info">Tratamiento prolongado - 6 meses</plex-badge>
+    </div> -->
+
+
+
+    <div class="Receta-header d-flex justify-content-between align-items-center p-2">
+    <div class="d-flex align-items-center">
+        <plex-icon name="pildoras" size="md" class="mr-2"></plex-icon>
+        <span class="font-weight-bold mr-2">
+            Losartán potásico 100 mg comprimido oral de liberación prolongada</span>
+        <plex-badge size="sm" class="badge-chip">Medicamentos</plex-badge>
+    </div>
+    <plex-badge size="sm" type="info" class="badge-nowrap">Tratamiento prolongado - 6 meses</plex-badge>
+</div>
+    <plex-table>
+        <tr>
+            <td>20/07/2026</td>
+            <td><plex-badge size="sm" type="success">VIGENTE</plex-badge></td>
+            <td>HOSPITAL PROVINCIAL NEUQUEN - <br>DR.EDUARDO CASTRO RENDON</td>
+            <td>ANDES</td>
+        </tr>
+    </plex-table>
+    
+<div class="Receta-pie">
+    <span class="Receta-pie-header d-flex align-items-center">
+        Ver recetas anteriores
+        <plex-icon name="chevron-down" size="sm" class="ml-1"></plex-icon>
+    </span>
+</div>
+</section>
+
+    </plex-layout-main>
+
+    <!-- SIDEBAR -->
+<plex-layout-sidebar type="invert">
+
+    <plex-title titulo="DETALLE DE PRESCRIPCIÓN" size="lg">
+<plex-button label="DESCARGAR PDF"type="info" size="sm" class="ml-1"></plex-button>
+<plex-button type="danger" tooltip="Cerrar" icon="close" size="sm" class="ml-1"></plex-button>
+</plex-title>
+
+<plex-detail size="md">
+    <plex-icon class= "pildoras-listado" type="" name="pildoras"></plex-icon>
+    <plex-badge  type="info" size="sm">RECETA 1 DE 6 TRATAMIENTO PROLONGADO</plex-badge>
+    <plex-badge  size="sm">VIGENTE</plex-badge>
+    <div title>Losartán potásico 100 mg comprimido oral de liberación prolongada</div>
+    <plex-label titulo="Paciente" subtitulo="LO VOTRICO, SERGIO DANIEL"></plex-label>
+    <plex-label titulo="Dni" subtitulo="34567890"></plex-label>
+    <plex-label titulo="Diagnóstico" subtitulo="Hipertensión arterial esencial"></plex-label>
+    <plex-label titulo="Profesional" subtitulo="Lopez, Alberto Angel"></plex-label>
+    <plex-label titulo="Efector" subtitulo="HOSPITAL PROVINCIAL NEUQUEN-DR.EDUARDO CASTRO RENDON"></plex-label>
+    <plex-label titulo="Sistema" subtitulo="ANDES"></plex-label>
+    <plex-label titulo="Fecha de prescripción" subtitulo="20/06/2026"></plex-label>
+    <plex-label titulo="Fecha de vigencia" subtitulo="20/06/2026"></plex-label>
+    <plex-label titulo="Dosis" subtitulo="100 mg"></plex-label>
+    <plex-label titulo="Cantidad prescripta" subtitulo="1 envase"></plex-label>
+    <plex-label titulo="Observaciones" subtitulo="Continuar tratamiento habitual. Control de tensión arterial en 30 días."></plex-label>
+</plex-detail>
+</plex-layout-sidebar>
+</plex-layout>

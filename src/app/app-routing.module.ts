@@ -10,6 +10,7 @@ import { WebhookLogComponent } from './webhook-log/webhook-log.component';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
 import { InsumosComponent } from './insumos/insumos.component';
 import { InsumosCreateComponent } from './insumos/insumos-create';
+import { VisualizadorRecetasComponent } from './visualizador-recetas/visualizador-recetas.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const appRoutes: Routes = [
     { path: 'fuentes-autenticas', component: EstadoFuentesAutenticasComponent, canActivate: [RoutingGuard] },
     { path: 'insumos', component: InsumosComponent, canActivate: [RoutingGuard] },
     { path: 'insumos-create', component: InsumosCreateComponent, canActivate: [RoutingGuard] },
+    { path: 'visualizador-recetas', component: VisualizadorRecetasComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
