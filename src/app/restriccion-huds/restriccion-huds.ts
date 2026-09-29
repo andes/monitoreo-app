@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ChangeDetectorRef, ElementRef, ViewChild, SimpleChange } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { Plex } from '@andes/plex';
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
@@ -17,9 +17,10 @@ const limit = 50;
 @Component({
     selector: 'app-restriccion-huds',
     templateUrl: 'restriccion-huds.html',
+    styleUrls: ['restriccion-huds.scss'],
 })
 
-export class restriccionHudsComponent implements OnInit, OnChanges {
+export class restriccionHudsComponent implements OnInit {
 
     @ViewChild('upload', { static: false }) uploadElement: ElementRef;
 
@@ -56,28 +57,28 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
     public restringidos: IPaciente[] = [];
     public usuarios = [];
     private skip = 0;
+    public finScroll = false;
     public loading = false;
     public resultadoBusqueda = null;
     public showBuscarPaciente = false;
     public showEditarPaciente = false;
     public agregarPaciente = false;
-    public userData$;
     public userSelected: any;
     public pacienteSelected: any;
     public observaciones: string;
-    public errorExt = false;
     public archivos = [];
     public files = [];
     private filesAdd = [];
     private filesDel = [];
-    public editable;
-    public email;
     public columns = [
         { key: 'usuario', label: 'Usuario', sorteable: false },
         { key: 'apellido', label: 'Apellido', sorteable: false },
         { key: 'nombre', label: 'Nombre/s', sorteable: false }
     ];
     public profesional: IProfesional;
+    public pacienteAbierto: string = null;
+    public documentosPaciente: { [id: string]: any[] } = {};
+    public observacionesPaciente: { [id: string]: string } = {};
 
     indexEdit = -1;
     extensions = ['pdf', 'doc', 'docx', 'bmp', 'jpg', 'jpeg', 'gif', 'png', 'tif', 'tiff', 'raw'];
@@ -95,7 +96,12 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
     }
 
     loadUsuarios(concatenar: boolean = false) {
-        if (!concatenar) { this.skip = 0; }
+        if (!concatenar) {
+            this.skip = 0;
+            this.finScroll = false;
+        } else if (this.finScroll || this.loading) {
+            return;
+        }
 
         if (!this.search) {
             this.usuarios = [];
@@ -114,41 +120,28 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
         this.usuariosService.find(query).subscribe(
             (usuarios: any[]) => {
                 this.loading = false;
-                this.userSelected = null;
+                if (!concatenar) {
+                    this.userSelected = null;
+                }
                 if (concatenar) {
                     if (usuarios.length > 0) {
                         this.usuarios = this.usuarios.concat(usuarios);
                         this.skip += limit;
                     }
+                    this.finScroll = !(usuarios.length > 0);
                 } else {
                     this.usuarios = usuarios;
                     this.skip += limit;
+                    this.finScroll = false;
                 }
             },
             (err) => {
                 this.loading = false;
                 this.usuarios = [];
                 this.skip = 0;
+                this.finScroll = false;
             }
         );
-    }
-
-    ngOnChanges(changes: { [key: string]: SimpleChange }) {
-        this.getProfesional(this.userSelected.documento).subscribe((profesional) => {
-            const permission = this.auth.getPermissions('usuarios:?');
-            const profesionalHabilitado = profesional.find(prof => prof.habilitado === true);
-            this.profesional = profesionalHabilitado || profesional[0];
-            this.editable = (permission.includes('cuenta') || permission.includes('*')) && !!profesional[0]?.id;
-        });
-
-        this.email = this.userSelected.email;
-    }
-
-    getProfesional(documento) {
-        return this.profesionalService.get({
-            documento,
-            fields: 'id habilitado documento nombre apellido profesionalMatriculado formacionGrado matriculaExterna profesionExterna'
-        });
     }
 
     select(user) {
@@ -156,10 +149,15 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
         this.restringidos = [];
         this.pacienteRestringido = [];
         this.showEditarPaciente = false;
+        this.pacienteAbierto = null;
+        this.documentosPaciente = {};
+        this.observacionesPaciente = {};
         if (this.userSelected.pacienteRestringido) {
             for (let i = 0; i < this.userSelected.pacienteRestringido.length; i++) {
-                this.pacienteRestringido.push(this.userSelected.pacienteRestringido[i]);
-                this.addPaciente(this.userSelected.pacienteRestringido[i].idPaciente);
+                const restriccion = this.userSelected.pacienteRestringido[i];
+                this.pacienteRestringido.push(restriccion);
+                this.observacionesPaciente[restriccion.idPaciente] = restriccion.observaciones;
+                this.addPaciente(restriccion.idPaciente);
             }
         }
         const params = { documento: user.documento };
@@ -233,6 +231,7 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
         } else {
             this.pacienteRestringido.push(pteRestr);
         }
+        this.observacionesPaciente[paciente.id] = this.observaciones;
         this.guardarLista(paciente);
     }
 
@@ -278,20 +277,42 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
         this.filesDel = [];
     }
 
-    eliminar(index) {
-        const restringido = this.pacienteRestringido[index];
+    eliminar(paciente: IPaciente) {
+        const restIndex = this.pacienteRestringido.findIndex(obj => obj.idPaciente === paciente.id);
+        const restringido = this.pacienteRestringido[restIndex];
         this.plex.confirm('¿Desea eliminar el paciente de la restricción?').then((resultado) => {
             if (resultado) {
                 this.filesDel = restringido?.archivos ? restringido.archivos : [];
-                this.pacienteRestringido.splice(index, 1);
+                this.pacienteRestringido.splice(restIndex, 1);
                 this.usuariosService.updatePacienteRestringido(this.userSelected.usuario, this.pacienteRestringido).subscribe(() => {
                     this.eliminarQuitados();
                     this.showBuscarPaciente = false;
                     this.plex.toast('success', 'El paciente se eliminó correctamente.');
                 });
-                this.restringidos.splice(index, 1);
+                const pIndex = this.restringidos.findIndex(obj => obj.id === paciente.id);
+                if (pIndex > -1) {
+                    this.restringidos.splice(pIndex, 1);
+                }
+                delete this.observacionesPaciente[paciente.id];
+                delete this.documentosPaciente[paciente.id];
+                if (this.pacienteAbierto === paciente.id) {
+                    this.pacienteAbierto = null;
+                }
             }
         });
+    }
+
+    getRestriccion(paciente: IPaciente): IPacienteRestringido {
+        return this.pacienteRestringido.find(obj => obj.idPaciente === paciente.id);
+    }
+
+    onTogglePaciente(paciente: IPaciente, open: boolean) {
+        this.pacienteAbierto = open ? paciente.id : null;
+        if (open) {
+            const restriccion = this.getRestriccion(paciente);
+            this.observacionesPaciente[paciente.id] = restriccion ? restriccion.observaciones : null;
+            this.documentosPaciente[paciente.id] = this.mapArchivos(restriccion ? restriccion.archivos : []);
+        }
     }
 
     buscarPaciente() {
@@ -319,6 +340,7 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
         this.agregarPaciente = false;
         this.pacienteSelected = null;
         this.indexEdit = -1;
+        this.pacienteAbierto = null;
     }
 
     backFilesDel() {
@@ -333,10 +355,8 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
 
     readThis(inputValue: any): void {
         const ext = this.fileExtension(inputValue.value);
-        this.errorExt = false;
         if (!this.extensions.find((item) => item === ext.toLowerCase())) {
             this.uploadElement.nativeElement.value = '';
-            this.errorExt = true;
             this.plex.toast('danger', 'Tipo de archivo inválido. Los tipos de archivos permitidos son: ' + this.extensions.join(', '), 'Error', 5000);
             return;
         }
@@ -369,8 +389,12 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
     }
 
     getArchivos() {
-        if (this.archivos) {
-            return this.archivos.map((doc: any) => {
+        return this.mapArchivos(this.archivos);
+    }
+
+    mapArchivos(archivos: any[]) {
+        if (archivos && archivos.length) {
+            return archivos.map((doc: any) => {
                 doc = { ...doc };
                 doc.url = this.createUrl(doc);
                 doc.isImage = this.esImagen(doc.ext);
@@ -404,6 +428,11 @@ export class restriccionHudsComponent implements OnInit, OnChanges {
 
     open(index: number) {
         this.plexVisualizador.open(this.files, index);
+    }
+
+    openPaciente(paciente: IPaciente, index: number) {
+        const archivos = this.documentosPaciente[paciente.id] || [];
+        this.plexVisualizador.open(archivos, index);
     }
 
 }

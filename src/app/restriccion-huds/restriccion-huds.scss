@@ -1,0 +1,49 @@
+:host ::ng-deep plex-layout-main .plex-box-content {
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep plex-table {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+:host ::ng-deep plex-table > section {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.titulo-paciente {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1.2fr 1.8fr auto;
+    align-items: center;
+    column-gap: 1rem;
+    width: 100%;
+
+    .col-paciente,
+    .col-edad,
+    .col-observaciones {
+        min-width: 0;
+    }
+
+    .col-observaciones {
+        word-break: break-word;
+    }
+
+    .col-badges {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .col-acciones {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.25rem;
+    }
+}
