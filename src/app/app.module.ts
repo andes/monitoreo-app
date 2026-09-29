@@ -33,6 +33,7 @@ import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-
 import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
 import { InsumosComponent } from './insumos/insumos.component';
 import { InsumosCreateComponent } from './insumos/insumos-create';
+import { VisualizadorRecetasComponent } from './visualizador-recetas/visualizador-recetas.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -46,7 +47,8 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
         BuscadorSnomedComponent,
         EstadoFuentesAutenticasComponent,
         InsumosComponent,
-        InsumosCreateComponent
+        InsumosCreateComponent,
+        VisualizadorRecetasComponent
     ],
     imports: [
         BrowserModule,
