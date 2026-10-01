@@ -9,8 +9,7 @@
         <plex-table [columns]="columns" *ngIf="usuarios.length" (scroll)="loadUsuarios(true)">
             <plex-table-columns>
             </plex-table-columns>
-            <tr class="hover" [class.selected]="selected(user)" *ngFor="let user of usuarios"
-                (click)="select(user)">
+            <tr class="hover" [class.selected]="selected(user)" *ngFor="let user of usuarios" (click)="select(user)">
                 <td>{{user.usuario}}</td>
                 <td *ngIf="user.apellido; else sinDatos">
                     {{user.apellido}}
@@ -100,16 +99,7 @@
                                     [active]="pacienteAbierto === paciente.id"
                                     (toggle)="onTogglePaciente(paciente, $event)">
                             <div plex-accordion-title class="titulo-paciente">
-                                <div class="col-paciente">
-                                    <plex-label titulo="{{ paciente | nombre }}"
-                                                subtitulo="{{ paciente.documento }}"></plex-label>
-                                </div>
-                                <div class="col-edad">
-                                    <plex-label titulo="{{ paciente | edad }}"
-                                                subtitulo="{{ paciente.fechaNacimiento | fecha }}">
-                                    </plex-label>
-                                </div>
-                                <div class="col-badges">
+                                <div class="fila-badges">
                                     <plex-badge type="info">{{ paciente.genero }}
                                     </plex-badge>
                                     <plex-badge type=""
@@ -120,26 +110,39 @@
                                         {{ paciente.fechaFallecimiento | fecha}}
                                     </plex-badge>
                                 </div>
-                                <div class="col-observaciones">
-                                    <plex-label titulo="Observaciones"
-                                                [subtitulo]="observacionesPaciente[paciente.id] || 'Sin observaciones'">
-                                    </plex-label>
-                                </div>
-                                <div class="col-acciones">
-                                    <plex-button size="sm" type="warning" class="ml-1" icon="pencil" tooltip="Editar"
-                                                 tooltipPosition="top" (click)="$event.stopPropagation(); editar(i)">
-                                    </plex-button>
-                                    <plex-button size="sm" type="danger" class="ml-1" icon="delete" tooltip="Quitar"
-                                                 tooltipPosition="top"
-                                                 (click)="$event.stopPropagation(); eliminar(paciente)">
-                                    </plex-button>
+                                <div class="fila-datos">
+                                    <div class="col-paciente">
+                                        <plex-label titulo="{{ paciente | nombre }}"
+                                                    subtitulo="{{ paciente.documento }}"></plex-label>
+                                    </div>
+                                    <div class="col-edad">
+                                        <plex-label titulo="{{ paciente | edad }}"
+                                                    subtitulo="{{ paciente.fechaNacimiento | fecha }}">
+                                        </plex-label>
+                                    </div>
+                                    <div class="col-acciones">
+                                        <plex-button size="sm" type="warning" class="ml-1" icon="pencil"
+                                                     tooltip="Editar" tooltipPosition="top"
+                                                     (click)="$event.stopPropagation(); editar(i)">
+                                        </plex-button>
+                                        <plex-button size="sm" type="danger" class="ml-1" icon="delete" tooltip="Quitar"
+                                                     tooltipPosition="top"
+                                                     (click)="$event.stopPropagation(); eliminar(paciente)">
+                                        </plex-button>
+                                    </div>
+                                    <div class="col-chevron">
+                                        <plex-icon size="lg" type="info"
+                                                   [name]="pacienteAbierto === paciente.id ? 'chevron-down' : 'chevron-up'">
+                                        </plex-icon>
+                                    </div>
                                 </div>
                             </div>
                             <ng-container *ngIf="pacienteAbierto === paciente.id">
-                                <plex-label *ngIf="!documentosPaciente[paciente.id]?.length"
-                                            titulo="El paciente no presenta documentos." type="warning"
-                                            subtitulo="Para insertar un documento, seleccione el botón Editar."
-                                            icon="informacion" size="md">
+                                <plex-label titulo="Observaciones"
+                                            [subtitulo]="observacionesPaciente[paciente.id] || 'Sin observaciones'">
+                                </plex-label>
+                                <plex-label titulo="Documentos"
+                                            [subtitulo]="documentosPaciente[paciente.id]?.length ? null : 'Sin documentos'">
                                 </plex-label>
                                 <plex-grid size="md" type="auto" *ngIf="documentosPaciente[paciente.id]?.length">
                                     <plex-card *ngFor="let archivo of documentosPaciente[paciente.id]; let j = index">
