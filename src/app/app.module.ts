@@ -33,6 +33,9 @@ import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-
 import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
 import { InsumosComponent } from './insumos/insumos.component';
 import { InsumosCreateComponent } from './insumos/insumos-create';
+import { VademecumComponent } from './vademecum/vademecum.component';
+import { VademecumService } from './vademecum/services/vademecum.service';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -46,7 +49,8 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
         BuscadorSnomedComponent,
         EstadoFuentesAutenticasComponent,
         InsumosComponent,
-        InsumosCreateComponent
+        InsumosCreateComponent,
+        VademecumComponent
     ],
     imports: [
         BrowserModule,
@@ -74,6 +78,7 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
         WebhookLogService,
         ModulosService,
         FuentesAutenticasService,
+        VademecumService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenExpiredInterceptor,
