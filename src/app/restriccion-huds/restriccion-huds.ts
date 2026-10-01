@@ -145,6 +145,11 @@ export class restriccionHudsComponent implements OnInit {
     }
 
     select(user) {
+        if (this.userSelected && this.userSelected === user) {
+            return;
+        }
+        this.pacienteSelected = null;
+        this.indexEdit = -1;
         this.userSelected = user;
         this.restringidos = [];
         this.pacienteRestringido = [];
@@ -238,7 +243,7 @@ export class restriccionHudsComponent implements OnInit {
     guardarLista(paciente) {
         this.usuariosService.updatePacienteRestringido(this.userSelected.usuario, this.pacienteRestringido).subscribe(() => {
             if (this.indexEdit > -1) {
-                this.plex.toast('success', 'El paciente se editó correctamente');
+                this.plex.toast('success', 'Cambios guardados correctamente');
             } else {
                 this.addPaciente(paciente.id);
                 this.plex.toast('success', 'El paciente se agregó correctamente');
