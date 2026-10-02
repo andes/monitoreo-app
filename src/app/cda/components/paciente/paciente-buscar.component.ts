@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Plex } from '@andes/plex';
-import { Router } from '@angular/router';
-import { PacienteService } from '../../services/paciente.service';
+import { PacienteBuscarService } from '../../../services/paciente-buscar.service';
 
 @Component({
     selector: 'app-paciente-buscar',
@@ -18,7 +16,7 @@ export class PacienteBuscarComponent implements OnInit {
     @Output() searchEnd: EventEmitter<any> = new EventEmitter<any>();
     @Output() searchClear: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private plex: Plex, private router: Router, private pacienteService: PacienteService) {
+    constructor(private pacienteBuscar: PacienteBuscarService) {
     }
 
     ngOnInit() {
@@ -39,12 +37,17 @@ export class PacienteBuscarComponent implements OnInit {
                 this.timeoutHandle = null;
 
                 // Busca por texto libre
-                this.pacienteService.get({ search: textoBuscar }).subscribe(
-                    resultado => {
-                        this.searchEnd.emit({ pacientes: resultado, err: null });
-                    },
-                    (err) => this.searchEnd.emit({ pacientes: [], err })
-                );
+                const resultado = this.pacienteBuscar.search(textoBuscar);
+                if (resultado) {
+                    resultado.subscribe(
+                        (data: any) => {
+                            this.searchEnd.emit({ pacientes: data?.pacientes || [], err: data?.err });
+                        },
+                        (err) => this.searchEnd.emit({ pacientes: [], err })
+                    );
+                } else {
+                    this.searchClear.emit();
+                }
             }, 200);
         } else {
             this.searchClear.emit();

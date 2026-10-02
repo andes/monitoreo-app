@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { Server, SharedModule } from '@andes/shared';
 import { routing } from './app-routing.module';
@@ -30,9 +30,16 @@ import { ModulosModule } from './modulos/modulos.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/components/estado-fa.component';
 import { FuentesAutenticasService } from './fuentes-autenticas/services/fuentes-autenticas.service';
-import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
 import { InsumosComponent } from './insumos/insumos.component';
 import { InsumosCreateComponent } from './insumos/insumos-create';
+import { restriccionHudsComponent } from './restriccion-huds/restriccion-huds';
+import { UsuariosHttp } from './services/usuarios.service';
+import { PermisosService } from './services/permisos.service';
+import { PacienteService } from './services/paciente.service';
+import { AdjuntosService } from './services/adjuntos.service';
+import { ProfesionalService } from './services/profesional.service';
+import { PacienteModule } from './shared/paciente/paciente.module';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -46,7 +53,8 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
         BuscadorSnomedComponent,
         EstadoFuentesAutenticasComponent,
         InsumosComponent,
-        InsumosCreateComponent
+        InsumosCreateComponent,
+        restriccionHudsComponent
     ],
     imports: [
         BrowserModule,
@@ -58,7 +66,8 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
         InfiniteScrollModule,
         ModulosModule,
         NoopAnimationsModule,
-        SharedModule
+        SharedModule,
+        PacienteModule
     ],
     providers: [
         Server,
@@ -74,11 +83,11 @@ import { InsumosCreateComponent } from './insumos/insumos-create';
         WebhookLogService,
         ModulosService,
         FuentesAutenticasService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenExpiredInterceptor,
-            multi: true,
-        }
+        UsuariosHttp,
+        PermisosService,
+        PacienteService,
+        AdjuntosService,
+        ProfesionalService
     ],
     bootstrap: [AppComponent]
 })

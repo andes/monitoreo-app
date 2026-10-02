@@ -6,9 +6,11 @@
                              (searchClear)="onSearchClear()">
         </app-paciente-buscar>
         <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
-        <app-paciente-listado *ngIf="listaPacientes && listaPacientes.length" [pacientes]="listaPacientes"
-                              (selected)="seleccionar($event)">
-        </app-paciente-listado>
+        <ng-container *ngIf="listaPacientes && listaPacientes.length">
+            <app-paciente-listado #listado [pacientes]="listaPacientes" (selected)="seleccionar($event)">
+            </app-paciente-listado>
+            <plex-scroll (change)="listado.onScroll()"></plex-scroll>
+        </ng-container>
         <div *ngIf="listaPacientes && !listaPacientes.length && !searchClear" class="alert alert-danger">
             <i class="mdi mdi-account-alert"></i> No se encontró ningún paciente.
         </div>

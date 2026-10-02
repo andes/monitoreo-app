@@ -9,21 +9,17 @@ import { CDARoutingModule } from './cda-routing.module';
 // pipes
 import { SharedModule } from '@andes/shared';
 // services
-import { PacienteService } from './services/paciente.service';
 import { CdaService } from './services/cda.service';
 
 // componnets
-import { PacienteBuscarComponent } from './components/paciente/paciente-buscar.component';
-import { PacienteListadoComponent } from './components/paciente/paciente-listado.component';
 import { CDAListadoComponent } from './components/cda/cda-listado.component';
 import { RegenerarRegistrosComponent } from './components/regenerar-registros.component';
+import { PacienteModule } from '../shared/paciente/paciente.module';
 
 
 @NgModule({
     declarations: [
         RegenerarRegistrosComponent,
-        PacienteBuscarComponent,
-        PacienteListadoComponent,
         CDAListadoComponent
     ],
     imports: [
@@ -32,8 +28,9 @@ import { RegenerarRegistrosComponent } from './components/regenerar-registros.co
         HttpClientModule,
         PlexModule,
         SharedModule,
-        CDARoutingModule
+        CDARoutingModule,
+        PacienteModule
     ],
-    providers: [PacienteService, CdaService, VacunasService]
+    providers: [CdaService, VacunasService]
 })
 export class CdaModule { }
