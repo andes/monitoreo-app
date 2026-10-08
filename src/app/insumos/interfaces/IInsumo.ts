@@ -1,4 +1,5 @@
 export interface IInsumo {
+    unidadMedida: 'ml' | 'grs' | 'caps';
     id?: string;
     nombre: string;
     codigo: {
