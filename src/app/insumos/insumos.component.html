@@ -12,10 +12,10 @@
 
         <plex-grid type="auto" size="md" cols="2">
             <plex-text label="Nombre" [(ngModel)]="busqueda" [debounce]="600" (change)="buscar()"
-                placeholder="Ingrese el nombre del insumo" name="nombre" class="mx-2"></plex-text>
+                       placeholder="Ingrese el nombre del insumo" name="nombre" class="mx-2"></plex-text>
             <plex-select [(ngModel)]="tipo" [data]="opciones" (change)="buscar()" label="Tipo:"></plex-select>
             <plex-text label="Código insumo" [debounce]="600" [(ngModel)]="codigo" (change)="buscar()" name="codigo"
-                class="mx-2"></plex-text>
+                       class="mx-2"></plex-text>
             <plex-select [(ngModel)]="estado" [data]="estados" (change)="buscar()" label="Estado:"></plex-select>
         </plex-grid>
 
@@ -46,13 +46,13 @@
         <plex-title justify titulo="DETALLE INSUMOS" size="md">
 
             <plex-button *ngIf="selectedInsumo.estado === 'activo'" type="warning" tooltip="Inactivar insumo"
-                icon="prohibido" size="sm" (click)="inactivar(selectedInsumo)"></plex-button>
+                         icon="prohibido" size="sm" (click)="inactivar(selectedInsumo)"></plex-button>
             <plex-button *ngIf="selectedInsumo.estado === 'inactivo'" type="success" tooltip="Activar insumo"
-                icon="check" size="sm" (click)="activar(selectedInsumo)"></plex-button>
+                         icon="check" size="sm" (click)="activar(selectedInsumo)"></plex-button>
             <plex-button type="warning" tooltip="Editar" icon="pencil" size="sm" (click)="editar(selectedInsumo)"
-                class="ml-1"></plex-button>
+                         class="ml-1"></plex-button>
             <plex-button type="danger" tooltip="Cerrar" icon="close" size="sm" (click)="cerrar()"
-                class="ml-1"></plex-button>
+                         class="ml-1"></plex-button>
         </plex-title>
         <plex-detail size="md">
             <plex-icon class=ColorFrasco name="frasco" size="sm"></plex-icon>
@@ -61,22 +61,30 @@
             <div title>{{ selectedInsumo.nombre }}</div>
 
             <plex-label titulo="Usuario/a que creó"
-                subtitulo="{{ (selectedInsumo.createdBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
+                        subtitulo="{{ (selectedInsumo.createdBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
             <plex-label titulo="Fecha creación"
-                subtitulo="{{ (selectedInsumo.createdAt | fecha:'utc') || 'N/D' }}"></plex-label>
+                        subtitulo="{{ (selectedInsumo.createdAt | fecha:'utc') || 'N/D' }}"></plex-label>
             <plex-label titulo="Tipo" [subtitulo]="selectedInsumo.tipo || '—'"></plex-label>
             <plex-label titulo="Última edición"
-                subtitulo="{{ (selectedInsumo.updatedAt | fecha:'utc') || 'N/D' }}"></plex-label>
+                        subtitulo="{{ (selectedInsumo.updatedAt | fecha:'utc') || 'N/D' }}"></plex-label>
             <plex-label titulo="Usuario que editó"
-                subtitulo="{{ (selectedInsumo.updatedBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
-            <plex-label titulo="Códigos" [subtitulo]="codigoInsumo(selectedInsumo.codigo)"></plex-label>
+                        subtitulo="{{ (selectedInsumo.updatedBy?.nombreCompleto ) || 'N/D' }}"></plex-label>
             <plex-label titulo="Especificación"
-                [subtitulo]="selectedInsumo.requiereEspecificacion ? 'Requiere especificación' : 'No requiere especificación'">
+                        [subtitulo]="selectedInsumo.requiereEspecificacion ? 'Requiere especificación' : 'No requiere especificación'">
             </plex-label>
             <plex-label *ngIf="selectedInsumo.observaciones" titulo="Observaciones"
-                [subtitulo]="selectedInsumo.observaciones"></plex-label>
+                        [subtitulo]="selectedInsumo.observaciones"></plex-label>
 
         </plex-detail>
 
+        <plex-title titulo="Códigos" size="md"></plex-title>
+        <plex-table [columns]="codigos">
+            <plex-table-columns>
+            </plex-table-columns>
+            <tr *ngFor="let codigo of selectedInsumo.codigo">
+                <td *plTableCol="'fuente'">{{ codigo.fuente }}</td>
+                <td *plTableCol="'valor'">{{ codigo.valor }}</td>
+            </tr>
+        </plex-table>
     </plex-layout-sidebar>
 </plex-layout>

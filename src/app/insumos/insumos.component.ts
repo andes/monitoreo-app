@@ -35,6 +35,11 @@ export class InsumosComponent implements OnInit {
         { id: 'inactivo', nombre: 'Inactivo' }
     ];
 
+    public codigos = [
+        { key: 'fuente', label: 'Fuente' },
+        { key: 'valor', label: 'Valor' }
+    ];
+
     public busqueda = null;
     public codigo = null;
     constructor(
@@ -42,6 +47,7 @@ export class InsumosComponent implements OnInit {
         private router: Router,
         private plex: Plex
     ) { }
+
     ngOnInit(): void {
         this.buscar();
     }
@@ -109,10 +115,5 @@ export class InsumosComponent implements OnInit {
 
     volver() {
         this.router.navigate(['/home']);
-    }
-
-    codigoInsumo(codigos) {
-        const codigosStr = codigos.map(c => `${c.fuente}: ${c.valor}`).join(', ');
-        return codigosStr;
     }
 }

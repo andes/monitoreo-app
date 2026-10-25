@@ -10,7 +10,7 @@ import { IInsumo } from './interfaces/IInsumo';
     templateUrl: './insumos-create.html',
     styleUrls: ['./insumos.component.css']
 })
-export class InsumosCreateComponent implements OnInit {
+export class InsumosCreateComponent {
 
     public insumoEdit: IInsumo = null;
     public title = 'Nuevo Insumo';
@@ -54,9 +54,6 @@ export class InsumosCreateComponent implements OnInit {
         }
     }
 
-    ngOnInit(): void {
-    }
-
     get puedeAgregarCodigo(): boolean {
         return this.codigos.length < 2 && this.codigos.every(cod => cod.fuente && cod.valor);
     }
@@ -78,12 +75,19 @@ export class InsumosCreateComponent implements OnInit {
     }
 
     save() {
-        const fuentesSeleccionadas = this.codigos.map(c => c.fuente?.id).filter(id => !!id);
-        const fuentesUnicas = new Set(fuentesSeleccionadas);
-
         if (this.nombre && this.tipo && this.codigos.every(c => c.fuente && c.valor)) {
-            if (fuentesSeleccionadas.length !== fuentesUnicas.size) {
-                this.plex.info('warning', 'No se permiten múltiples códigos para la misma fuente');
+            const codigosDuplicadosMismaFuente = this.codigos.some((codigo, index) => {
+                const fuenteId = codigo.fuente?.id;
+                const valor = codigo.valor?.trim();
+
+                return this.codigos.slice(index + 1).some(codigoComparado =>
+                    codigoComparado.fuente?.id === fuenteId &&
+                    codigoComparado.valor?.trim() === valor
+                );
+            });
+
+            if (codigosDuplicadosMismaFuente) {
+                this.plex.info('warning', 'No se permiten códigos con el mismo valor para una misma fuente');
                 return;
             }
 
