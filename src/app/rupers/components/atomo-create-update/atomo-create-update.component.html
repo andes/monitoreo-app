@@ -52,9 +52,7 @@
 
                 <div *ngSwitchCase="'SelectProfesionalComponent'">
                     <plex-grid cols="2" type="auto" size="lg">
-                        <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-
-                        <div justify class="ml-4 mt-5">
+                        <div justify class="ml-4 mt-2">
                             <plex-bool type="slide" [(ngModel)]="params.multiple" label="Multiple"
                                        name="params-multiple">
                             </plex-bool>
@@ -73,11 +71,7 @@
 
                 <div *ngSwitchCase="'SelectSnomedComponent'">
                     <plex-grid type="auto" size="md" cols="2">
-                        <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
-
-
                         <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
-
                     </plex-grid>
 
                     <div justify class="ml-4 mt-5">
@@ -150,7 +144,6 @@
                 </div>
                 <div *ngSwitchCase="'ChecklistComponent'">
                     <plex-grid type="auto" size="md" cols="2">
-                        <plex-text [(ngModel)]="params.title" label="Titulo/Label" name="params-title"></plex-text>
                         <plex-text [(ngModel)]="params.query" label="Snomed Query" name="params-query"></plex-text>
                     </plex-grid>
                     <div justify class="ml-4 mt-5">
@@ -193,11 +186,16 @@
 
                 <div *ngSwitchCase="'ValorFechaComponent'">
 
-                    <plex-grid cols="2" type="auto" size="md">
+                    <plex-grid cols="3" type="auto" size="md">
+
+                        <plex-select label="Tipo de dato" [data]="valorFechaType" [(ngModel)]="params.type"
+                                     idField="id" labelField="label" valueField="id" name="params-date-type">
+                        </plex-select>
 
                         <plex-text [(ngModel)]="params.placeholder" label="Placeholder" name="params-placeholder">
                         </plex-text>
-                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required">
+
+                        <plex-bool type="slide" [(ngModel)]="params.required" label="Requerido" name="params-required" class="mt-4">
                         </plex-bool>
 
                     </plex-grid>
