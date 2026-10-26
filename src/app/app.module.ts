@@ -41,6 +41,7 @@ import { ProfesionalService } from './services/profesional.service';
 import { PacienteModule } from './shared/paciente/paciente.module';
 
 import { VisualizadorRecetasComponent } from './visualizador-recetas/visualizador-recetas.component';
+import { PacienteBusquedaModule } from './cda/components/paciente/paciente-busqueda.module';
 @NgModule({
     declarations: [
         AppComponent,
@@ -69,7 +70,8 @@ import { VisualizadorRecetasComponent } from './visualizador-recetas/visualizado
         ModulosModule,
         NoopAnimationsModule,
         SharedModule,
-        PacienteModule
+        PacienteModule,
+        PacienteBusquedaModule
     ],
     providers: [
         Server,

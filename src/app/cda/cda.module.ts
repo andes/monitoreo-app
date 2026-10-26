@@ -12,6 +12,7 @@ import { SharedModule } from '@andes/shared';
 import { CdaService } from './services/cda.service';
 
 // componnets
+import { PacienteBusquedaModule } from './components/paciente/paciente-busqueda.module';
 import { CDAListadoComponent } from './components/cda/cda-listado.component';
 import { RegenerarRegistrosComponent } from './components/regenerar-registros.component';
 import { PacienteModule } from '../shared/paciente/paciente.module';
@@ -29,7 +30,9 @@ import { PacienteModule } from '../shared/paciente/paciente.module';
         PlexModule,
         SharedModule,
         CDARoutingModule,
-        PacienteModule
+        PacienteModule,
+        PacienteBusquedaModule,
+        CDARoutingModule
     ],
     providers: [CdaService, VacunasService]
 })

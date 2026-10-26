@@ -33,6 +33,10 @@
     border-radius: 13px;
 }
 
+.campo-tipo plex-badge {
+    cursor: pointer;
+}
+
 .pildoras-listado { 
 color: #00B9B1;
 }
