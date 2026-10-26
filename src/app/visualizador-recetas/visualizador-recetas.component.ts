@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Plex } from '@andes/plex';
 import * as moment from 'moment';
 import { PrescripcionesService } from './services/prescripciones.service';
+import { PacienteBuscarService } from '../services/paciente-buscar.service';
+import { PermisosService } from '../services/permisos.service';
 
 interface IPrescripcion {
     id: string;
@@ -15,6 +17,7 @@ interface IPrescripcion {
     fecha: Date;
     fechaReferencia: Date;
     organizacion: string;
+    organizacionId: string;
     idRegistro: string;
     prolongado: boolean;
     tiempoTratamiento: string;
@@ -36,7 +39,7 @@ interface IGrupoPrescripciones {
     templateUrl: './visualizador-recetas.component.html',
     styleUrls: ['./visualizador-recetas.component.css']
 })
-export class VisualizadorRecetasComponent {
+export class VisualizadorRecetasComponent implements OnInit {
 
     public busquedaPaciente = '';
     // null: no hay búsqueda en curso; []: la búsqueda no encontró pacientes
@@ -44,7 +47,8 @@ export class VisualizadorRecetasComponent {
     public buscandoPacientes = false;
     public paciente: any = null;
 
-    public organizacion: string;
+    public organizaciones: any[] = [];
+    public organizacion: any = null;
     public prescripcion: string;
     public filtros: any = {
         fechaDesde: moment().subtract(6, 'months').startOf('day').toDate(),
@@ -88,24 +92,31 @@ export class VisualizadorRecetasComponent {
 
     constructor(
         private plex: Plex,
-        private prescripcionesService: PrescripcionesService
+        private prescripcionesService: PrescripcionesService,
+        private pacienteBuscar: PacienteBuscarService,
+        private permisosService: PermisosService
     ) { }
+
+    ngOnInit() {
+        this.permisosService.organizaciones().subscribe(organizaciones => this.organizaciones = organizaciones);
+    }
 
     buscarPaciente() {
         const texto = (this.busquedaPaciente || '').trim();
-        if (!texto) {
+        const busqueda = texto ? this.pacienteBuscar.search(texto) : null;
+        if (!busqueda) {
             this.pacientes = null;
             this.buscandoPacientes = false;
             return;
         }
         this.buscandoPacientes = true;
-        this.prescripcionesService.buscarPacientes(texto).subscribe(
-            pacientes => {
+        busqueda.subscribe(
+            (resultado: any) => {
                 // Descarta la respuesta si el usuario siguió escribiendo o ya eligió un paciente
                 if (texto !== (this.busquedaPaciente || '').trim() || this.paciente) {
                     return;
                 }
-                this.pacientes = pacientes;
+                this.pacientes = resultado?.pacientes || [];
                 this.buscandoPacientes = false;
             },
             () => this.buscandoPacientes = false
@@ -181,7 +192,7 @@ export class VisualizadorRecetasComponent {
         const hasta = moment(this.filtros.fechaHasta).endOf('day');
         const estado = this.filtros.estado?.id;
         const texto = this.normalizar(this.prescripcion);
-        const efector = this.normalizar(this.organizacion);
+        const efector = this.organizacion?.id ? String(this.organizacion.id) : null;
 
         const filtradas = this.prescripciones.filter(p =>
             moment(p.fechaReferencia).isBetween(desde, hasta, null, '[]')
@@ -189,7 +200,7 @@ export class VisualizadorRecetasComponent {
             && (!this.tiposSeleccionados.length || this.tiposSeleccionados.includes(p.tipo))
             && (!this.sistemasSeleccionados.length || this.sistemasSeleccionados.includes(p.sistema))
             && (!texto || this.normalizar(p.nombre).includes(texto))
-            && (!efector || this.normalizar(p.organizacion).includes(efector))
+            && (!efector || p.organizacionId === efector)
         );
 
         this.grupos = this.agrupar(filtradas);
@@ -268,6 +279,7 @@ export class VisualizadorRecetasComponent {
             fecha: receta.fechaRegistro,
             fechaReferencia: receta.fechaRegistro,
             organizacion: receta.organizacion?.nombre || '',
+            organizacionId: receta.organizacion?.id ? String(receta.organizacion.id) : null,
             idRegistro: receta.idRegistro,
             prolongado: !!datos.tratamientoProlongado,
             tiempoTratamiento: tiempo?.nombre || (tiempo?.id ? `${tiempo.id} meses` : ''),

@@ -8,10 +8,6 @@ export class PrescripcionesService {
 
     constructor(private server: Server) { }
 
-    buscarPacientes(texto: string): Observable<any[]> {
-        return this.server.get('/core-v2/mpi/pacientes', { params: { search: texto } });
-    }
-
     // Recetas de medicamentos (incluye magistrales) y de insumos (dispositivos, nutriterápicos y magistrales)
     getPrescripciones(pacienteId: string): Observable<any[]> {
         const params = { pacienteId };

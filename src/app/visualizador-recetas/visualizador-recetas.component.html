@@ -38,8 +38,9 @@
                            (change)="onCambioFechas()"></plex-datetime>
             <plex-datetime label="Fecha hasta" type="date" name="fechaHasta" [(ngModel)]="filtros.fechaHasta"
                            (change)="onCambioFechas()"></plex-datetime>
-            <plex-text label="Organización" name="organizacion" class="grow-2" [(ngModel)]="organizacion"
-                       [debounce]="400" (change)="filtrar()"></plex-text>
+            <plex-select label="Organización" name="organizacion" class="grow-2" [(ngModel)]="organizacion"
+                         placeholder="Seleccione una organización" [data]="organizaciones" (change)="filtrar()">
+            </plex-select>
 
             <small class="hint-rango grow-full text-info">
                 El rango de fechas admite consultas de hasta 6 meses.
