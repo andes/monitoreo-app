@@ -23,8 +23,8 @@ export class PrescripcionesService {
         );
     }
 
-    descargarPdf(recetasIds: string[], nombreArchivo: string): Observable<any> {
-        return this.server.post('/modules/descargas/recetas', { recetasIds }, { responseType: 'blob' } as any).pipe(
+    descargarPdf(informe: { idPrestacion: string; idRegistro: string; recetasIds: string[] }, nombreArchivo: string): Observable<any> {
+        return this.server.post('/modules/descargas/recetas', informe, { responseType: 'blob' } as any).pipe(
             saveAs(nombreArchivo, 'pdf')
         );
     }

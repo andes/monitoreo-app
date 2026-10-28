@@ -236,7 +236,12 @@ export class VisualizadorRecetasComponent implements OnInit {
             return;
         }
         this.descargando = true;
-        this.prescripcionesService.descargarPdf([this.seleccionada.id], this.seleccionada.nombre || 'prescripcion').subscribe(
+        const informe = {
+            idPrestacion: this.seleccionada.receta.idPrestacion,
+            idRegistro: this.seleccionada.idRegistro,
+            recetasIds: [this.seleccionada.id]
+        };
+        this.prescripcionesService.descargarPdf(informe, this.seleccionada.nombre || 'prescripcion').subscribe(
             () => this.descargando = false,
             () => this.descargando = false
         );
