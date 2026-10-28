@@ -28,8 +28,8 @@ import { PacienteModule } from '../shared/paciente/paciente.module';
         HttpClientModule,
         PlexModule,
         SharedModule,
-        CDARoutingModule,
-        PacienteModule
+        PacienteModule,
+        CDARoutingModule
     ],
     providers: [CdaService, VacunasService]
 })

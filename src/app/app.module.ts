@@ -40,6 +40,7 @@ import { AdjuntosService } from './services/adjuntos.service';
 import { ProfesionalService } from './services/profesional.service';
 import { PacienteModule } from './shared/paciente/paciente.module';
 
+import { VisualizadorRecetasComponent } from './visualizador-recetas/visualizador-recetas.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -54,7 +55,8 @@ import { PacienteModule } from './shared/paciente/paciente.module';
         EstadoFuentesAutenticasComponent,
         InsumosComponent,
         InsumosCreateComponent,
-        restriccionHudsComponent
+        restriccionHudsComponent,
+        VisualizadorRecetasComponent
     ],
     imports: [
         BrowserModule,
