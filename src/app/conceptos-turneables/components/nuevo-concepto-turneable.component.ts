@@ -30,7 +30,8 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         auditable: null,
         agendaDinamica: null,
         ambito: null,
-        tiempoVigencia: 365
+        tiempoVigencia: 365,
+        tiempoLimiteRomperValidacion: 30
     };
     agendaDinamica;
     public ambitoActual;
@@ -152,11 +153,28 @@ export class NuevoConceptoTurneableComponent implements OnInit {
         });
     }
 
+    limiteRomperValidacionValido(): boolean {
+        const valor: any = this.nuevoConceptoTurneable.tiempoLimiteRomperValidacion;
+        if (valor === null || valor === undefined || valor === '') {
+            return false;
+        }
+        return Number.isInteger(valor) && valor >= 1 && valor <= 365;
+    }
+
+    normalizarLimiteRomperValidacion(): number {
+        const valor: any = this.nuevoConceptoTurneable.tiempoLimiteRomperValidacion;
+        if (valor === null || valor === undefined || valor === '') {
+            return 30;
+        }
+        return Number.isInteger(valor) ? valor : 30;
+    }
+
     agregar() {
         this.nuevoConceptoTurneable.ambito = (this.ambitoActual || []).map(a => a.id);
 
         this.nuevoConceptoTurneable.noNominalizada = !this.nominalizada;
         this.nuevoConceptoTurneable.auditable = this.auditable;
+        this.nuevoConceptoTurneable.tiempoLimiteRomperValidacion = this.normalizarLimiteRomperValidacion();
         this.agregarConceptoTurneable.emit(this.nuevoConceptoTurneable);
     }
 
