@@ -20,6 +20,7 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     public ambito;
     public ambitos: any[];
     public tiempoVigencia: number;
+    public tiempoLimiteRomperValidacion: number;
 
     constructor(
         public plex: Plex,
@@ -35,6 +36,10 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
     }
 
     editar() {
+        if (!this.limiteRomperValidacionValido()) {
+            this.plex.info('warning', 'El tiempo límite para romper la validación debe ser un número entre 1 y 365 días.', 'Valor inválido');
+            return;
+        }
         if (this.conceptoTurneable && this.conceptoTurneable.id) {
             this.plex.confirm('Guardar cambios de concepto turneable "' +
                 this.conceptoTurneable.conceptId + '"', '¿Desea guardar cambios?').then(confirmacion => {
@@ -44,7 +49,8 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
                         auditable: this.auditable,
                         agendaDinamica: this.agendaDinamica,
                         ambito: this.objectSelect2array(this.ambitoActual),
-                        tiempoVigencia: this.tiempoVigencia
+                        tiempoVigencia: this.tiempoVigencia,
+                        tiempoLimiteRomperValidacion: this.normalizarLimite(this.tiempoLimiteRomperValidacion)
                     };
                     this.toggleEdicion();
                     this.editarConceptoTurneable.emit(cambios);
@@ -108,6 +114,22 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
         // guarda el estado previo del ambito
         this.ambitoActual = this.array2objectSelect(this.conceptoTurneable.ambito);
         this.tiempoVigencia = this.conceptoTurneable.tiempoVigencia || 365;
+        this.tiempoLimiteRomperValidacion = this.normalizarLimite(this.conceptoTurneable.tiempoLimiteRomperValidacion);
+    }
+
+    normalizarLimite(valor): number {
+        if (valor === null || valor === undefined || valor === '') {
+            return 30;
+        }
+        return Number.isInteger(valor) ? valor : 30;
+    }
+
+    limiteRomperValidacionValido(): boolean {
+        const valor: any = this.tiempoLimiteRomperValidacion;
+        if (valor === null || valor === undefined || valor === '') {
+            return false;
+        }
+        return Number.isInteger(valor) && valor >= 1 && valor <= 365;
     }
 
     cancelar() {
@@ -162,7 +184,9 @@ export class DetalleConceptoTurneableComponent implements OnInit, OnChanges {
             (this.conceptoTurneable.auditable !== this.auditable) ||
             (this.conceptoTurneable.agendaDinamica !== this.agendaDinamica) ||
             (!this.arrayEquals(this.conceptoTurneable.ambito, this.objectSelect2array(this.ambitoActual))) ||
-            (this.conceptoTurneable.tiempoVigencia !== this.tiempoVigencia)
+            (this.conceptoTurneable.tiempoVigencia !== this.tiempoVigencia) ||
+            (this.normalizarLimite(this.conceptoTurneable.tiempoLimiteRomperValidacion) !==
+                this.normalizarLimite(this.tiempoLimiteRomperValidacion))
         );
 
     }

@@ -1,6 +1,6 @@
 <ng-container *ngIf="conceptoSnomedSeleccionado">
     <plex-title titulo="Nuevo Concepto Turneable">
-        <plex-button label="Guardar" type="success" (click)="agregar()">
+        <plex-button label="Guardar" type="success" [disabled]="!limiteRomperValidacionValido()" (click)="agregar()">
         </plex-button>
         <plex-button label="Cancelar" type="danger" (click)="cancelarAgregar()">
         </plex-button>
@@ -14,7 +14,7 @@
                             <td>
                                 <strong>Concept ID:</strong>
                                 <plex-text placeholder="Concept ID" name="usuario"
-                                    [(ngModel)]="nuevoConceptoTurneable.conceptId" [disabled]="true">
+                                           [(ngModel)]="nuevoConceptoTurneable.conceptId" [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -23,7 +23,7 @@
                             <td>
                                 <strong>Term:</strong>
                                 <plex-text placeholder="Term" name="usuario" [(ngModel)]="nuevoConceptoTurneable.term"
-                                    [disabled]="true">
+                                           [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -32,7 +32,7 @@
                             <td>
                                 <strong>FSN:</strong>
                                 <plex-text placeholder="fsn" name="usuario" [(ngModel)]="nuevoConceptoTurneable.fsn"
-                                    [disabled]="true">
+                                           [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
@@ -41,16 +41,16 @@
                             <td>
                                 <strong>Semantic Tag:</strong>
                                 <plex-text placeholder="Semantic Tag" name="usuario"
-                                    [(ngModel)]="nuevoConceptoTurneable.semanticTag" [disabled]="true">
+                                           [(ngModel)]="nuevoConceptoTurneable.semanticTag" [disabled]="true">
                                 </plex-text>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <plex-select [multiple]="true" label="Ambito:" [(ngModel)]="ambitoActual"
-                                    [data]="ambitos" placeholder="Seleccione los ambitos">
+                                             [data]="ambitos" placeholder="Seleccione los ambitos">
                                 </plex-select>
-                                
+
                             </td>
                         </tr>
                         <tr>
@@ -75,6 +75,14 @@
                                 &nbsp;
                                 <plex-bool [(ngModel)]="agendaDinamica" type="slide" name="agendaDinamica">
                                 </plex-bool>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <plex-int label="Tiempo límite para romper validación (días):"
+                                          [(ngModel)]="nuevoConceptoTurneable.tiempoLimiteRomperValidacion"
+                                          name="tiempoLimiteRomperValidacion" [min]="1" [max]="365" [required]="true">
+                                </plex-int>
                             </td>
                         </tr>
                         <tr>
@@ -105,7 +113,7 @@
     <div class="row">
         <div class="col-lg-12">
             <plex-text label="Ingrese Nombre" placeholder="Nombre" [(ngModel)]="term" name="usuario" [required]="false"
-                #filtroTerm="ngModel" (ngModelChange)="buscar();">
+                       #filtroTerm="ngModel" (ngModelChange)="buscar();">
                 <plex-icon prefix="mdi" name="format-text" left></plex-icon>
             </plex-text>
         </div>
@@ -132,7 +140,7 @@
                             </td>
                             <td class="">
                                 <span *ngIf="concepto?.semanticTag !== ''"
-                                    class="d-block">{{concepto.semanticTag}}</span>
+                                      class="d-block">{{concepto.semanticTag}}</span>
                             </td>
                         </tr>
                     </tbody>

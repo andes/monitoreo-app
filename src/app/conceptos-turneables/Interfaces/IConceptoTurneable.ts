@@ -10,4 +10,5 @@ export interface IConceptoTurneable {
     agendaDinamica: boolean;
     ambito: string[];
     tiempoVigencia?: number;
+    tiempoLimiteRomperValidacion?: number;
 }

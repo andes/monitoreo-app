@@ -4,7 +4,8 @@
     </plex-title>
     <plex-title *ngIf="conceptoTurneable.id && editable" titulo="Editar Concepto">
         <plex-button label="Cancelar" type="danger" (click)="cancelar()"></plex-button>
-        <plex-button [disabled]="!hayCambios()" label="Guardar" type="success" (click)="editar()"></plex-button>
+        <plex-button [disabled]="!hayCambios() || !limiteRomperValidacionValido()" label="Guardar" type="success"
+                     (click)="editar()"></plex-button>
     </plex-title>
     <div class="row">
         <div class="col">
@@ -100,6 +101,20 @@
                             </td>
                         </tr>
                         <tr>
+                            <td *ngIf="!editable">
+                                <strong>Tiempo límite para romper validación (días):</strong>
+                                <plex-text [ngModel]="conceptoTurneable.tiempoLimiteRomperValidacion || 30"
+                                           name="tiempoLimiteRomperValidacionView" [disabled]="true">
+                                </plex-text>
+                            </td>
+                            <td *ngIf="editable">
+                                <plex-int label="Tiempo límite para romper validación (días):"
+                                          [(ngModel)]="tiempoLimiteRomperValidacion" name="tiempoLimiteRomperValidacion"
+                                          [min]="1" [max]="365" [required]="true">
+                                </plex-int>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>
                                 <plex-title titulo="Solicitudes" size="sm"></plex-title>
                             </td>
@@ -120,6 +135,7 @@
                                            tooltipPosition="right">
                                 </plex-icon>
                             </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
