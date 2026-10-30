@@ -8,15 +8,51 @@
 
         <plex-wrapper>
             <plex-text [(ngModel)]="searchTerm" name="searchTerm" [debounce]="400" (change)="buscar()"
-                       placeholder="Buscar medicamento o insumo por nombre comercial o genérico..." [autoFocus]="true">
+                       placeholder="Buscar medicamento o insumo por nombre comercial, genérico, código de barras o ATC..." [autoFocus]="true">
             </plex-text>
             <plex-button type="success" label="Buscar" (click)="buscar()" [disabled]="!searchTerm || loading">
             </plex-button>
+            <plex-button *ngIf="medicamentosOriginales.length" [type]="showFiltros ? 'info' : 'default'"
+                         [icon]="showFiltros ? 'chevron-up' : 'filter-outline'"
+                         [tooltip]="showFiltros ? 'Ocultar filtros' : 'Mostrar filtros'"
+                         (click)="showFiltros = !showFiltros">
+            </plex-button>
         </plex-wrapper>
+
+        <!-- Filtros secundarios sobre los resultados -->
+        <ng-container *ngIf="medicamentosOriginales.length && showFiltros">
+            <plex-wrapper>
+                <plex-text [(ngModel)]="filtros.droga" name="filtroDroga" label="Droga (Genérico)" [debounce]="300"
+                           (change)="aplicarFiltros()" placeholder="Filtrar por droga (subcadena)...">
+                </plex-text>
+                <plex-text [(ngModel)]="filtros.accion" name="filtroAccion" label="Acción Terapéutica" [debounce]="300"
+                           (change)="aplicarFiltros()" placeholder="Filtrar por acción (subcadena)...">
+                </plex-text>
+                <plex-text [(ngModel)]="filtros.monodrogas" name="filtroMonodrogas" label="Monodrogas" [debounce]="300"
+                           (change)="aplicarFiltros()" placeholder="Filtrar por ID o potencia...">
+                </plex-text>
+            </plex-wrapper>
+
+            <plex-wrapper>
+                <plex-text [(ngModel)]="filtros.atc" name="filtroAtc" label="Códigos ATC" [debounce]="300"
+                           (change)="aplicarFiltros()" placeholder="Filtrar por código ATC...">
+                </plex-text>
+                <plex-text [(ngModel)]="filtros.gtin" name="filtroGtin" label="Códigos GTINs" [debounce]="300"
+                           (change)="aplicarFiltros()" placeholder="Filtrar por código GTIN...">
+                </plex-text>
+                <plex-text [(ngModel)]="filtros.snomed" name="filtroSnomed" label="Código SNOMED (búsqueda completa)" [debounce]="300"
+                           (change)="aplicarFiltros()" placeholder="Código SNOMED exacto...">
+                </plex-text>
+            </plex-wrapper>
+        </ng-container>
 
         <plex-loader *ngIf="loading" type="ball-pulse"></plex-loader>
 
-        <plex-title *ngIf="!loading && medicamentos.length" [titulo]="'Resultados (' + medicamentos.length + ')'" size="sm"></plex-title>
+        <plex-title *ngIf="!loading && medicamentosOriginales.length" [titulo]="tituloResultados" size="sm">
+            <plex-button *ngIf="hayFiltrosActivos" type="warning" size="sm" icon="filter-remove" label="Limpiar filtros"
+                         (click)="limpiarFiltros()">
+            </plex-button>
+        </plex-title>
 
         <plex-table *ngIf="!loading && medicamentos.length" [columns]="columns">
             <plex-table-columns></plex-table-columns>
@@ -37,10 +73,17 @@
             </tr>
         </plex-table>
 
-        <div *ngIf="!loading && searched && !medicamentos.length" class="text-center mt-5">
+        <div *ngIf="!loading && medicamentosOriginales.length && !medicamentos.length" class="text-center mt-5">
+            <plex-label icon="filter-remove" type="warning" size="xl" direction="column"
+                        titulo="No hay resultados para los filtros seleccionados"
+                        subtitulo="Modifique o limpie los filtros secundarios para volver a ver los resultados">
+            </plex-label>
+        </div>
+
+        <div *ngIf="!loading && searched && !medicamentosOriginales.length" class="text-center mt-5">
             <plex-label icon="magnify" type="info" size="xl" direction="column"
                         titulo="No se encontraron medicamentos o insumos"
-                        subtitulo="Intente con otro término de búsqueda comercial o genérico">
+                        subtitulo="Intente con otro término de búsqueda (nombre, droga, código de barras o ATC)">
             </plex-label>
         </div>
     </plex-layout-main>

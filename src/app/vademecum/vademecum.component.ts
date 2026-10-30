@@ -11,11 +11,22 @@ import { IVademecumEntry } from './interfaces/IVademecum';
 })
 export class VademecumComponent implements OnInit {
     public searchTerm = '';
+    public medicamentosOriginales: IVademecumEntry[] = [];
     public medicamentos: IVademecumEntry[] = [];
     public selectedItem: IVademecumEntry = null;
     public atributos: Array<{ label: string; key: string; value: string }> = [];
     public loading = false;
     public searched = false;
+    public showFiltros = true;
+
+    public filtros = {
+        droga: '',
+        accion: '',
+        atc: '',
+        gtin: '',
+        snomed: '',
+        monodrogas: ''
+    };
 
     public columns = [
         { key: 'nombre', label: 'Nombre Comercial / Presentación' },
@@ -24,6 +35,24 @@ export class VademecumComponent implements OnInit {
         { key: 'precio', label: 'Precio' },
         { key: 'estado', label: 'Estado' }
     ];
+
+    public get hayFiltrosActivos(): boolean {
+        return Boolean(
+            (this.filtros.droga && this.filtros.droga.trim()) ||
+            (this.filtros.accion && this.filtros.accion.trim()) ||
+            (this.filtros.atc && this.filtros.atc.trim()) ||
+            (this.filtros.gtin && this.filtros.gtin.trim()) ||
+            (this.filtros.snomed && this.filtros.snomed.trim()) ||
+            (this.filtros.monodrogas && this.filtros.monodrogas.trim())
+        );
+    }
+
+    public get tituloResultados(): string {
+        if (this.hayFiltrosActivos) {
+            return `Resultados (${this.medicamentos.length} de ${this.medicamentosOriginales.length})`;
+        }
+        return `Resultados (${this.medicamentos.length})`;
+    }
 
     constructor(
         private vademecumService: VademecumService,
@@ -37,6 +66,7 @@ export class VademecumComponent implements OnInit {
 
     public buscar(): void {
         if (!this.searchTerm || !this.searchTerm.trim()) {
+            this.medicamentosOriginales = [];
             this.medicamentos = [];
             this.selectedItem = null;
             this.searched = false;
@@ -45,17 +75,126 @@ export class VademecumComponent implements OnInit {
 
         this.loading = true;
         this.searched = true;
+        this.selectedItem = null;
         this.vademecumService.searchMedications({ q: this.searchTerm.trim(), limit: 50 }).subscribe(
             (data: IVademecumEntry[]) => {
-                this.medicamentos = data || [];
+                this.medicamentosOriginales = data || [];
+                this.aplicarFiltros();
                 this.loading = false;
             },
             () => {
+                this.medicamentosOriginales = [];
                 this.medicamentos = [];
                 this.loading = false;
                 this.plex.toast('danger', 'Error al consultar el vademécum');
             }
         );
+    }
+
+    public aplicarFiltros(): void {
+        const filtroDroga = this.normalize(this.filtros.droga);
+        const filtroAccion = this.normalize(this.filtros.accion);
+        const filtroAtc = this.normalize(this.filtros.atc);
+        const filtroGtin = this.normalize(this.filtros.gtin);
+        const filtroSnomed = (this.filtros.snomed || '').trim().toLowerCase();
+        const filtroMonodrogas = this.normalize(this.filtros.monodrogas);
+
+        this.medicamentos = this.medicamentosOriginales.filter((item) => {
+            // 1. Droga (genérico) substring
+            if (filtroDroga) {
+                const desc = this.normalize(item.droga_descrip);
+                const id = item.droga ? String(item.droga) : '';
+                if (!desc.includes(filtroDroga) && !id.includes(filtroDroga)) {
+                    return false;
+                }
+            }
+
+            // 2. Acción terapéutica substring
+            if (filtroAccion) {
+                const desc = this.normalize(item.accion_descrip);
+                const id = item.accion ? String(item.accion) : '';
+                if (!desc.includes(filtroAccion) && !id.includes(filtroAccion)) {
+                    return false;
+                }
+            }
+
+            // 3. Códigos ATC substring
+            if (filtroAtc) {
+                let atcs: any = item.atcs;
+                if (typeof atcs === 'string') {
+                    try { atcs = JSON.parse(atcs); } catch { atcs = [atcs]; }
+                }
+                const matchAtc = Array.isArray(atcs) && atcs.some(atc => this.normalize(atc).includes(filtroAtc));
+                if (!matchAtc) {
+                    return false;
+                }
+            }
+
+            // 4. Códigos GTINs substring
+            if (filtroGtin) {
+                let gtins: any = item.gtins;
+                if (typeof gtins === 'string') {
+                    try { gtins = JSON.parse(gtins); } catch { gtins = [gtins]; }
+                }
+                const matchGtin = Array.isArray(gtins) && gtins.some(gtin => this.normalize(gtin).includes(filtroGtin));
+                if (!matchGtin) {
+                    return false;
+                }
+            }
+
+            // 5. Código SNOMED (búsqueda completa)
+            if (filtroSnomed) {
+                const snomedVal = item.snomed ? String(item.snomed).trim().toLowerCase() : '';
+                if (snomedVal !== filtroSnomed) {
+                    return false;
+                }
+            }
+
+            // 6. Monodrogas
+            if (filtroMonodrogas) {
+                let ndrogas: any = item.ndrogas;
+                if (typeof ndrogas === 'string') {
+                    try { ndrogas = JSON.parse(ndrogas); } catch { ndrogas = []; }
+                }
+                const matchNdrogas = Array.isArray(ndrogas) && ndrogas.some(nd => {
+                    if (typeof nd === 'object' && nd !== null) {
+                        return this.normalize(nd.ndroga).includes(filtroMonodrogas) ||
+                               this.normalize(nd.pvalor).includes(filtroMonodrogas) ||
+                               this.normalize((nd as any).droga_descrip).includes(filtroMonodrogas) ||
+                               this.normalize((nd as any).nombre).includes(filtroMonodrogas);
+                    }
+                    return this.normalize(nd).includes(filtroMonodrogas);
+                });
+                if (!matchNdrogas) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    }
+
+    public limpiarFiltros(): void {
+        this.filtros = {
+            droga: '',
+            accion: '',
+            atc: '',
+            gtin: '',
+            snomed: '',
+            monodrogas: ''
+        };
+        this.aplicarFiltros();
+    }
+
+    private normalize(val: any): string {
+        if (val === undefined || val === null) {
+            return '';
+        }
+        return String(val)
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim();
     }
 
     public seleccionar(item: IVademecumEntry): void {
