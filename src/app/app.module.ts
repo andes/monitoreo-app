@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PlexModule } from '@andes/plex';
 import { Server, SharedModule } from '@andes/shared';
 import { routing } from './app-routing.module';
@@ -39,6 +39,9 @@ import { PacienteService } from './services/paciente.service';
 import { AdjuntosService } from './services/adjuntos.service';
 import { ProfesionalService } from './services/profesional.service';
 import { PacienteModule } from './shared/paciente/paciente.module';
+import { VademecumComponent } from './vademecum/vademecum.component';
+import { VademecumService } from './vademecum/services/vademecum.service';
+import { TokenExpiredInterceptor } from './services/token-expired.interceptor';
 
 @NgModule({
     declarations: [
@@ -54,7 +57,8 @@ import { PacienteModule } from './shared/paciente/paciente.module';
         EstadoFuentesAutenticasComponent,
         InsumosComponent,
         InsumosCreateComponent,
-        restriccionHudsComponent
+        restriccionHudsComponent,
+        VademecumComponent
     ],
     imports: [
         BrowserModule,
@@ -87,7 +91,13 @@ import { PacienteModule } from './shared/paciente/paciente.module';
         PermisosService,
         PacienteService,
         AdjuntosService,
-        ProfesionalService
+        ProfesionalService,
+        VademecumService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenExpiredInterceptor,
+            multi: true,
+        }
     ],
     bootstrap: [AppComponent]
 })

@@ -11,6 +11,7 @@ import { EstadoFuentesAutenticasComponent } from './fuentes-autenticas/component
 import { InsumosComponent } from './insumos/insumos.component';
 import { InsumosCreateComponent } from './insumos/insumos-create';
 import { restriccionHudsComponent } from './restriccion-huds/restriccion-huds';
+import { VademecumComponent } from './vademecum/vademecum.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
     { path: 'insumos', component: InsumosComponent, canActivate: [RoutingGuard] },
     { path: 'insumos-create', component: InsumosCreateComponent, canActivate: [RoutingGuard] },
     { path: 'restriccion-huds', component: restriccionHudsComponent, canActivate: [RoutingGuard] },
+    { path: 'vademecum', component: VademecumComponent, canActivate: [RoutingGuard] },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 

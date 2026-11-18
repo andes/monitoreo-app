@@ -1,0 +1,19 @@
+.table-atributos {
+    font-size: 0.875rem;
+
+    th {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    td {
+        padding: 0.35rem 0.5rem;
+    }
+}
+
+.selectable {
+    cursor: pointer;
+}
+
+.selected {
+    background-color: rgba(0, 168, 204, 0.12) !important;
+}
